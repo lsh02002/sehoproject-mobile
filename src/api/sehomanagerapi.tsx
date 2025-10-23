@@ -1,0 +1,176 @@
+import axios from "axios";
+import {
+  projectRequestType,
+  spaceRequestType,
+  taskRequestType,
+  taskUpdateRequestType,
+  userSignupType,
+  workspaceRequestType,
+} from "../types/type";
+import { BASE_URL } from "./BASE_URL";
+import { toast } from "react-toastify";
+
+export const api = axios.create({
+  baseURL: BASE_URL,
+});
+
+// 요청 인터셉터: 매 요청마다 토큰 자동 추가
+api.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (accessToken && refreshToken) {
+      config.headers["accessToken"] = accessToken;
+      config.headers["refreshToken"] = refreshToken;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// ✅ 응답 인터셉터: 새 accessToken이 오면 자동 저장
+api.interceptors.response.use(
+  (response) => {
+    const newAccessToken = response.headers["accesstoken"]; // 헤더 키 이름은 서버와 동일하게
+    if (newAccessToken) {
+      localStorage.setItem("accessToken", newAccessToken);
+    }
+    return response;
+  },
+  (error) => {
+    // ✅ detailMessage가 있으면 가장 먼저 콘솔에 출력
+    if (error.response?.data?.detailMessage) {
+      toast.error(error.response.data.detailMessage);
+      return Promise.reject(error);
+    }
+    // 그 외의 에러도 같이 로깅
+    console.error("⚠️ Axios Error:", error);
+    return Promise.reject(error);
+  }
+);
+
+const UserLoginApi = async (email: string, password: string) => {
+  return api.post(`${BASE_URL}/user/login`, {
+    email,
+    password,
+  });
+};
+
+const UserSignupApi = async (userInfo: userSignupType) => {
+  return api.post(`${BASE_URL}/user/sign-up`, userInfo);
+};
+
+const UserLogoutApi = async () => {
+  return api.delete(`${BASE_URL}/user/logout`);
+};
+
+const getUserInfosApi = async () => {
+  return api.get(`${BASE_URL}/user`);
+};
+
+const getWorkspacesTreeApi = async () => {
+  return api.get(`${BASE_URL}/workspaces/tree`);
+};
+
+const getWorkspacesApi = async () => {
+  return api.get(`${BASE_URL}/workspaces`);
+}
+
+const getOneWorkspaceApi = async(id: number) => {
+  return api.get(`${BASE_URL}/workspaces/${id}`);
+}
+
+const putOneWorkspaceApi = async(id: number, data: {name: string, slug: string}) => {
+  return api.put(`${BASE_URL}/workspaces/${id}`, data);
+}
+
+const getSpacesByWorkspaceApi = async (workspaceId: number) => {
+  return api.get(`${BASE_URL}/workspace/${workspaceId}/spaces`);
+};
+
+const getOneSpaceByWorkspaceAndSpaceApi = async (workspaceId: number, spaceId: number) => {
+  return api.get(`${BASE_URL}/workspace/${workspaceId}/spaces/${spaceId}`);
+}
+
+const putOneSpaceByWorkspaceAndSpaceApi = async (workspaceId: number, spaceId: number, data: {name: string, slug: string}) => {
+  return api.put(`${BASE_URL}/workspace/${workspaceId}/spaces/${spaceId}`, data);
+}
+
+const getProjectsBySpaceApi = (spaceId: number) => {
+  return api.get(`${BASE_URL}/projects/spaces/${spaceId}`);
+}
+
+const getOneProjectApi = (projectId: number) => {
+  return api.get(`${BASE_URL}/projects/${projectId}`);
+}
+
+const putOneProjectApi = (projectId: number, data: projectRequestType) => {
+  return api.put(`${BASE_URL}/projects/${projectId}/edit`, data);
+}
+
+const getMilestonesByProjectApi = async (projectId: number) => {
+  return api.get(`${BASE_URL}/milestones/projects/${projectId}`);
+};
+
+const getTasksByProjectApi = async (projectId: number) => {
+  return api.get(`${BASE_URL}/tasks/projects/${projectId}`);
+};
+
+const getOneTaskApi = async (taskId: number) => {
+  return api.get(`${BASE_URL}/tasks/${taskId}`);
+}
+
+const putOneTaskApi = async (taskId: number, data: taskUpdateRequestType) => {
+  return api.put(`${BASE_URL}/tasks/${taskId}/edit`, data);
+}
+
+const getTagsByProjectApi = async (projectId: number) => {
+  return api.get(`${BASE_URL}/tags/projects/${projectId}/tags`);
+}
+
+const getSprintsByProjectApi = async (projectId: number) => {
+  return api.get(`${BASE_URL}/sprints/projects/${projectId}`);
+};
+
+const createWorkspaceApi = async (info: workspaceRequestType) => {
+  return api.post(`${BASE_URL}/workspaces/create`, info);
+};
+
+const createSpaceApi = async (workspaceId: number, info: spaceRequestType) => {
+  return api.post(`${BASE_URL}/workspace/${workspaceId}/spaces/create`, info);
+};
+
+const createProjectApi = async (info: projectRequestType) => {
+  return api.post(`${BASE_URL}/projects/create`, info);
+};
+
+const createTaskApi = async (info: taskRequestType) => {
+  return api.post(`${BASE_URL}/tasks/create`, info);
+};
+
+export {
+  UserLoginApi,
+  UserSignupApi,
+  UserLogoutApi,
+  getWorkspacesTreeApi,
+  getWorkspacesApi,
+  getOneWorkspaceApi,
+  putOneWorkspaceApi,
+  getSpacesByWorkspaceApi,
+  getOneSpaceByWorkspaceAndSpaceApi,
+  putOneSpaceByWorkspaceAndSpaceApi,
+  getProjectsBySpaceApi,
+  getOneProjectApi,
+  putOneProjectApi,
+  getUserInfosApi,
+  getMilestonesByProjectApi,
+  getTasksByProjectApi,
+  getOneTaskApi,
+  putOneTaskApi,
+  getTagsByProjectApi,
+  getSprintsByProjectApi,
+  createWorkspaceApi,
+  createSpaceApi,
+  createProjectApi,
+  createTaskApi,
+};
