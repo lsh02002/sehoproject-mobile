@@ -1,27 +1,25 @@
 import React from "react";
-import { SpaceResponseType } from "../../types/type";
+import { workspaceResponseType } from "../../../types/type";
 import styled from "styled-components";
+import Invitation from "../../../assets/invitation.svg";
 import { useNavigate } from "react-router-dom";
 
-const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
+const WorkspaceCard = ({ workspace }: { workspace: workspaceResponseType }) => {
   const navigate = useNavigate();
   return (
-    <Container onClick={(e) =>{ 
-        e.stopPropagation();
-        console.log(space.id);
-        navigate(`/projects/spaces/${space.id}`)}}>
+    <Container onClick={() => navigate(`/workspace/${workspace.id}/spaces`)}>
       <Wrapper>
         <Info>
-          <Id>{space.id}</Id>
-          <Name>{space.name}</Name>
-          <Slug>{space.slug}</Slug>
-          <WorkId>워크스페이스: {space.workspaceId}</WorkId>
+          <Id>{workspace.id}</Id>
+          <Name>{workspace.name}</Name>
+          <Slug>{workspace.slug}</Slug>
         </Info>
         <Buttons>
+          <img src={Invitation} alt="" width={28} />
           <span
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/workspace/${space.workspaceId}/spaces/${space.id}`);
+              navigate(`/workspace/${workspace.id}`);
             }}
           >
             EDIT
@@ -32,17 +30,17 @@ const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
   );
 };
 
-export default SpaceCard;
+export default WorkspaceCard;
 
 const Container = styled.div`
-  width: 100%;  
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid lightgray;
   padding-left: 10px;  
   box-sizing: border-box;
-  margin-bottom: 20px;
+  margin-bottom: 20px;  
 `;
 
 const Wrapper = styled.div`
@@ -54,7 +52,7 @@ const Wrapper = styled.div`
 
 const Info = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
   flex-direction: column;
   padding: 10px;
@@ -69,11 +67,6 @@ const Name = styled.div`
 `;
 
 const Slug = styled.div`
-  color: gray;
-`;
-
-const WorkId = styled.div`
-  font-size: 0.9rem;
   color: gray;
 `;
 

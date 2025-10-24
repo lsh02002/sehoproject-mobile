@@ -1,22 +1,27 @@
 import React from "react";
-import { projectResponseType } from "../../types/type";
+import { SpaceResponseType } from "../../../types/type";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const ProjectCard = ({ project }: { project: projectResponseType }) => {
+const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
   const navigate = useNavigate();
   return (
-    <Container onClick={() => navigate(`/tasks/projects/${project.id}`)}>
+    <Container onClick={(e) =>{ 
+        e.stopPropagation();
+        console.log(space.id);
+        navigate(`/projects/spaces/${space.id}`)}}>
       <Wrapper>
         <Info>
-          <Id>{project.id}</Id>
-          <Name>{project.name}</Name>          
+          <Id>{space.id}</Id>
+          <Name>{space.name}</Name>
+          <Slug>{space.slug}</Slug>
+          <WorkId>워크스페이스: {space.workspaceId}</WorkId>
         </Info>
-        <Buttons>          
+        <Buttons>
           <span
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/projects/${project.id}/edit`);
+              navigate(`/workspace/${space.workspaceId}/spaces/${space.id}`);
             }}
           >
             EDIT
@@ -27,10 +32,10 @@ const ProjectCard = ({ project }: { project: projectResponseType }) => {
   );
 };
 
-export default ProjectCard;
+export default SpaceCard;
 
 const Container = styled.div`
-  width: 100%;
+  width: 100%;  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,6 +66,15 @@ const Id = styled.div`
 
 const Name = styled.div`
   font-size: 1.1rem;
+`;
+
+const Slug = styled.div`
+  color: gray;
+`;
+
+const WorkId = styled.div`
+  font-size: 0.9rem;
+  color: gray;
 `;
 
 const Buttons = styled.div`

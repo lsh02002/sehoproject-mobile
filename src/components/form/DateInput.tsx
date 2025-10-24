@@ -49,12 +49,12 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 6px 0;
+  margin: 10px 0;
 
   label {
     color: black;
     font-weight: 400;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 
   .datePicker {
@@ -62,9 +62,8 @@ const Container = styled.div`
     padding: 0.7rem;
     box-sizing: border-box;    
     border: none;
-    border-bottom: 1px solid lightgray;
-    margin-top: 4px;
-    font-size: 0.85rem;
+    border-bottom: 1px solid lightgray;    
+    font-size: 0.8rem;
     outline: none;
     transition: border 0.2s ease-in-out;
 

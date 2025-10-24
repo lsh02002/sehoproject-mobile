@@ -247,6 +247,7 @@ const Container = styled.div`
   width: 100%;
   font-family: system-ui, sans-serif;
   position: relative;
+  margin: 10px 0;
   margin-bottom: 20px;
 `;
 
@@ -254,8 +255,8 @@ const Label = styled.label`
   display: block;
   margin-bottom: 6px;
   font-size: 0.9rem;
-  font-weight: 500;
-  color: #333;
+  font-weight: 400;
+  color: black;
 `;
 
 const SelectedList = styled.div`
@@ -272,7 +273,7 @@ const SelectedItem = styled.span`
   background-color: #f3f3f3;
   border-radius: 16px;
   padding: 4px 8px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 `;
 
 const RemoveButton = styled.button`
@@ -292,16 +293,15 @@ const Input = styled.input`
   border: none;
   border-bottom: 1px solid #ccc;
   outline: none;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   box-sizing: border-box;
   &:hover,
-  &:focus {    
-    border-bottom: 1px solid #007bff;    
+  &:focus {
+    border-bottom: 1px solid #007bff;
   }
 `;
 
-const Menu = styled.div<{ $maxHeight: number }>`
-  margin-top: 6px;
+const Menu = styled.div<{ $maxHeight: number }>`  
   border-radius: 6px;
   overflow-y: auto;
   max-height: ${(p) => p.$maxHeight}px;

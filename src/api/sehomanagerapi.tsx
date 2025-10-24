@@ -96,15 +96,15 @@ const putOneSpaceByWorkspaceAndSpaceApi = async (workspaceId: number, spaceId: n
   return api.put(`${BASE_URL}/workspace/${workspaceId}/spaces/${spaceId}`, data);
 }
 
-const getProjectsBySpaceApi = (spaceId: number) => {
+const getProjectsBySpaceApi = async (spaceId: number) => {
   return api.get(`${BASE_URL}/projects/spaces/${spaceId}`);
 }
 
-const getOneProjectApi = (projectId: number) => {
+const getOneProjectApi = async (projectId: number) => {
   return api.get(`${BASE_URL}/projects/${projectId}`);
 }
 
-const putOneProjectApi = (projectId: number, data: projectRequestType) => {
+const putOneProjectApi = async (projectId: number, data: projectRequestType) => {
   return api.put(`${BASE_URL}/projects/${projectId}/edit`, data);
 }
 

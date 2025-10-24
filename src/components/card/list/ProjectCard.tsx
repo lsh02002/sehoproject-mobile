@@ -1,25 +1,22 @@
 import React from "react";
-import { workspaceResponseType } from "../../types/type";
+import { projectResponseType } from "../../../types/type";
 import styled from "styled-components";
-import Invitation from "../../assets/invitation.svg";
 import { useNavigate } from "react-router-dom";
 
-const WorkspaceCard = ({ workspace }: { workspace: workspaceResponseType }) => {
+const ProjectCard = ({ project }: { project: projectResponseType }) => {
   const navigate = useNavigate();
   return (
-    <Container onClick={() => navigate(`/workspace/${workspace.id}/spaces`)}>
+    <Container onClick={() => navigate(`/tasks/projects/${project.id}`)}>
       <Wrapper>
         <Info>
-          <Id>{workspace.id}</Id>
-          <Name>{workspace.name}</Name>
-          <Slug>{workspace.slug}</Slug>
+          <Id>{project.id}</Id>
+          <Name>{project.name}</Name>          
         </Info>
-        <Buttons>
-          <img src={Invitation} alt="" width={28} />
+        <Buttons>          
           <span
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/workspace/${workspace.id}`);
+              navigate(`/projects/${project.id}/edit`);
             }}
           >
             EDIT
@@ -30,7 +27,7 @@ const WorkspaceCard = ({ workspace }: { workspace: workspaceResponseType }) => {
   );
 };
 
-export default WorkspaceCard;
+export default ProjectCard;
 
 const Container = styled.div`
   width: 100%;
@@ -40,7 +37,7 @@ const Container = styled.div`
   border-bottom: 1px solid lightgray;
   padding-left: 10px;  
   box-sizing: border-box;
-  margin-bottom: 20px;  
+  margin-bottom: 20px;
 `;
 
 const Wrapper = styled.div`
@@ -52,7 +49,7 @@ const Wrapper = styled.div`
 
 const Info = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
   flex-direction: column;
   padding: 10px;
@@ -64,10 +61,6 @@ const Id = styled.div`
 
 const Name = styled.div`
   font-size: 1.1rem;
-`;
-
-const Slug = styled.div`
-  color: gray;
 `;
 
 const Buttons = styled.div`

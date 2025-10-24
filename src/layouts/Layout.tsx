@@ -131,7 +131,8 @@ function LockBodyScroll({ when }: { when: boolean }) {
 // ================= styled-components =================
 const Container = styled.div`
   min-height: 100vh;
-  background: #fafafa;
+  /* background: #fafafa; */
+  background: white;
   color: #111827;
 `;
 

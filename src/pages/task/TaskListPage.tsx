@@ -3,7 +3,7 @@ import { getTasksByProjectApi } from "../../api/sehomanagerapi";
 import { TaskResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
 import ListLayout from "../../layouts/ListLayout";
-import TaskCard from "../../components/card/TaskCard";
+import TaskCard from "../../components/card/list/TaskCard";
 
 const TaskListPage = () => {
   const { projectId } = useParams();

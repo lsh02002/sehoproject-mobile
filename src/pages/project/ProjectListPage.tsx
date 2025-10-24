@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { projectResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
 import { getProjectsBySpaceApi } from "../../api/sehomanagerapi";
-import ProjectCard from "../../components/card/ProjectCard";
+import ProjectCard from "../../components/card/list/ProjectCard";
 import ListLayout from "../../layouts/ListLayout";
 
 const ProjectListPage = () => {

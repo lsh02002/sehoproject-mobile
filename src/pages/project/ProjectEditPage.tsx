@@ -7,6 +7,7 @@ import { projectRequestType, tagResponseType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
 import DateInput from "../../components/form/DateInput";
 import { CompleteArrayInput } from "../../components/form/CompleteArrayInput";
+import { TwoDiv } from "../../components/form/TwoDiv";
 
 const ProjectEditPage = () => {
   const { projectId } = useParams();
@@ -82,6 +83,7 @@ const ProjectEditPage = () => {
     const set = new Set(tags);
     return ids.filter((id) => set.has(id)).map((id) => ({ id, name: id }));
   }
+
   const OnEditSubmit = () => {
     const data: projectRequestType = {
       spaceId: Number(spaceId),
@@ -209,10 +211,4 @@ const Title = styled.div`
   a {
     font-size: 0.7rem;
   }
-`;
-
-const TwoDiv = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 10px;
 `;

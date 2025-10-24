@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   assigneeRequestType,
-  assignInfoType,  
+  assignInfoType,
   tagResponseType,
   taskUpdateRequestType,
 } from "../../types/type";
@@ -17,10 +17,11 @@ import SelectInput, { Option } from "../../components/form/SelectInput";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import styled from "styled-components";
 import ConfirmButton from "../../components/form/ConfirmButton";
+import { TwoDiv } from "../../components/form/TwoDiv";
 
 const TaskEditPage = () => {
   const { taskId } = useParams();
-  const [id, setId] = useState(taskId);
+  const [id, setId] = useState("");
   const [projectKey, setProjectKey] = useState("");
   const [projectId, setProjectId] = useState("");
   const [name, setName] = useState("");
@@ -120,10 +121,10 @@ const TaskEditPage = () => {
     setTags(newTagsOptions);
   };
 
-  const handleSetDependencyIds = (ids: (string | number)[]) => {
-    const numericIds = ids.map((id) => Number(id)).filter((id) => !isNaN(id)); // NaN 제거
-    setDependencyIds(numericIds);
-  };
+  // const handleSetDependencyIds = (ids: (string | number)[]) => {
+  //   const numericIds = ids.map((id) => Number(id)).filter((id) => !isNaN(id)); // NaN 제거
+  //   setDependencyIds(numericIds);
+  // };
 
   const OnEditSubmit = () => {
     const data: taskUpdateRequestType = {
@@ -286,10 +287,4 @@ const Title = styled.div`
   a {
     font-size: 0.7rem;
   }
-`;
-
-const TwoDiv = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 10px;
 `;

@@ -189,14 +189,14 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  margin: 6px 0;
+  margin: 10px 0;
   position: relative;
 
   label {
     width: 100%;
     color: black;
     font-weight: 400;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -205,9 +205,8 @@ const SelectBox = styled.button<{ $isPlaceholder: boolean }>`
   padding: 0.7rem;
   box-sizing: border-box;
   border: none;  
-  border-bottom: 1px solid lightgray;
-  margin-top: 4px;
-  font-size: 0.7rem;
+  border-bottom: 1px solid lightgray;  
+  font-size: 0.8rem;
   outline: none;
   background: white;
   text-align: left;
