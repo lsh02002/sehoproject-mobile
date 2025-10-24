@@ -112,20 +112,22 @@ const ProjectEditPage = () => {
         <Title>
           <h3>프로젝트 수정</h3>
         </Title>
-        <TextInput
-          name="id"
-          title="프로젝트 아이디"
-          disabled
-          data={id ?? "0"}
-          setData={setId}
-        />
-        <TextInput
-          name="spaceName"
-          title="스페이스 이름"
-          disabled
-          data={spaceName}
-          setData={setSpaceName}
-        />
+        <TwoDiv>
+          <TextInput
+            name="id"
+            title="프로젝트 아이디"
+            disabled
+            data={id ?? "0"}
+            setData={setId}
+          />
+          <TextInput
+            name="spaceName"
+            title="스페이스 이름"
+            disabled
+            data={spaceName}
+            setData={setSpaceName}
+          />
+        </TwoDiv>
         <TextInput
           name="projectKey"
           title="프로젝트 키"
@@ -140,16 +142,18 @@ const ProjectEditPage = () => {
           data={description}
           setData={setDescription}
         />
-        <DateInput
-          title="시작시간"
-          selected={startDate}
-          setSelected={setStartDate}
-        />
-        <DateInput
-          title="dueDate"
-          selected={dueDate}
-          setSelected={setDueDate}
-        />
+        <TwoDiv>
+          <DateInput
+            title="시작일"
+            selected={startDate}
+            setSelected={setStartDate}
+          />
+          <DateInput
+            title="마감일"
+            selected={dueDate}
+            setSelected={setDueDate}
+          />
+        </TwoDiv>
         <TextInput
           name="creatorName"
           title="생성자 이름"
@@ -179,7 +183,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   padding: 20px;
   box-sizing: border-box;
 `;
@@ -205,4 +209,10 @@ const Title = styled.div`
   a {
     font-size: 0.7rem;
   }
+`;
+
+const TwoDiv = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 10px;
 `;

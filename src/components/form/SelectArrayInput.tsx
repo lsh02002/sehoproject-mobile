@@ -204,8 +204,8 @@ const SelectBox = styled.button<{ $isPlaceholder: boolean }>`
   width: 100%;
   padding: 0.7rem;
   box-sizing: border-box;
-  border-radius: 5px;
-  border: 1px solid lightgray;
+  border: none;  
+  border-bottom: 1px solid lightgray;
   margin-top: 4px;
   font-size: 0.7rem;
   outline: none;
@@ -214,12 +214,12 @@ const SelectBox = styled.button<{ $isPlaceholder: boolean }>`
   position: relative;
 
   &:hover {
-    border: 1px solid #4680ff;
+    border-bottom: 1px solid #4680ff;
     cursor: pointer;
   }
 
   &:focus {
-    border: 1px solid #4680ff;
+    border-bottom: 1px solid #4680ff;
   }
 
   .placeholder {

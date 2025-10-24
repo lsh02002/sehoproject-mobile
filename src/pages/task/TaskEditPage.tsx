@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   assigneeRequestType,
-  assignInfoType,
-  tagRequestType,
+  assignInfoType,  
   tagResponseType,
   taskUpdateRequestType,
 } from "../../types/type";
@@ -165,20 +164,22 @@ const TaskEditPage = () => {
         <Title>
           <h3>태스크 수정</h3>
         </Title>
-        <TextInput
-          name="id"
-          title="태스크 아이디"
-          disabled
-          data={id ?? "null"}
-          setData={setId}
-        />
-        <TextInput
-          name="projectId"
-          title="프로젝트 아이디"
-          disabled
-          data={projectId ?? "null"}
-          setData={setProjectId}
-        />
+        <TwoDiv>
+          <TextInput
+            name="id"
+            title="태스크 아이디"
+            disabled
+            data={id ?? "null"}
+            setData={setId}
+          />
+          <TextInput
+            name="projectId"
+            title="프로젝트 아이디"
+            disabled
+            data={projectId ?? "null"}
+            setData={setProjectId}
+          />
+        </TwoDiv>
         <TextInput
           name="projectKey"
           title="프로젝트 키"
@@ -193,20 +194,22 @@ const TaskEditPage = () => {
           data={description}
           setData={setDescription}
         />
-        <SelectInput
-          name="state"
-          title="작업 상태"
-          value={state}
-          setValue={setState}
-          options={options}
-        />
-        <SelectInput
-          name="priority"
-          title="작업 우선순위"
-          value={priority}
-          setValue={setPriority}
-          options={priorityOptions}
-        />
+        <TwoDiv>
+          <SelectInput
+            name="state"
+            title="작업 상태"
+            value={state}
+            setValue={setState}
+            options={options}
+          />
+          <SelectInput
+            name="priority"
+            title="작업 우선순위"
+            value={priority}
+            setValue={setPriority}
+            options={priorityOptions}
+          />
+        </TwoDiv>
         <SelectArrayInput
           name="assignees"
           title="작업할당자"
@@ -217,20 +220,22 @@ const TaskEditPage = () => {
             value: assignee.email,
           }))}
         />
-        <TextInput
-          name="sprintId"
-          title="스프린트 아이디"
-          disabled
-          data={sprintId ?? "null"}
-          setData={setSprintId}
-        />
-        <TextInput
-          name="milestoneId"
-          title="마일스톤 아이디"
-          disabled
-          data={milestoneId ?? "null"}
-          setData={setMilestoneId}
-        />
+        <TwoDiv>
+          <TextInput
+            name="sprintId"
+            title="스프린트 아이디"
+            disabled
+            data={sprintId ?? "null"}
+            setData={setSprintId}
+          />
+          <TextInput
+            name="milestoneId"
+            title="마일스톤 아이디"
+            disabled
+            data={milestoneId ?? "null"}
+            setData={setMilestoneId}
+          />
+        </TwoDiv>
         <SelectArrayInput
           name="tags"
           title="태그"
@@ -281,4 +286,10 @@ const Title = styled.div`
   a {
     font-size: 0.7rem;
   }
+`;
+
+const TwoDiv = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 10px;
 `;

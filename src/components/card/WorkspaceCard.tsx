@@ -37,9 +37,8 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid gray;
-  padding-left: 10px;
-  border-radius: 5px;
+  border-bottom: 1px solid lightgray;
+  padding-left: 10px;  
   box-sizing: border-box;
   margin-bottom: 20px;  
 `;

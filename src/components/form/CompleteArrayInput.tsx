@@ -174,8 +174,8 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   };
 
   return (
-    <Container      
-      // onBlur={() => setMenuOpen(false)}
+    <Container
+    // onBlur={() => setMenuOpen(false)}
     >
       {title && <Label>{title}</Label>}
 
@@ -289,14 +289,14 @@ const RemoveButton = styled.button`
 const Input = styled.input`
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: none;
+  border-bottom: 1px solid #ccc;
   outline: none;
   font-size: 0.9rem;
   box-sizing: border-box;
-  &:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+  &:hover,
+  &:focus {    
+    border-bottom: 1px solid #007bff;    
   }
 `;
 

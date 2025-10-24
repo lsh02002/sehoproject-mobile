@@ -1,20 +1,22 @@
 import React from "react";
 import { TaskResponseType } from "../../types/type";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-const TaskCard = ({ task }: { task: TaskResponseType }) => {  
+const TaskCard = ({ task }: { task: TaskResponseType }) => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Wrapper>
         <Info>
           <Id>{task.id}</Id>
-          <Name>{task.name}</Name>          
+          <Name>{task.name}</Name>
         </Info>
-        <Buttons>          
+        <Buttons>
           <span
             onClick={(e) => {
               e.stopPropagation();
-            //   navigate(`/projects/${project.id}/edit`);
+              navigate(`/tasks/${task.id}/edit`);
             }}
           >
             EDIT
@@ -32,9 +34,8 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid gray;
-  padding-left: 10px;
-  border-radius: 5px;
+  border-bottom: 1px solid lightgray;
+  padding-left: 10px;  
   box-sizing: border-box;
   margin-bottom: 20px;
 `;

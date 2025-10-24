@@ -60,9 +60,9 @@ const Container = styled.div`
   .datePicker {
     width: 100%;
     padding: 0.7rem;
-    box-sizing: border-box;
-    border-radius: 6px;
-    border: 1px solid lightgray;
+    box-sizing: border-box;    
+    border: none;
+    border-bottom: 1px solid lightgray;
     margin-top: 4px;
     font-size: 0.85rem;
     outline: none;
@@ -70,7 +70,7 @@ const Container = styled.div`
 
     &:hover,
     &:focus {
-      border: 1px solid #4680ff;
+      border-bottom: 1px solid #4680ff;
     }
 
     &::placeholder {

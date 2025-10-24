@@ -44,20 +44,20 @@ const Container = styled.div`
   input {
     width: 100%;
     padding: 0.7rem;
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: 1px solid lightgray;
+    box-sizing: border-box;    
+    border: none;
+    border-bottom: 1px solid lightgray;
     margin-top: 4px;
     font-size: 0.7rem;
     //*****매우 중요 outline *****//
     outline: none;
 
     &:hover {
-      border: 1px solid #4680ff;
+      border-bottom: 1px solid #4680ff;
     }
 
     &:focus {
-      border: 1px solid #4680ff;
+      border-bottom: 1px solid #4680ff;
     }
 
     &::placeholder {
