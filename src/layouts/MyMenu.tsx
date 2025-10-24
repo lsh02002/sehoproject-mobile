@@ -16,10 +16,20 @@ import { useLogin } from "../context/LoginContext";
 const Panel = styled.aside<{ $open: boolean }>`
   min-width: ${({ $open }) => ($open ? 240 : 64)}px;
   padding: 8px;
+  height: calc(100vh - 150px);
+  box-sizing: border-box;
+  position: relative;
 `;
 
-export default function SidebarMenu() {
-  const [open] = React.useState(true);
+export default function SidebarMenu({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (v: boolean) => void;
+}) {
+  const { isLogin, setIsLogin } = useLogin();
+  // const [open] = React.useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const { workspaceId } = useParams();
@@ -93,8 +103,43 @@ export default function SidebarMenu() {
   return (
     <Panel $open={open} aria-label="Workspace Tree Navigation">
       <ul style={{ padding: 0, margin: 0 }}>
-        <TreeNode node={root} selectedId={selectedId} onSelect={handleSelect} />
+        <TreeNode
+          open={open}
+          setOpen={setOpen}
+          node={root}
+          selectedId={selectedId}
+          onSelect={handleSelect}
+        />
       </ul>
+      <LoginMenuItem>
+        {isLogin ? (
+          <span
+            onClick={() => {
+              setIsLogin(false);
+              setOpen(false);
+              navigate("/login");
+            }}
+          >
+            로그아웃
+          </span>
+        ) : (
+          <span
+            onClick={() => {
+              setOpen(false);
+              navigate("/login");
+            }}
+          >
+            로그인
+          </span>
+        )}
+      </LoginMenuItem>
     </Panel>
   );
 }
+
+const LoginMenuItem = styled.div`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 0 20px;
+`;

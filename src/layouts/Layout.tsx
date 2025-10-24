@@ -64,7 +64,7 @@ export default function Layout({
   return (
     <Container data-overlay-open={open}>
       {/* 스킵 링크 */}
-      <SkipLink href="#main">본문으로 건너뛰기</SkipLink>      
+      <SkipLink href="#main">본문으로 건너뛰기</SkipLink>
       {/* 최상단 왼쪽 모서리 햄버거 버튼 (고정) */}
       <BurgerButton
         aria-label="메뉴 열기"
@@ -93,22 +93,19 @@ export default function Layout({
         </SidebarHeader>
 
         <Nav role="navigation" aria-label="주 메뉴">
-          <SidebarMenu />
+          <SidebarMenu open={open} setOpen={setOpen} />
         </Nav>
       </Sidebar>
 
       {/* 상단 바 (선택) */}
       <TopBar>
         <TopBarInner>
-          <strong>{appName}</strong>          
-        </TopBarInner>        
+          <strong>{appName}</strong>
+        </TopBarInner>
       </TopBar>
 
       {/* 메인 컨텐츠 */}
       <Main id="main">{children}</Main>
-
-      {/* 하단 푸터 (선택) */}
-      <Footer>⌘/Ctrl + M 로 메뉴 토글 · ESC 로 닫기</Footer>
 
       <LockBodyScroll when={open} />
     </Container>
@@ -281,18 +278,9 @@ const TopBarInner = styled.div`
 
 const Main = styled.main`
   max-width: 768px;
-  margin: 0 auto;  
+  margin: 0 auto;
   padding-bottom: 100px;
   @media (min-width: 768px) {
     padding: 24px;
   }
-`;
-
-const Footer = styled.footer`
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 0 16px 32px 16px;
-  text-align: center;
-  font-size: 12px;
-  color: #6b7280;
 `;

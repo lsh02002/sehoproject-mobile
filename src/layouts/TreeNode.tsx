@@ -1,5 +1,5 @@
 // TreeNode.tsx
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import styled, { css } from "styled-components";
 import {
   BackendRowType,
@@ -321,6 +321,8 @@ export function convertToRootTreeNode(
 
 /* ========= Props ========= */
 type Props = {
+  open: boolean;
+  setOpen: (v: any) => void;
   node: TreeNodeType;
   depth?: number;
   selectedId?: string | number;
@@ -329,13 +331,14 @@ type Props = {
 
 /* ========= TreeNode 컴포넌트 ========= */
 export const TreeNode: React.FC<Props> = memo(function TreeNode({
+  open,
+  setOpen,
   node,
   depth = 0,
   selectedId,
   onSelect,
 }) {
   const redirect = useNavigate();
-  const [open, setOpen] = useState(true);
 
   const hasChildren = Boolean(node.children?.length);
   const isSelected = selectedId === node.id;
@@ -343,7 +346,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
 
   const handleToggle = () => {
     // 펼치기/접기는 허용
-    if (hasChildren) setOpen((v) => !v);
+    if (hasChildren) setOpen((v: any) => !v);
     onSelect?.(node);
 
     // 🚫 비활성 노드는 이동 금지
@@ -357,21 +360,27 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
     // ✅ 각 타입별 라우트는 node.id만 사용
     switch (node.type) {
       case "WORKSPACE":
+        setOpen(false);
         redirect(`/workspace/${node.id}/spaces`);
         break;
       case "SPACE":
+        setOpen(false);
         redirect(`/projects/spaces/${node.id}`);
         break;
       case "PROJECT":
+        setOpen(false);
         redirect(`/workboards/${node.id}`);
         break;
       case "MILESTONE":
+        setOpen(false);
         redirect(`/milestones/${node.id}`);
         break;
       case "SPRINT":
+        setOpen(false);
         redirect(`/sprints/${node.id}`);
         break;
       case "TASK":
+        setOpen(false);
         redirect(`/tasks/${node.id}`);
         break;
     }
@@ -424,6 +433,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
                   return;
                 }
                 e.stopPropagation();
+                setOpen(false);
                 redirect(`/sprints/projects/${node.id}`);
               }}
               style={{
@@ -448,6 +458,8 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
               key={`${depth + 1}-${child.type ?? "NODE"}-${String(
                 child.id ?? idx
               )}-${idx}`}
+              open={open}
+              setOpen={setOpen}
               node={child}
               depth={depth + 1}
               selectedId={selectedId}

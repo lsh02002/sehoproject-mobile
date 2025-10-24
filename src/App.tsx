@@ -16,6 +16,7 @@ import ProjectEditPage from "./pages/project/ProjectEditPage";
 import { StyledToastContainer } from "./layouts/Toast";
 import TaskListPage from "./pages/task/TaskListPage";
 import TaskEditPage from "./pages/task/TaskEditPage";
+import SprintPage from "./pages/sprint/SprintPage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -50,6 +51,8 @@ function App() {
 
         <Route path="/tasks/projects/:projectId" element={<TaskListPage />} />
         <Route path="/tasks/:taskId/edit" element={<TaskEditPage />} />
+
+        <Route path="/sprints/projects/:projectId" element={<SprintPage />} />
       </Routes>
       <StyledToastContainer
         position="bottom-center"
