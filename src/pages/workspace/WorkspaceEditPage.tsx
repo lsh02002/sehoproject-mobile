@@ -38,7 +38,7 @@ const WorkspaceEditPage = () => {
     putOneWorkspaceApi(Number(id), data)
       .then((res) => {
         console.log(res);
-        toast.info("수정을 성공했습니다!");
+        toast.success("수정을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);

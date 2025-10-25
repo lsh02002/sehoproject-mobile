@@ -131,7 +131,7 @@ const TaskCreatePage = () => {
     createTaskApi(data)
       .then((res) => {
         console.log(res);
-        toast.info("생성을 성공했습니다!");
+        toast.success("생성을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);

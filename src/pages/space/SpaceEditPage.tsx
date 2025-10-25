@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { spaceRequestType } from "../../types/type";
+import { toast } from "react-toastify";
 
 const SpaceEditPage = () => {
   const { workspaceId, spaceId } = useParams();
@@ -42,6 +43,7 @@ const SpaceEditPage = () => {
     )
       .then((res) => {
         console.log(res);
+        toast.success("생성을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);
