@@ -21,7 +21,7 @@ const WorkspaceListPage = () => {
   }, []);
 
   return (
-    <ListLayout title="워크스페이스">
+    <ListLayout title="워크스페이스"  url={`/workspaces/create`}>
       {workspaces?.map((workspace) => (
         <WorkspaceCard key={workspace.id} workspace={workspace} />
       ))}

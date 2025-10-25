@@ -21,7 +21,7 @@ const TaskListPage = () => {
   }, [projectId]);
 
   return (
-    <ListLayout title="태스크">
+    <ListLayout title="태스크" url={`/tasks/projects/${projectId}/create`}>
       {tasks?.map((task) => (
         <TaskCard key={task.id} task={task} />
       ))}

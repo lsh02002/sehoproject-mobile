@@ -4,13 +4,12 @@ import {
   assigneeRequestType,
   assignInfoType,
   tagResponseType,
-  taskUpdateRequestType,
+  taskRequestType,  
 } from "../../types/type";
 import {
-  getOneTaskApi,
+  createTaskApi,
   getTagsByProjectApi,
   getUserInfosApi,
-  putOneTaskApi,
 } from "../../api/sehomanagerapi";
 import TextInput from "../../components/form/TextInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
@@ -18,25 +17,21 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import styled from "styled-components";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
+import DateInput from "../../components/form/DateInput";
 
-const TaskEditPage = () => {
-  const { taskId } = useParams();
-  const [id, setId] = useState("");
-  const [projectKey, setProjectKey] = useState("");
-  const [projectId, setProjectId] = useState("");
+const TaskCreatePage = () => {
+  const { projectIdParam } = useParams();
+  const [projectId, setProjectId] = useState(projectIdParam);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [state, setState] = useState("");
-  const [priority, setPriority] = useState("");
-  const [type, setType] = useState("");
-  const [storyPoints, setStoryPoints] = useState();
+  const [state, setState] = useState("TODO");
+  const [priority, setPriority] = useState("MEDIUM");
+  const [type, setType] = useState("TASK");
+  const [storyPoints, setStoryPoints] = useState("");
   const [assignees, setAssignees] = useState<assigneeRequestType[]>([]);
   const [assigneeOptions, setAssigneeOptions] = useState<assignInfoType[]>([]);
-  const [sprintId, setSprintId] = useState("");
-  const [milestoneId, setMilestoneId] = useState("");
   const [tags, setTags] = useState<tagResponseType[]>([]);
   const [tagOptions, setTagOptions] = useState<tagResponseType[]>([]);
-  const [dependencyIds, setDependencyIds] = useState<number[]>([]);
   const [dueDate, setDueDate] = useState<Date>();
 
   const stateOptions: Option[] = [
@@ -72,39 +67,15 @@ const TaskEditPage = () => {
   }, []);
 
   useEffect(() => {
-    getOneTaskApi(Number(taskId))
+    getTagsByProjectApi(Number(projectId))
       .then((res) => {
         console.log(res);
-
-        setId(res.data.id);
-        setProjectKey(res.data.projectKey);
-        setProjectId(res.data.projectId);
-        setName(res.data.name);
-        setDescription(res.data.description);
-        setState(res.data.state);
-        setPriority(res.data.priority);
-        setType(res.data.type);
-        setStoryPoints(res.data.storyPoints);
-        setAssignees(res.data.assignees);
-        setSprintId(res.data.sprintId);
-        setMilestoneId(res.data.milestoneId);
-        setTags(res.data.tags);
-        setDependencyIds(res.data.dependencyIds);
-        setDueDate(res.data.dueDate);
-
-        getTagsByProjectApi(Number(res.data.projectId))
-          .then((res) => {
-            console.log(res);
-            setTagOptions(res.data);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
+        setTagOptions(res.data);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, [projectId, taskId]);
+  }, [projectId]);
 
   const handleSetAssignees = (emails: string[]) => {
     const newAssignees: assigneeRequestType[] = emails.map((email, index) => ({
@@ -133,8 +104,8 @@ const TaskEditPage = () => {
   //   setDependencyIds(numericIds);
   // };
 
-  const OnEditSubmit = () => {
-    const data: taskUpdateRequestType = {
+  const OnCreateSubmit = () => {
+    const data: taskRequestType = {
       projectId: Number(projectId),
       name,
       description,
@@ -145,21 +116,21 @@ const TaskEditPage = () => {
       assignees: assigneeOptions.filter((option) =>
         assignees.some((user) => user.email === option.email)
       ),
-      sprintId: Number(sprintId),
-      milestoneId: Number(milestoneId),
+      sprintId: null,
+      milestoneId: null,
       tags: tagOptions
         .filter((option) => tags.some((tag) => tag.name === option.name))
         .map((tag) => tag.id),
-      dependencyTaskIds: dependencyIds,
+      dependencyTaskIds: [],
       dueDate: dueDate,
     };
 
     console.log(data);
 
-    putOneTaskApi(Number(taskId), data)
+    createTaskApi(data)
       .then((res) => {
         console.log(res);
-        alert("수정을 성공했습니다!");
+        alert("생성을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);
@@ -170,30 +141,14 @@ const TaskEditPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>태스크 수정</h3>
+          <h3>태스크 생성</h3>
         </Title>
-        <TwoDiv>
-          <TextInput
-            name="id"
-            title="태스크 아이디"
-            disabled
-            data={id ?? "null"}
-            setData={setId}
-          />
-          <TextInput
-            name="projectId"
-            title="프로젝트 아이디"
-            disabled
-            data={projectId ?? "null"}
-            setData={setProjectId}
-          />
-        </TwoDiv>
         <TextInput
-          name="projectKey"
-          title="프로젝트 키"
+          name="projectId"
+          title="프로젝트 아이디"
           disabled
-          data={projectKey}
-          setData={setProjectKey}
+          data={projectId ?? "null"}
+          setData={setProjectId}
         />
         <TextInput name="name" title="이름" data={name} setData={setName} />
         <TextInput
@@ -212,7 +167,7 @@ const TaskEditPage = () => {
           />
           <SelectInput
             name="priority"
-            title="작업 우선순위"
+            title="우선순위"
             value={priority}
             setValue={setPriority}
             options={priorityOptions}
@@ -235,22 +190,12 @@ const TaskEditPage = () => {
             value: assignee.email,
           }))}
         />
-        <TwoDiv>
-          <TextInput
-            name="sprintId"
-            title="스프린트 아이디"
-            disabled
-            data={sprintId ?? "null"}
-            setData={setSprintId}
-          />
-          <TextInput
-            name="milestoneId"
-            title="마일스톤 아이디"
-            disabled
-            data={milestoneId ?? "null"}
-            setData={setMilestoneId}
-          />
-        </TwoDiv>
+        <TextInput
+          name="storyPoints"
+          title="스토리 포인트"
+          data={storyPoints ?? "null"}
+          setData={setStoryPoints}
+        />
         <SelectArrayInput
           name="tags"
           title="태그"
@@ -263,13 +208,14 @@ const TaskEditPage = () => {
             })) ?? []
           }
         />
-        <ConfirmButton title="수정" onClick={OnEditSubmit} />
+        <DateInput title="마감일" selected={dueDate} setSelected={setDueDate} />
+        <ConfirmButton title="생성" onClick={OnCreateSubmit} />
       </Wrapper>
     </Container>
   );
 };
 
-export default TaskEditPage;
+export default TaskCreatePage;
 
 const Container = styled.div`
   width: 100%;

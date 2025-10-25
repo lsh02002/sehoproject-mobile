@@ -53,7 +53,7 @@ const getStableColor = (seed: string | number) => {
 };
 
 // ===== 메인 컴포넌트 =====
-const SprintPage = () => {
+const SprintCalendarPage = () => {
   const { projectId } = useParams();
   const [sprints, setSprints] = useState<SprintType[]>([]);
   const [baseDate, setBaseDate] = useState<Date>(() => {
@@ -117,7 +117,7 @@ const SprintPage = () => {
   };
 
   return (
-    <div className="sprint-page">
+    <div className="sprint-page" style={{padding: "20px", boxSizing: "border-box"}}>
       {/* 상단 커스텀 헤더 */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
         <h2 style={{ margin: 0 }}>{formatYM(currMonth)}</h2>
@@ -184,4 +184,4 @@ const SprintPage = () => {
   );
 };
 
-export default SprintPage;
+export default SprintCalendarPage;

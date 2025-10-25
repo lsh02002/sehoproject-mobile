@@ -21,7 +21,7 @@ const ProjectListPage = () => {
   }, [spaceId]);
 
   return (
-    <ListLayout title="프로젝트">
+    <ListLayout title="프로젝트"  url={`/projects/spaces/${spaceId}/create`}>
       {projects?.map((project) => (
         <ProjectCard key={project.id} project={project} />
       ))}

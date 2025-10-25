@@ -16,10 +16,11 @@ import ProjectEditPage from "./pages/project/ProjectEditPage";
 import { StyledToastContainer } from "./layouts/Toast";
 import TaskListPage from "./pages/task/TaskListPage";
 import TaskEditPage from "./pages/task/TaskEditPage";
-import SprintPage from "./pages/sprint/SprintPage";
+import SprintCalendarPage from "./pages/sprint/SprintCalendarPage";
 import WorkspaceCreatePage from "./pages/workspace/WorkspaceCreatePage";
 import SpaceCreatePage from "./pages/space/SpaceCreatePage";
 import ProjectCreatePage from "./pages/project/ProjectCreatePage";
+import TaskCreatePage from "./pages/task/TaskCreatePage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -63,8 +64,15 @@ function App() {
 
         <Route path="/tasks/projects/:projectId" element={<TaskListPage />} />
         <Route path="/tasks/:taskId/edit" element={<TaskEditPage />} />
+        <Route
+          path="/tasks/projects/:projectIdParam/create"
+          element={<TaskCreatePage />}
+        />
 
-        <Route path="/sprints/projects/:projectId" element={<SprintPage />} />
+        <Route
+          path="/sprints/projects/:projectId"
+          element={<SprintCalendarPage />}
+        />
       </Routes>
       <StyledToastContainer
         position="bottom-center"
