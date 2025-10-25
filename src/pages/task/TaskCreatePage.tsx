@@ -18,6 +18,7 @@ import styled from "styled-components";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import DateInput from "../../components/form/DateInput";
+import { toast } from "react-toastify";
 
 const TaskCreatePage = () => {
   const { projectIdParam } = useParams();
@@ -130,7 +131,7 @@ const TaskCreatePage = () => {
     createTaskApi(data)
       .then((res) => {
         console.log(res);
-        alert("생성을 성공했습니다!");
+        toast.info("생성을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);

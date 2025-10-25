@@ -8,6 +8,7 @@ import TextInput from "../../components/form/TextInput";
 import DateInput from "../../components/form/DateInput";
 import { CompleteArrayInput } from "../../components/form/CompleteArrayInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
+import { toast } from "react-toastify";
 
 const ProjectEditPage = () => {
   const { projectId } = useParams();
@@ -99,7 +100,7 @@ const ProjectEditPage = () => {
     putOneProjectApi(Number(projectId), data)
       .then((res) => {
         console.log(res);
-        alert("수정을 성공했습니다!");
+        toast.info("수정을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);

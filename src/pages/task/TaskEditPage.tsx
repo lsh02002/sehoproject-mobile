@@ -18,6 +18,7 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import styled from "styled-components";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
+import { toast } from "react-toastify";
 
 const TaskEditPage = () => {
   const { taskId } = useParams();
@@ -159,7 +160,7 @@ const TaskEditPage = () => {
     putOneTaskApi(Number(taskId), data)
       .then((res) => {
         console.log(res);
-        alert("수정을 성공했습니다!");
+        toast.info("수정을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);

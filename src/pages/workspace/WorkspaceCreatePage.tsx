@@ -6,6 +6,7 @@ import {
 } from "../../api/sehomanagerapi";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { workspaceRequestType } from "../../types/type";
+import { toast } from "react-toastify";
 
 const WorkspaceCreatePage = () => {  
   const [name, setName] = useState("");
@@ -22,7 +23,7 @@ const WorkspaceCreatePage = () => {
     createWorkspaceApi(data)
       .then((res) => {
         console.log(res);
-        alert("생성을 성공했습니다!");
+        toast.info("생성을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);

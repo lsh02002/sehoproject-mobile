@@ -7,6 +7,7 @@ import { projectRequestType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
 import DateInput from "../../components/form/DateInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
+import { toast } from "react-toastify";
 
 const ProjectCreatePage = () => {
   const { spaceIdParam } = useParams();
@@ -30,7 +31,7 @@ const ProjectCreatePage = () => {
     createProjectApi(data)
       .then((res) => {
         console.log(res);
-        alert("생성을 성공했습니다!");
+        toast.info("생성을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);

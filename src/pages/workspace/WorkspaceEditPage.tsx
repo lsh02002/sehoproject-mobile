@@ -8,6 +8,7 @@ import {
 } from "../../api/sehomanagerapi";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { workspaceRequestType } from "../../types/type";
+import { toast } from "react-toastify";
 
 const WorkspaceEditPage = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const WorkspaceEditPage = () => {
     putOneWorkspaceApi(Number(id), data)
       .then((res) => {
         console.log(res);
-        alert("수정을 성공했습니다!");
+        toast.info("수정을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);

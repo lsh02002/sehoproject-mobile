@@ -7,6 +7,7 @@ import {
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { spaceRequestType } from "../../types/type";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SpaceCreatePage = () => {
     const { workspaceId } = useParams();
@@ -24,7 +25,7 @@ const SpaceCreatePage = () => {
     createSpaceApi(Number(workspaceId), data)
       .then((res) => {
         console.log(res);
-        alert("생성을 성공했습니다!");
+        toast.info("생성을 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);
