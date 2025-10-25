@@ -25,6 +25,7 @@ const WorkspaceListPage = () => {
       {workspaces?.map((workspace) => (
         <WorkspaceCard key={workspace.id} workspace={workspace} />
       ))}
+      {workspaces?.length === 0 && <div>해당 스페이스가 존재하지 않습니다.</div>}
     </ListLayout>
   );
 };

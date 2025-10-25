@@ -25,6 +25,7 @@ const SpaceListPage = () => {
       {spaces?.map((space) => (
         <SpaceCard key={space.id} space={space} />
       ))}
+      {spaces?.length === 0 && <div>프로젝트가 존재하지 않습니다.</div>}
     </ListLayout>
   );
 };

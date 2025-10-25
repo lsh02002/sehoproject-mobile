@@ -17,6 +17,9 @@ import { StyledToastContainer } from "./layouts/Toast";
 import TaskListPage from "./pages/task/TaskListPage";
 import TaskEditPage from "./pages/task/TaskEditPage";
 import SprintPage from "./pages/sprint/SprintPage";
+import WorkspaceCreatePage from "./pages/workspace/WorkspaceCreatePage";
+import SpaceCreatePage from "./pages/space/SpaceCreatePage";
+import ProjectCreatePage from "./pages/project/ProjectCreatePage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -38,6 +41,7 @@ function App() {
         <Route path="/register" element={<SignupPage />} />
         <Route path="/workspaces" element={<WorkspaceListPage />} />
         <Route path="/workspace/:id" element={<WorkspaceEditPage />} />
+        <Route path="/workspaces/create" element={<WorkspaceCreatePage />} />
         <Route
           path="/workspace/:workspaceId/spaces"
           element={<SpaceListPage />}
@@ -46,8 +50,16 @@ function App() {
           path="/workspace/:workspaceId/spaces/:spaceId"
           element={<SpaceEditPage />}
         />
+        <Route
+          path="/workspace/:workspaceId/spaces/create"
+          element={<SpaceCreatePage />}
+        />
         <Route path="/projects/spaces/:spaceId" element={<ProjectListPage />} />
         <Route path="/projects/:projectId/edit" element={<ProjectEditPage />} />
+        <Route
+          path="/projects/spaces/:spaceIdParam/create"
+          element={<ProjectCreatePage />}
+        />
 
         <Route path="/tasks/projects/:projectId" element={<TaskListPage />} />
         <Route path="/tasks/:taskId/edit" element={<TaskEditPage />} />

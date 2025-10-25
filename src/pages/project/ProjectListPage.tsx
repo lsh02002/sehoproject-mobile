@@ -25,6 +25,7 @@ const ProjectListPage = () => {
       {projects?.map((project) => (
         <ProjectCard key={project.id} project={project} />
       ))}
+      {projects?.length === 0 && <div>해당 프로젝트가 존재하지 않습니다.</div>}
     </ListLayout>
   );
 };

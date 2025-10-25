@@ -38,12 +38,12 @@ export type spaceRequestType = {
 
 export type projectRequestType = {
   spaceId: number;
-  projectKey: string;
+  projectKey?: string;
   name: string;
   description: string;
   startDate?: Date;
   dueDate?: Date;
-  creatorId: number;
+  creatorId?: number | null;
   tags?: string[];
 };
 

@@ -96,8 +96,6 @@ const ProjectEditPage = () => {
       tags,
     };
 
-    console.log(data);
-
     putOneProjectApi(Number(projectId), data)
       .then((res) => {
         console.log(res);
