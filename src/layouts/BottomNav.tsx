@@ -4,7 +4,7 @@ import Home from "../assets/home.svg";
 import Inbox from "../assets/inbox.svg";
 import TaskList from "../assets/task-list.svg";
 import DashBoard from "../assets/dashboard.svg";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const BottomNav = () => {
   return (
@@ -69,6 +69,7 @@ const Wrapper = styled.div`
     text-decoration: none;
     color: black;
   }
+
   span {
     display: inline-block;
     width: 15px;
@@ -83,15 +84,27 @@ const Wrapper = styled.div`
   }
 `;
 
-const IconLink = styled(Link)`
+const IconLink = styled(NavLink)`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  text-decoration: none;
+  color: #777;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
 
   img {
-    width: 2rem;    
+    width: 2rem;
     height: 2rem;
-    display: block;    
+    margin-bottom: 4px;
+  }
+
+  /* active 상태일 때 텍스트/아이콘 색상 변경 */
+  &.active {
+    color: #4680ff;
+    font-weight: 600;
+    filter: invert(47%) sepia(79%) saturate(1448%) hue-rotate(194deg)
+      brightness(103%) contrast(101%);
   }
 `;

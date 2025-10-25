@@ -153,6 +153,7 @@ export type TaskNodeType = {
 /* ========= 서버에서 오는 플랫 형태 (예시) ========= */
 export type TreeRowType = {
   workspaceId: number;
+  workspaceName: string;
   workspacePosition: number;
 
   spaceId: number;
@@ -167,6 +168,7 @@ export type TreeRowType = {
 // ==== 1) 백엔드 Row 타입 (boolean 플래그 포함) ====
 export type BackendRowType = {
   workspaceId: number;
+  workspaceName: string;
   workspacePosition: number;
 
   spaceId: number;
@@ -251,8 +253,8 @@ export type WorkspaceRole = "OWNER" | "ADMIN" | "MEMBER" | "GUEST";
 export type SprintType = {
   id: string;
   name: string;
-  startDate: [number, number, number];
-  endDate: [number, number, number];
+  startDate: Date;
+  endDate: Date;
   display: string;
   color: string;
 };

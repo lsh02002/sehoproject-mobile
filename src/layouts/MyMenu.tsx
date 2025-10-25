@@ -51,7 +51,7 @@ export default function SidebarMenu({
       // 백엔드 연동 (예: GET /api/workspaces/{workspaceId}/tree)
       getWorkspacesTreeApi()
         .then((res) => {
-          const rows = res.data;
+          const rows = res.data;          
           const list = rowsToWorkspaceTreeResponse(rows);
           if (!aborted) setRoot(convertToRootTreeNode(list));
         })

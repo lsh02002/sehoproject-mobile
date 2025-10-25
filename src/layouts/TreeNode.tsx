@@ -84,7 +84,7 @@ export function rowsToWorkspaceTreeResponse(
       ws = {
         id: r.workspaceId,
         position: r.workspacePosition,
-        name: workspaceNameMap?.[r.workspaceId] ?? `Workspace ${r.workspaceId}`,
+        name: r.workspaceName ?? `Workspace ${r.workspaceId}`,
         canEnter: !!r.canEnterWorkspace,
         spaces: new Map(),
       };

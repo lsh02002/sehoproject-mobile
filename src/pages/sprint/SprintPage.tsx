@@ -14,17 +14,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Mousewheel } from "swiper/modules";
 import "swiper/css";
 
-// ===== 유틸 =====
-export const tupleToISO = (t: [number, number, number]) => {
-  const [y, m, d] = t;
-  const dt = new Date(y, m - 1, d);
-  return dt.toISOString().slice(0, 10);
-};
-
-export const addDaysISO = (iso: string, days: number) => {
+const addDaysISO = (iso: string, days: number) => {
   const dt = new Date(iso);
   dt.setDate(dt.getDate() + days);
-  return dt.toISOString().slice(0, 10);
+  return dt.toISOString();
 };
 
 const addMonthsClamped = (date: Date, months: number) => {
@@ -85,8 +78,8 @@ const SprintPage = () => {
         id: String(sprint.id),
         title: sprint.name,
         // FullCalendar의 end는 exclusive → +1일 보정
-        start: addDaysISO(tupleToISO(sprint.startDate), 1),
-        end: addDaysISO(tupleToISO(sprint.endDate), 1),
+        start: addDaysISO(sprint.startDate.toString(), 1),
+        end: addDaysISO(sprint.endDate.toString(), 1),
         display: "block",
         color: getStableColor(sprint.id),
       })),
