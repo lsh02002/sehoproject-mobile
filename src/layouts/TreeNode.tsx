@@ -369,15 +369,15 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         break;
       case "PROJECT":
         setOpen(false);
-        redirect(`/workboards/${node.id}`);
+        redirect(`/boards/projects/${node.id}`);
         break;
       case "MILESTONE":
         setOpen(false);
-        redirect(`/milestones/${node.id}`);
+        redirect(`/milestones/${node.id}/edit`);
         break;
       case "SPRINT":
         setOpen(false);
-        redirect(`/sprints/${node.id}`);
+        redirect(`/sprints/${node.id}/edit`);
         break;
       case "TASK":
         setOpen(false);
@@ -434,7 +434,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
                 }
                 e.stopPropagation();
                 setOpen(false);
-                redirect(`/sprints/projects/${node.id}`);
+                redirect(`/sprints/projects/${node.id}/calendar`);
               }}
               style={{
                 color: node.disabled ? "#aaa" : "inherit",

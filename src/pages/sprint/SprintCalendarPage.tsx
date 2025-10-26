@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { getSprintsByProjectApi } from "../../api/sehomanagerapi";
 import { useParams } from "react-router-dom";
-import { SprintType } from "../../types/type";
+import { SprintCalendarType } from "../../types/type";
 import { EventInput } from "@fullcalendar/core";
 import koLocale from "@fullcalendar/core/locales/ko";
 
@@ -55,7 +55,7 @@ const getStableColor = (seed: string | number) => {
 // ===== 메인 컴포넌트 =====
 const SprintCalendarPage = () => {
   const { projectId } = useParams();
-  const [sprints, setSprints] = useState<SprintType[]>([]);
+  const [sprints, setSprints] = useState<SprintCalendarType[]>([]);
   const [baseDate, setBaseDate] = useState<Date>(() => {
     const d = new Date();
     d.setDate(0);

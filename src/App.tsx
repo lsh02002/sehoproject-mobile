@@ -21,6 +21,13 @@ import WorkspaceCreatePage from "./pages/workspace/WorkspaceCreatePage";
 import SpaceCreatePage from "./pages/space/SpaceCreatePage";
 import ProjectCreatePage from "./pages/project/ProjectCreatePage";
 import TaskCreatePage from "./pages/task/TaskCreatePage";
+import SprintListPage from "./pages/sprint/SprintListPage";
+import BoardList from "./pages/project/board/BoardList";
+import SprintEditPage from "./pages/sprint/SprintEditPage";
+import SprintCreatePage from "./pages/sprint/SprintCreatePage";
+import MilestoneListPage from "./pages/milestone/MilestoneListPage";
+import MilestoneEditPage from "./pages/milestone/MilestoneEditPage";
+import MilestoneCreatePage from "./pages/milestone/MilestoneCreatePage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -62,6 +69,29 @@ function App() {
           element={<ProjectCreatePage />}
         />
 
+        <Route
+          path="/milestones/projects/:projectId"
+          element={<MilestoneListPage />}
+        />
+        <Route
+          path="/milestones/:milestoneId/edit"
+          element={<MilestoneEditPage />}
+        />
+        <Route
+          path="/milestones/projects/:projectIdParam/create"
+          element={<MilestoneCreatePage />}
+        />
+
+        <Route
+          path="/sprints/projects/:projectId"
+          element={<SprintListPage />}
+        />
+        <Route path="/sprints/:sprintId/edit" element={<SprintEditPage />} />
+        <Route
+          path="/sprints/projects/:projectIdParam/create"
+          element={<SprintCreatePage />}
+        />
+
         <Route path="/tasks/projects/:projectId" element={<TaskListPage />} />
         <Route path="/tasks/:taskId/edit" element={<TaskEditPage />} />
         <Route
@@ -69,8 +99,10 @@ function App() {
           element={<TaskCreatePage />}
         />
 
+        <Route path="/boards/projects/:projectId" element={<BoardList />} />
+
         <Route
-          path="/sprints/projects/:projectId"
+          path="/sprints/projects/:projectId/calendar"
           element={<SprintCalendarPage />}
         />
       </Routes>

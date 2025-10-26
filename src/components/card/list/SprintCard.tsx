@@ -1,22 +1,22 @@
 import React from "react";
-import { projectResponseType } from "../../../types/type";
+import { SprintResponseType } from "../../../types/type";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const ProjectCard = ({ project }: { project: projectResponseType }) => {
+const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
   const navigate = useNavigate();
   return (
-    <Container onClick={() => navigate(`/boards/projects/${project.id}`)}>
+    <Container>
       <Wrapper>
         <Info>
-          <Id>{project.id}</Id>
-          <Name>{project.name}</Name>          
+          <Id>{sprint.id}</Id>
+          <Name>{sprint.name}</Name>
         </Info>
-        <Buttons>          
+        <Buttons>
           <span
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/projects/${project.id}/edit`);
+              navigate(`/sprints/${sprint.id}/edit`);
             }}
           >
             EDIT
@@ -27,7 +27,7 @@ const ProjectCard = ({ project }: { project: projectResponseType }) => {
   );
 };
 
-export default ProjectCard;
+export default SprintCard;
 
 const Container = styled.div`
   width: 100%;

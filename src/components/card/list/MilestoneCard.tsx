@@ -1,22 +1,22 @@
 import React from "react";
-import { projectResponseType } from "../../../types/type";
+import { MilestoneResponseType } from "../../../types/type";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const ProjectCard = ({ project }: { project: projectResponseType }) => {
+const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {
   const navigate = useNavigate();
   return (
-    <Container onClick={() => navigate(`/boards/projects/${project.id}`)}>
+    <Container>
       <Wrapper>
         <Info>
-          <Id>{project.id}</Id>
-          <Name>{project.name}</Name>          
+          <Id>{milestone.id}</Id>
+          <Name>{milestone.name}</Name>
         </Info>
-        <Buttons>          
+        <Buttons>
           <span
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/projects/${project.id}/edit`);
+              navigate(`/milestones/${milestone.id}/edit`);
             }}
           >
             EDIT
@@ -27,7 +27,7 @@ const ProjectCard = ({ project }: { project: projectResponseType }) => {
   );
 };
 
-export default ProjectCard;
+export default MilestoneCard;
 
 const Container = styled.div`
   width: 100%;
@@ -35,7 +35,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid lightgray;
-  padding-left: 10px;  
+  padding-left: 10px;
   box-sizing: border-box;
   margin-bottom: 20px;
 `;

@@ -115,7 +115,7 @@ export type taskUpdateRequestType = {
 };
 
 export type TaskResponseType = {
-  id: number; // Long
+  id?: number; // Long
   projectKey: string;
   projectId: number;
   name: string;
@@ -250,7 +250,49 @@ export type TreeNodeType = {
 
 export type WorkspaceRole = "OWNER" | "ADMIN" | "MEMBER" | "GUEST";
 
-export type SprintType = {
+export type SprintRequestType = {
+  projectId: number;
+  name: string;
+  state: string;
+  startDate?: Date;
+  endDate?: Date;
+  taskIds: number[];
+}
+
+export type SprintResponseType = {
+  id: string;
+  projectId: number;
+  name: string;
+  state: string;
+  startDate: Date;
+  endDate: Date;
+  taskIds: TaskResponseType[];
+};
+
+export type MilestoneRequestType = {  
+  projectId: number;
+  name: string;
+  description: string;
+  startDate?: Date;
+  dueDate?: Date;
+  status: string;  
+  taskIds: number[];
+}
+
+export type MilestoneResponseType = {
+  id: number;
+  projectId: number;
+  name: string;
+  description: string;
+  startDate: Date;
+  dueDate: Date;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  taskIds: TaskResponseType[];
+}
+
+export type SprintCalendarType = {
   id: string;
   name: string;
   startDate: Date;
