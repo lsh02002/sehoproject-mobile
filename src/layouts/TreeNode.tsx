@@ -4,8 +4,8 @@ import styled, { css } from "styled-components";
 import {
   BackendRowType,
   MilestoneNodeType,
-  ProjectNodeType,  
-  SpaceNodeType,  
+  ProjectNodeType,
+  SpaceNodeType,
   SprintNodeType,
   TreeNodeType,
   WorkspaceTreeResponseType,
@@ -429,7 +429,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
           {node.type === "PROJECT" && (
             <Calendar
               onClick={(e) => {
-                if(isDisabled) {
+                if (isDisabled) {
                   return;
                 }
                 e.stopPropagation();

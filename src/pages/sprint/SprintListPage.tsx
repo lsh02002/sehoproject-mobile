@@ -3,12 +3,12 @@ import { SprintResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
 import { getSprintsByProjectApi } from "../../api/sehomanagerapi";
 import ListLayout from "../../layouts/ListLayout";
-import SprintCard from "../../components/card/list/SprintCard";
+import SprintCard from "../../components/card/SprintCard";
 
 const SprintListPage = () => {
   const { projectId } = useParams();
   const [sprints, setSprints] = useState<SprintResponseType[] | null>([]);
-   const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getSprintsByProjectApi(Number(projectId))
@@ -19,7 +19,7 @@ const SprintListPage = () => {
       .catch((err) => {
         console.error(err);
       })
-      .finally(()=>{
+      .finally(() => {
         setIsLoading(false);
       });
   }, [projectId]);

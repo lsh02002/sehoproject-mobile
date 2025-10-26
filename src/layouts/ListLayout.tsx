@@ -16,7 +16,11 @@ const ListLayout = ({
         <Title>
           <div>{title}</div>
           <Link
-            style={{ color: "#4680ff", textDecoration: "none", fontSize: "0.8rem" }}
+            style={{
+              color: "#4680ff",
+              textDecoration: "none",
+              fontSize: "0.8rem",
+            }}
             to={url ?? ""}
           >
             {title} 생성

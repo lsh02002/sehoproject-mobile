@@ -3,12 +3,12 @@ import { getTasksByProjectApi } from "../../api/sehomanagerapi";
 import { TaskResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
 import ListLayout from "../../layouts/ListLayout";
-import TaskCard from "../../components/card/list/TaskCard";
+import TaskCard from "../../components/card/TaskCard";
 
 const TaskListPage = () => {
   const { projectId } = useParams();
   const [tasks, setTasks] = useState<TaskResponseType[] | null>([]);
-   const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getTasksByProjectApi(Number(projectId))
@@ -19,7 +19,7 @@ const TaskListPage = () => {
       .catch((err) => {
         console.error(err);
       })
-      .finally(()=>{
+      .finally(() => {
         setIsLoading(false);
       });
   }, [projectId]);

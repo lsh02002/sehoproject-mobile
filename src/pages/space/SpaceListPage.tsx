@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SpaceResponseType } from "../../types/type";
 import { getSpacesByWorkspaceApi } from "../../api/sehomanagerapi";
-import SpaceCard from "../../components/card/list/SpaceCard";
+import SpaceCard from "../../components/card/SpaceCard";
 import ListLayout from "../../layouts/ListLayout";
 
 const SpaceListPage = () => {
   const { workspaceId } = useParams();
   const [spaces, setSpaces] = useState<SpaceResponseType[] | null>([]);
-   const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getSpacesByWorkspaceApi(Number(workspaceId))
@@ -19,7 +19,7 @@ const SpaceListPage = () => {
       .catch((err) => {
         console.error(err);
       })
-      .finally(()=>{
+      .finally(() => {
         setIsLoading(false);
       });
   }, [workspaceId]);

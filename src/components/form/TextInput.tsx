@@ -51,7 +51,7 @@ const Container = styled.div`
     padding: 0.7rem;
     box-sizing: border-box;
     border: none;
-    border-bottom: 1px solid lightgray;    
+    border-bottom: 1px solid lightgray;
     font-size: 0.8rem;
     //*****매우 중요 outline *****//
     outline: none;
