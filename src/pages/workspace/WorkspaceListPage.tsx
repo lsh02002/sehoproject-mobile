@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { workspaceResponseType } from "../../types/type";
+import { WorkspaceResponseType } from "../../types/type";
 import { getWorkspacesApi } from "../../api/sehomanagerapi";
 import WorkspaceCard from "../../components/card/list/WorkspaceCard";
 import ListLayout from "../../layouts/ListLayout";
 
 const WorkspaceListPage = () => {
-  const [workspaces, setWorkspaces] = useState<workspaceResponseType[] | null>(
+  const [workspaces, setWorkspaces] = useState<WorkspaceResponseType[] | null>(
     []
   );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getWorkspacesApi()
@@ -17,15 +18,22 @@ const WorkspaceListPage = () => {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
   return (
-    <ListLayout title="워크스페이스"  url={`/workspaces/create`}>
-      {workspaces?.map((workspace) => (
-        <WorkspaceCard key={workspace.id} workspace={workspace} />
-      ))}
-      {workspaces?.length === 0 && <div>해당 스페이스가 존재하지 않습니다.</div>}
+    <ListLayout title="워크스페이스" url={`/workspaces/create`}>
+      {isLoading && <div>로딩 중...</div>}
+      {!isLoading && workspaces?.length === 0 ? (
+        <div>해당 스페이스가 존재하지 않습니다.</div>
+      ) : (
+        workspaces?.map((workspace) => (
+          <WorkspaceCard key={workspace.id} workspace={workspace} />
+        ))
+      )}
     </ListLayout>
   );
 };

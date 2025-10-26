@@ -5,7 +5,7 @@ import {
     createSpaceApi,
 } from "../../api/sehomanagerapi";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { spaceRequestType } from "../../types/type";
+import { SpaceRequestType } from "../../types/type";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -17,7 +17,7 @@ const SpaceCreatePage = () => {
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {    
     e.stopPropagation();
 
-    const data: spaceRequestType = {
+    const data: SpaceRequestType = {
       name,
       slug,      
     };

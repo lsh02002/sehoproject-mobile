@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  assigneeRequestType,
-  assignInfoType,
-  tagResponseType,
-  taskUpdateRequestType,
+  AssigneeRequestType,
+  AssignInfoType,
+  TagResponseType,
+  TaskUpdateRequestType,
 } from "../../types/type";
 import {
   getOneTaskApi,
@@ -31,12 +31,12 @@ const TaskEditPage = () => {
   const [priority, setPriority] = useState("");
   const [type, setType] = useState("");
   const [storyPoints, setStoryPoints] = useState();
-  const [assignees, setAssignees] = useState<assigneeRequestType[]>([]);
-  const [assigneeOptions, setAssigneeOptions] = useState<assignInfoType[]>([]);
+  const [assignees, setAssignees] = useState<AssigneeRequestType[]>([]);
+  const [assigneeOptions, setAssigneeOptions] = useState<AssignInfoType[]>([]);
   const [sprintId, setSprintId] = useState("");
   const [milestoneId, setMilestoneId] = useState("");
-  const [tags, setTags] = useState<tagResponseType[]>([]);
-  const [tagOptions, setTagOptions] = useState<tagResponseType[]>([]);
+  const [tags, setTags] = useState<TagResponseType[]>([]);
+  const [tagOptions, setTagOptions] = useState<TagResponseType[]>([]);
   const [dependencyIds, setDependencyIds] = useState<number[]>([]);
   const [dueDate, setDueDate] = useState<Date>();
 
@@ -108,7 +108,7 @@ const TaskEditPage = () => {
   }, [projectId, taskId]);
 
   const handleSetAssignees = (emails: string[]) => {
-    const newAssignees: assigneeRequestType[] = emails.map((email, index) => ({
+    const newAssignees: AssigneeRequestType[] = emails.map((email, index) => ({
       assigneeId: index, // 실제로는 서버 id 또는 uuid로 대체
       email,
       dynamicAssign: false, // 기본값 (필요에 따라 true/false 조정)
@@ -119,7 +119,7 @@ const TaskEditPage = () => {
   };
 
   const handleSetTags = (names: string[]) => {
-    const newTagsOptions: tagResponseType[] = names.map((name, index) => ({
+    const newTagsOptions: TagResponseType[] = names.map((name, index) => ({
       id: index,
       projectId: Number(projectId), // 실제로는 서버 id 또는 uuid로 대체
       name,
@@ -135,7 +135,7 @@ const TaskEditPage = () => {
   // };
 
   const OnEditSubmit = () => {
-    const data: taskUpdateRequestType = {
+    const data: TaskUpdateRequestType = {
       projectId: Number(projectId),
       name,
       description,
@@ -231,7 +231,7 @@ const TaskEditPage = () => {
           title="작업할당자"
           values={assignees.map((assignee) => assignee.email)}
           setValues={handleSetAssignees}
-          options={assigneeOptions?.map((assignee: assignInfoType) => ({
+          options={assigneeOptions?.map((assignee: AssignInfoType) => ({
             label: assignee.email,
             value: assignee.email,
           }))}
@@ -255,10 +255,10 @@ const TaskEditPage = () => {
         <SelectArrayInput
           name="tags"
           title="태그"
-          values={tags.map((tag: tagResponseType) => String(tag.name))}
+          values={tags.map((tag: TagResponseType) => String(tag.name))}
           setValues={handleSetTags}
           options={
-            tagOptions.map((tag: tagResponseType) => ({
+            tagOptions.map((tag: TagResponseType) => ({
               label: tag.name,
               value: tag.name,
             })) ?? []

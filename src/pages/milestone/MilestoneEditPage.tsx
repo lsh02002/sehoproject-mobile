@@ -34,7 +34,6 @@ const MilestoneEditPage = () => {
     { label: "ARCHIVED", value: "ARCHIVED" },
   ];
 
-
   useEffect(() => {
     getOneMilestoneApi(Number(milestoneId))
       .then((res) => {
@@ -51,7 +50,7 @@ const MilestoneEditPage = () => {
       })
       .catch((err) => {
         console.error(err);
-      });
+      })
   }, [milestoneId]);
 
   useEffect(() => {
@@ -105,7 +104,7 @@ const MilestoneEditPage = () => {
       });
   };
 
-  return (
+  return (    
     <Container>
       <Wrapper>
         <Title>

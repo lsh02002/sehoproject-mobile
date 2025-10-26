@@ -5,7 +5,7 @@ import {
     createWorkspaceApi,  
 } from "../../api/sehomanagerapi";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { workspaceRequestType } from "../../types/type";
+import { WorkspaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 
 const WorkspaceCreatePage = () => {  
@@ -15,7 +15,7 @@ const WorkspaceCreatePage = () => {
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {    
     e.stopPropagation();
 
-    const data: workspaceRequestType = {
+    const data: WorkspaceRequestType = {
       name,
       slug,
     };

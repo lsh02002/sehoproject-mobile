@@ -1,13 +1,13 @@
 import axios from "axios";
 import {
   MilestoneRequestType,
-  projectRequestType,
-  spaceRequestType,
+  ProjectRequestType,
+  SpaceRequestType,
   SprintRequestType,
-  taskRequestType,
-  taskUpdateRequestType,
-  userSignupType,
-  workspaceRequestType,
+  TaskRequestType,
+  TaskUpdateRequestType,
+  UserSignupType,
+  WorkspaceRequestType,
 } from "../types/type";
 import { BASE_URL } from "./BASE_URL";
 import { toast } from "react-toastify";
@@ -56,52 +56,52 @@ api.interceptors.response.use(
 );
 
 const UserLoginApi = async (email: string, password: string) => {
-  return api.post(`${BASE_URL}/user/login`, {
+  return api.post(`/user/login`, {
     email,
     password,
   });
 };
 
-const UserSignupApi = async (userInfo: userSignupType) => {
-  return api.post(`${BASE_URL}/user/sign-up`, userInfo);
+const UserSignupApi = async (data: UserSignupType) => {
+  return api.post(`/user/sign-up`, data);
 };
 
 const UserLogoutApi = async () => {
-  return api.delete(`${BASE_URL}/user/logout`);
+  return api.delete(`/user/logout`);
 };
 
 const getUserInfosApi = async () => {
-  return api.get(`${BASE_URL}/user`);
+  return api.get(`/user`);
 };
 
 const getWorkspacesTreeApi = async () => {
-  return api.get(`${BASE_URL}/workspaces/tree`);
+  return api.get(`/workspaces/tree`);
 };
 
 const getWorkspacesApi = async () => {
-  return api.get(`${BASE_URL}/workspaces`);
+  return api.get(`/workspaces`);
 };
 
 const getOneWorkspaceApi = async (id: number) => {
-  return api.get(`${BASE_URL}/workspaces/${id}`);
+  return api.get(`/workspaces/${id}`);
 };
 
 const putOneWorkspaceApi = async (
   id: number,
   data: { name: string; slug: string }
 ) => {
-  return api.put(`${BASE_URL}/workspaces/${id}`, data);
+  return api.put(`/workspaces/${id}`, data);
 };
 
 const getSpacesByWorkspaceApi = async (workspaceId: number) => {
-  return api.get(`${BASE_URL}/workspace/${workspaceId}/spaces`);
+  return api.get(`/workspace/${workspaceId}/spaces`);
 };
 
 const getOneSpaceByWorkspaceAndSpaceApi = async (
   workspaceId: number,
   spaceId: number
 ) => {
-  return api.get(`${BASE_URL}/workspace/${workspaceId}/spaces/${spaceId}`);
+  return api.get(`/workspace/${workspaceId}/spaces/${spaceId}`);
 };
 
 const putOneSpaceByWorkspaceAndSpaceApi = async (
@@ -109,90 +109,90 @@ const putOneSpaceByWorkspaceAndSpaceApi = async (
   spaceId: number,
   data: { name: string; slug: string }
 ) => {
-  return api.put(
-    `${BASE_URL}/workspace/${workspaceId}/spaces/${spaceId}`,
-    data
-  );
+  return api.put(`/workspace/${workspaceId}/spaces/${spaceId}`, data);
 };
 
 const getProjectsBySpaceApi = async (spaceId: number) => {
-  return api.get(`${BASE_URL}/projects/spaces/${spaceId}`);
+  return api.get(`/projects/spaces/${spaceId}`);
 };
 
 const getOneProjectApi = async (projectId: number) => {
-  return api.get(`${BASE_URL}/projects/${projectId}`);
+  return api.get(`/projects/${projectId}`);
 };
 
 const putOneProjectApi = async (
   projectId: number,
-  data: projectRequestType
+  data: ProjectRequestType
 ) => {
-  return api.put(`${BASE_URL}/projects/${projectId}/edit`, data);
+  return api.put(`/projects/${projectId}/edit`, data);
 };
 
 const getMilestonesByProjectApi = async (projectId: number) => {
-  return api.get(`${BASE_URL}/milestones/projects/${projectId}`);
+  return api.get(`/milestones/projects/${projectId}`);
 };
 
 const getOneMilestoneApi = async (milestoneId: number) => {
-  return api.get(`${BASE_URL}/milestones/${milestoneId}`);
-}
+  return api.get(`/milestones/${milestoneId}`);
+};
 
-const putOneMilestoneApi = async (milestoneId: number, data: MilestoneRequestType) => {
-  return api.put(`${BASE_URL}/milestones/${milestoneId}`, data);
-}
+const putOneMilestoneApi = async (
+  milestoneId: number,
+  data: MilestoneRequestType
+) => {
+  return api.put(`/milestones/${milestoneId}`, data);
+};
 
 const getTasksByProjectApi = async (projectId: number) => {
-  return api.get(`${BASE_URL}/tasks/projects/${projectId}`);
+  return api.get(`/tasks/projects/${projectId}`);
 };
 
 const getOneTaskApi = async (taskId: number) => {
-  return api.get(`${BASE_URL}/tasks/${taskId}`);
+  return api.get(`/tasks/${taskId}`);
 };
 
-const putOneTaskApi = async (taskId: number, data: taskUpdateRequestType) => {
-  return api.put(`${BASE_URL}/tasks/${taskId}/edit`, data);
+const putOneTaskApi = async (taskId: number, data: TaskUpdateRequestType) => {
+  return api.put(`/tasks/${taskId}/edit`, data);
 };
 
 const getTagsByProjectApi = async (projectId: number) => {
-  return api.get(`${BASE_URL}/tags/projects/${projectId}/tags`);
+  return api.get(`/tags/projects/${projectId}/tags`);
 };
 
 const getOneSprintApi = async (sprintId: number) => {
-  return api.get(`${BASE_URL}/sprints/${sprintId}`);
+  return api.get(`/sprints/${sprintId}`);
 };
 
 const getSprintsByProjectApi = async (projectId: number) => {
-  return api.get(`${BASE_URL}/sprints/projects/${projectId}`);
+  return api.get(`/sprints/projects/${projectId}`);
 };
 
 const putOneSprintApi = async (sprintId: number, data: SprintRequestType) => {
-  return api.put(`${BASE_URL}/sprints/${sprintId}`, data);
+  return api.put(`/sprints/${sprintId}`, data);
 };
 
-const createWorkspaceApi = async (info: workspaceRequestType) => {
-  return api.post(`${BASE_URL}/workspaces/create`, info);
+const createWorkspaceApi = async (data: WorkspaceRequestType) => {
+  return api.post(`/workspaces/create`, data);
 };
 
-const createSpaceApi = async (workspaceId: number, info: spaceRequestType) => {
-  return api.post(`${BASE_URL}/workspace/${workspaceId}/spaces/create`, info);
+const createSpaceApi = async (workspaceId: number, data: SpaceRequestType) => {
+  return api.post(`/workspace/${workspaceId}/spaces/create`, data);
 };
 
-const createProjectApi = async (info: projectRequestType) => {
-  return api.post(`${BASE_URL}/projects/create`, info);
+const createProjectApi = async (data: ProjectRequestType) => {
+  return api.post(`/projects/create`, data);
 };
 
-const createTaskApi = async (info: taskRequestType) => {
-  return api.post(`${BASE_URL}/tasks/create`, info);
+const createTaskApi = async (data: TaskRequestType) => {
+  return api.post(`/tasks/create`, data);
 };
 
-const createSprintApi = async (info: SprintRequestType) => {
-  return api.post(`${BASE_URL}/sprints/create`, info);
+const createSprintApi = async (data: SprintRequestType) => {
+  return api.post(`/sprints/create`, data);
 };
 
-const createMilestoneApi = async (info: MilestoneRequestType) => {
-  return api.post(`${BASE_URL}/milestones/create`, info);
-}
+const createMilestoneApi = async (data: MilestoneRequestType) => {
+  return api.post(`/milestones/create`, data);
+};
 
 export {
   UserLoginApi,

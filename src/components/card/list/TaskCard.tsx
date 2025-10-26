@@ -2,17 +2,18 @@ import React from "react";
 import { TaskResponseType } from "../../../types/type";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { ButtonsField, IdField, InfoBoxField, NameField } from "./field/Field";
 
 const TaskCard = ({ task }: { task: TaskResponseType }) => {
   const navigate = useNavigate();
   return (
     <Container>
       <Wrapper>
-        <Info>
-          <Id>{task.id}</Id>
-          <Name>{task.name}</Name>
-        </Info>
-        <Buttons>
+        <InfoBoxField>
+          <IdField>{task.id}</IdField>
+          <NameField>{task.name}</NameField>
+        </InfoBoxField>
+        <ButtonsField>
           <span
             onClick={(e) => {
               e.stopPropagation();
@@ -21,7 +22,7 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
           >
             EDIT
           </span>
-        </Buttons>
+        </ButtonsField>
       </Wrapper>
     </Container>
   );
@@ -35,7 +36,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid lightgray;
-  padding-left: 10px;  
+  padding-left: 10px;
   box-sizing: border-box;
   margin-bottom: 20px;
 `;
@@ -45,28 +46,4 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const Info = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-direction: column;
-  padding: 10px;
-`;
-
-const Id = styled.div`
-  color: #4680ff;
-`;
-
-const Name = styled.div`
-  font-size: 1.1rem;
-`;
-
-const Buttons = styled.div`
-  width: 150px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  color: #4680ff;
 `;

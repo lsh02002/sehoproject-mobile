@@ -3,7 +3,7 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOneProjectApi, putOneProjectApi } from "../../api/sehomanagerapi";
-import { projectRequestType, tagResponseType } from "../../types/type";
+import { ProjectRequestType, TagResponseType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
 import DateInput from "../../components/form/DateInput";
 import { CompleteArrayInput } from "../../components/form/CompleteArrayInput";
@@ -41,7 +41,7 @@ const ProjectEditPage = () => {
         setCreatorId(res.data.creatorId);
         setCreatorName(res.data.creatorName);
         setTags(
-          res.data.tagResponses?.map((tag: tagResponseType) => tag?.name)
+          res.data.tagResponses?.map((tag: TagResponseType) => tag?.name)
         );
       })
       .catch((err) => {
@@ -86,7 +86,7 @@ const ProjectEditPage = () => {
   }
 
   const OnEditSubmit = () => {
-    const data: projectRequestType = {
+    const data: ProjectRequestType = {
       spaceId: Number(spaceId),
       projectKey,
       name,

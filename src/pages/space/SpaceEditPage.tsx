@@ -7,7 +7,7 @@ import {
 } from "../../api/sehomanagerapi";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { spaceRequestType } from "../../types/type";
+import { SpaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 
 const SpaceEditPage = () => {
@@ -31,7 +31,7 @@ const SpaceEditPage = () => {
   }, [workspaceId, spaceId]);
 
   const OnEditSubmit = () => {
-    const data: spaceRequestType = {
+    const data: SpaceRequestType = {
       name,
       slug,
     };

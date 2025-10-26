@@ -7,7 +7,7 @@ import {
   putOneWorkspaceApi,
 } from "../../api/sehomanagerapi";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { workspaceRequestType } from "../../types/type";
+import { WorkspaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 
 const WorkspaceEditPage = () => {
@@ -30,7 +30,7 @@ const WorkspaceEditPage = () => {
   const OnEditSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {    
     e.stopPropagation();
 
-    const data: workspaceRequestType = {
+    const data: WorkspaceRequestType = {
       name,
       slug,
     };

@@ -1,11 +1,11 @@
-export type userSignupType = {
+export type UserSignupType = {
   email: string;
   password: string;
   passwordConfirm: string;
   name: string;
 };
 
-export type usersInfoType = {
+export type UsersInfoType = {
   userId: number;
   name: string;
   email: string;
@@ -13,30 +13,30 @@ export type usersInfoType = {
   deletedAt: string;
 };
 
-export type assignInfoType = {
+export type AssignInfoType = {
   assigneeId: number;
   dynamicAssign: boolean;
   type: string;
   email: string;
 };
 
-export type workspaceResponseType = {
+export type WorkspaceResponseType = {
   id: number;
   name: string;
   slug: string;
 };
 
-export type workspaceRequestType = {
+export type WorkspaceRequestType = {
   name: string;
   slug: string;
 };
 
-export type spaceRequestType = {
+export type SpaceRequestType = {
   name: string;
   slug: string;
 };
 
-export type projectRequestType = {
+export type ProjectRequestType = {
   spaceId: number;
   projectKey?: string;
   name: string;
@@ -47,20 +47,20 @@ export type projectRequestType = {
   tags?: string[];
 };
 
-export type tagRequestType = {
+export type TagRequestType = {
   projectId: number;
   name: string;
   description: string | null;
 };
 
-export type tagResponseType = {
+export type TagResponseType = {
   id: number;
   projectId: number;
   name: string;
   description: string;
 };
 
-export type projectResponseType = {
+export type ProjectResponseType = {
   id: number;
   spaceId: number;
   spaceName: string;
@@ -72,21 +72,21 @@ export type projectResponseType = {
   dueDate: Date;
   creatorId: number;
   creatorName: string;
-  tagResponses: tagResponseType[];
+  tagResponses: TagResponseType[];
 };
 
-export type assigneeRequestType = {
+export type AssigneeRequestType = {
   assigneeId: number;
   email: string;
   dynamicAssign: boolean;
   type: string;
 };
 
-export type taskRequestType = {
+export type TaskRequestType = {
   projectId: number;
   name: string;
   description: string;
-  assignees: assigneeRequestType[];
+  assignees: AssigneeRequestType[];
   sprintId: number | null;
   milestoneId: number | null;
   tags: number[];
@@ -98,7 +98,7 @@ export type taskRequestType = {
   dueDate: Date | undefined;
 };
 
-export type taskUpdateRequestType = {
+export type TaskUpdateRequestType = {
   projectId: number;
   name: string;
   description: string;
@@ -111,7 +111,7 @@ export type taskUpdateRequestType = {
   milestoneId: number; // null: 변경 없음, 0 이하: 마일스톤 해제
   tags: number[]; // null: 변경 없음, empty: 모두 제거
   dependencyTaskIds: number[]; // null: 변경 없음, empty: 모두 제거
-  assignees: assigneeRequestType[];
+  assignees: AssigneeRequestType[];
 };
 
 export type TaskResponseType = {
@@ -133,7 +133,7 @@ export type TaskResponseType = {
   createdAt?: string; // or Date/LocalDateTime 포맷에 맞게
 };
 
-export type spaceNodeType = {
+export type SpaceNodeType = {
   id: number;
   name: string;
   type: "SPACE";
@@ -236,7 +236,7 @@ export type WorkspaceTreeResponseType = {
   name: string; // 필요 시 name map으로 주입
   type: "WORKSPACE";
   canEnter?: boolean; // (선택) 필요하면 사용
-  spaces: spaceNodeType[];
+  spaces: SpaceNodeType[];
 };
 
 // UI 트리 노드 (disabled로 렌더 제어)

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { UserSignupApi } from "../../api/sehomanagerapi";
-import { userSignupType } from "../../types/type";
+import { UserSignupType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
 import PasswordInput from "../../components/form/PasswordInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
@@ -15,7 +15,7 @@ const SignupPage = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const OnSignupSubmit = () => {
-    const userInfo: userSignupType = {
+    const userInfo: UserSignupType = {
       email,
       password,
       passwordConfirm,

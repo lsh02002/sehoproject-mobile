@@ -7,7 +7,10 @@ import MilestoneCard from "../../components/card/list/MilestoneCard";
 
 const MilestoneListPage = () => {
   const { projectId } = useParams();
-  const [milestones, setMilestones] = useState<MilestoneResponseType[] | null>([]);
+  const [milestones, setMilestones] = useState<MilestoneResponseType[] | null>(
+    []
+  );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getMilestonesByProjectApi(Number(projectId))
@@ -17,15 +20,25 @@ const MilestoneListPage = () => {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [projectId]);
 
   return (
-    <ListLayout title="마일스톤" url={`/milestones/projects/${projectId}/create`}>
-      {milestones?.map((milestone) => (
-        <MilestoneCard key={milestone.id} milestone={milestone} />
-      ))}
-      {milestones?.length === 0 && <div>해당 마일스톤이 존재하지 않습니다.</div>}
+    <ListLayout
+      title="마일스톤"
+      url={`/milestones/projects/${projectId}/create`}
+    >
+      {isLoading && <div>로딩 중...</div>}
+      {!isLoading && milestones?.length === 0 ? (
+        <div>해당 마일스톤이 존재하지 않습니다.</div>
+      ) : (
+        milestones?.map((milestone) => (
+          <MilestoneCard key={milestone.id} milestone={milestone} />
+        ))
+      )}
     </ListLayout>
   );
 };

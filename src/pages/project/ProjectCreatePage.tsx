@@ -3,7 +3,7 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { createProjectApi } from "../../api/sehomanagerapi";
-import { projectRequestType } from "../../types/type";
+import { ProjectRequestType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
 import DateInput from "../../components/form/DateInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
@@ -19,7 +19,7 @@ const ProjectCreatePage = () => {
   const [dueDate, setDueDate] = useState<Date>();
 
   const OnCreateSubmit = () => {
-    const data: projectRequestType = {
+    const data: ProjectRequestType = {
       spaceId: Number(spaceId),
       name,
       projectKey,

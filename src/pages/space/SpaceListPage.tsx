@@ -8,6 +8,7 @@ import ListLayout from "../../layouts/ListLayout";
 const SpaceListPage = () => {
   const { workspaceId } = useParams();
   const [spaces, setSpaces] = useState<SpaceResponseType[] | null>([]);
+   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getSpacesByWorkspaceApi(Number(workspaceId))
@@ -17,15 +18,23 @@ const SpaceListPage = () => {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(()=>{
+        setIsLoading(false);
       });
   }, [workspaceId]);
 
   return (
-    <ListLayout title="스페이스" url={`/workspace/${workspaceId}/spaces/create`}>
-      {spaces?.map((space) => (
-        <SpaceCard key={space.id} space={space} />
-      ))}
-      {spaces?.length === 0 && <div>프로젝트가 존재하지 않습니다.</div>}
+    <ListLayout
+      title="스페이스"
+      url={`/workspace/${workspaceId}/spaces/create`}
+    >
+      {isLoading && <div>로딩 중...</div>}
+      {!isLoading && spaces?.length === 0 ? (
+        <div>프로젝트가 존재하지 않습니다.</div>
+      ) : (
+        spaces?.map((space) => <SpaceCard key={space.id} space={space} />)
+      )}
     </ListLayout>
   );
 };

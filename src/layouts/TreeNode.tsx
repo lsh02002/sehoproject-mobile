@@ -5,7 +5,7 @@ import {
   BackendRowType,
   MilestoneNodeType,
   ProjectNodeType,  
-  spaceNodeType,  
+  SpaceNodeType,  
   SprintNodeType,
   TreeNodeType,
   WorkspaceTreeResponseType,
@@ -207,7 +207,7 @@ export function rowsToWorkspaceTreeResponse(
       canEnter: ws.canEnter,
       spaces: Array.from(ws.spaces.values())
         .sort(byPosThenId<SpaceAgg>())
-        .map<spaceNodeType>((sp) => ({
+        .map<SpaceNodeType>((sp) => ({
           id: sp.id,
           name: sp.name,
           type: "SPACE",

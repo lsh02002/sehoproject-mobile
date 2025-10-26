@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { projectResponseType } from "../../types/type";
+import { ProjectResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
 import { getProjectsBySpaceApi } from "../../api/sehomanagerapi";
 import ProjectCard from "../../components/card/list/ProjectCard";
@@ -7,7 +7,8 @@ import ListLayout from "../../layouts/ListLayout";
 
 const ProjectListPage = () => {
   const { spaceId } = useParams();
-  const [projects, setProjects] = useState<projectResponseType[] | null>([]);
+  const [projects, setProjects] = useState<ProjectResponseType[] | null>([]);
+   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getProjectsBySpaceApi(Number(spaceId))
@@ -17,15 +18,18 @@ const ProjectListPage = () => {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(()=>{
+        setIsLoading(false);
       });
   }, [spaceId]);
 
   return (
     <ListLayout title="프로젝트"  url={`/projects/spaces/${spaceId}/create`}>
-      {projects?.map((project) => (
+      {isLoading && <div>로딩 중...</div>}
+      {!isLoading && projects?.length === 0 ? <div>해당 프로젝트가 존재하지 않습니다.</div> : projects?.map((project) => (
         <ProjectCard key={project.id} project={project} />
-      ))}
-      {projects?.length === 0 && <div>해당 프로젝트가 존재하지 않습니다.</div>}
+      ))}      
     </ListLayout>
   );
 };
