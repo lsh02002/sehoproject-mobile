@@ -28,6 +28,7 @@ import SprintCreatePage from "./pages/sprint/SprintCreatePage";
 import MilestoneListPage from "./pages/milestone/MilestoneListPage";
 import MilestoneEditPage from "./pages/milestone/MilestoneEditPage";
 import MilestoneCreatePage from "./pages/milestone/MilestoneCreatePage";
+import TaskByAssigneePage from "./pages/task/task-list/TasksByAssigneePage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -91,6 +92,10 @@ function App() {
           path="/sprints/projects/:projectIdParam/create"
           element={<SprintCreatePage />}
         />
+        <Route
+          path="/sprints/projects/:projectId/calendar"
+          element={<SprintCalendarPage />}
+        />
 
         <Route path="/tasks/projects/:projectId" element={<TaskListPage />} />
         <Route path="/tasks/:taskId/edit" element={<TaskEditPage />} />
@@ -101,10 +106,7 @@ function App() {
 
         <Route path="/boards/projects/:projectId" element={<BoardList />} />
 
-        <Route
-          path="/sprints/projects/:projectId/calendar"
-          element={<SprintCalendarPage />}
-        />
+        <Route path="/task-list" element={<TaskByAssigneePage />} />
       </Routes>
       <StyledToastContainer
         position="bottom-center"

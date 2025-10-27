@@ -150,6 +150,10 @@ const getOneTaskApi = async (taskId: number) => {
   return api.get(`/tasks/${taskId}`);
 };
 
+const getTasksByAssigneeApi = async() => {
+  return api.get(`/tasks/assignee`);
+}
+
 const putOneTaskApi = async (taskId: number, data: TaskUpdateRequestType) => {
   return api.put(`/tasks/${taskId}/edit`, data);
 };
@@ -216,6 +220,7 @@ export {
   getOneTaskApi,
   putOneTaskApi,
   getTagsByProjectApi,
+  getTasksByAssigneeApi,
   getSprintsByProjectApi,
   getOneSprintApi,
   putOneSprintApi,

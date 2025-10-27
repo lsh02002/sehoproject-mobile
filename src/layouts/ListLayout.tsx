@@ -4,13 +4,13 @@ import styled, { css } from "styled-components";
 
 type ListLayoutProps = {
   title?: string;
-  subtitle?: string;            // 제목 아래 회색 설명
-  to?: string;                  // 생성 버튼 이동 경로
-  createLabel?: string;         // 생성 버튼 레이블 (기본: "{title} 생성")
+  subtitle?: string; // 제목 아래 회색 설명
+  to?: string; // 생성 버튼 이동 경로
+  createLabel?: string; // 생성 버튼 레이블 (기본: "{title} 생성")
   rightActions?: React.ReactNode; // 우측에 배치할 임의의 액션들
-  count?: number;               // 아이템 개수 뱃지
-  isEmpty?: boolean;            // 빈 상태 여부
-  emptyMessage?: string;        // 빈 상태 메시지
+  count?: number; // 아이템 개수 뱃지
+  isEmpty?: boolean; // 빈 상태 여부
+  emptyMessage?: string; // 빈 상태 메시지
   children: React.ReactNode;
 };
 
@@ -36,7 +36,9 @@ const ListLayout = ({
               {title && (
                 <TitleRow>
                   <Title>{title}</Title>
-                  {typeof count === "number" && <CountBadge>{count}</CountBadge>}
+                  {typeof count === "number" && (
+                    <CountBadge>{count}</CountBadge>
+                  )}
                 </TitleRow>
               )}
               {subtitle && <Subtitle>{subtitle}</Subtitle>}
@@ -44,7 +46,7 @@ const ListLayout = ({
 
             <Actions>
               {rightActions}
-              {hasCreate ? (
+              {to && hasCreate ? (
                 <CreateLink to={to!}>
                   {createLabel ?? `${title ?? "항목"} 생성`}
                 </CreateLink>
@@ -59,11 +61,7 @@ const ListLayout = ({
         )}
 
         <Content>
-          {isEmpty ? (
-            <EmptyState>{emptyMessage}</EmptyState>
-          ) : (
-            children
-          )}
+          {isEmpty ? <EmptyState>{emptyMessage}</EmptyState> : children}
         </Content>
       </Wrapper>
     </Container>
@@ -84,7 +82,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 1040px;   /* 중앙 정렬 + 가독성 */
+  max-width: 1040px; /* 중앙 정렬 + 가독성 */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -126,7 +124,7 @@ const CountBadge = styled.span`
   padding: 2px 8px;
   border-radius: 9999px;
   background: #eef2ff; /* indigo-50 */
-  color: #4f46e5;      /* indigo-600 */
+  color: #4f46e5; /* indigo-600 */
   font-size: 0.8rem;
   font-weight: 600;
 `;
