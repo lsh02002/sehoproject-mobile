@@ -57,8 +57,9 @@ const Container = styled.div`
 
   label {
     color: black;
-    font-weight: 400;
-    font-size: 0.9rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
   }
 
   .datePicker {
@@ -67,7 +68,7 @@ const Container = styled.div`
     box-sizing: border-box;
     border: none;
     border-bottom: 1px solid lightgray;
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     outline: none;
     transition: border 0.2s ease-in-out;
     background-color: transparent;

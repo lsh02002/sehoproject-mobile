@@ -199,8 +199,9 @@ const Container = styled.div`
   label {
     width: 100%;
     color: black;
-    font-weight: 400;
-    font-size: 0.9rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
   }
 `;
 
@@ -210,7 +211,7 @@ const SelectBox = styled.button<{ $isPlaceholder: boolean }>`
   box-sizing: border-box;
   border: none;  
   border-bottom: 1px solid lightgray;  
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   outline: none;
   background: white;
   text-align: left;
@@ -251,7 +252,7 @@ const Chip = styled.span`
   border-radius: 12px;
   background: #f2f4f7;
   border: 1px solid #e5e7eb;
-  font-size: 0.68rem;
+  font-size: 0.95rem;
 `;
 
 const Menu = styled.ul<{ $maxH: number }>`
@@ -280,7 +281,7 @@ const MenuItem = styled.li<{
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   color: ${({ $disabled }) => ($disabled ? "gray" : "inherit")};
   background: ${({ $focused }) => ($focused ? "#f5f9ff" : "transparent")};

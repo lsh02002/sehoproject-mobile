@@ -21,5 +21,5 @@ const Button = styled.button`
   border-radius: 5px;
   color: white;
   background-color: #4680ff;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
 `;

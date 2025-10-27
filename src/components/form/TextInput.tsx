@@ -46,8 +46,9 @@ const Container = styled.div`
   label {
     width: 100%;
     color: black;
-    font-weight: 400;
-    font-size: 0.9rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
   }
 
   input {
@@ -56,7 +57,7 @@ const Container = styled.div`
     box-sizing: border-box;
     border: none;
     border-bottom: 1px solid lightgray;
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     background-color: transparent;
     //*****매우 중요 outline *****//
     outline: none;

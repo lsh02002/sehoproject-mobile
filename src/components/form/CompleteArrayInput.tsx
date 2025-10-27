@@ -256,11 +256,11 @@ const Container = styled.div`
 `;
 
 const Label = styled.label`
-  display: block;
-  margin-bottom: 6px;
-  font-size: 0.9rem;
-  font-weight: 400;
+  display: block;  
+  font-size: 0.95rem;
+  font-weight: 500;
   color: black;
+  margin-bottom: 4px;
 `;
 
 const SelectedList = styled.div`
@@ -277,7 +277,7 @@ const SelectedItem = styled.span`
   background-color: #f3f3f3;
   border-radius: 16px;
   padding: 4px 8px;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
 `;
 
 const RemoveButton = styled.button`
@@ -285,7 +285,7 @@ const RemoveButton = styled.button`
   background: transparent;
   color: #777;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   &:hover {
     color: #000;
   }
@@ -297,7 +297,7 @@ const Input = styled.input`
   border: none;
   border-bottom: 1px solid #ccc;
   outline: none;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   box-sizing: border-box;
   background-color: transparent;
   &:hover,
@@ -368,7 +368,7 @@ const CreateBtn = styled.button`
   color: white;
   border: none;
   border-radius: 0 0 6px 6px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   &:hover {
     background-color: #0064d6;

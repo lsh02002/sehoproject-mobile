@@ -70,8 +70,9 @@ const Container = styled.div`
   label {
     width: 100%;
     color: black;
-    font-weight: 400;
-    font-size: 0.9rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
   }
 `;
 
@@ -81,7 +82,7 @@ const SelectEl = styled.select<{ $isPlaceholder: boolean }>`
   box-sizing: border-box;  
   border: none;
   border-bottom: 1px solid lightgray;  
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   background: white;
   outline: none;
   appearance: none;
