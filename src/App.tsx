@@ -48,14 +48,14 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
         <Route path="/workspaces" element={<WorkspaceListPage />} />
-        <Route path="/workspace/:id" element={<WorkspaceEditPage />} />
+        <Route path="/workspace/:id/edit" element={<WorkspaceEditPage />} />
         <Route path="/workspaces/create" element={<WorkspaceCreatePage />} />
         <Route
           path="/workspace/:workspaceId/spaces"
           element={<SpaceListPage />}
         />
         <Route
-          path="/workspace/:workspaceId/spaces/:spaceId"
+          path="/workspace/:workspaceId/spaces/:spaceId/edit"
           element={<SpaceEditPage />}
         />
         <Route
