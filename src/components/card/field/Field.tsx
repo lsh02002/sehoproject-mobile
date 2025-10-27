@@ -5,13 +5,13 @@ export const CardContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
   box-sizing: border-box;
   margin-bottom: 10px;
   cursor: pointer;
   padding: 10px;
   transition: background-color 0.15s ease;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 
   &:hover {
     background-color: #f7f9fc;
