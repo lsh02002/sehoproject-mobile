@@ -51,6 +51,10 @@ const Container = styled.div`
   flex-direction: column;
   margin: 10px 0;
 
+  &:hover {
+    background-color: #f7f9fc;
+  }
+
   label {
     color: black;
     font-weight: 400;
@@ -60,12 +64,13 @@ const Container = styled.div`
   .datePicker {
     width: 100%;
     padding: 0.7rem;
-    box-sizing: border-box;    
+    box-sizing: border-box;
     border: none;
-    border-bottom: 1px solid lightgray;    
+    border-bottom: 1px solid lightgray;
     font-size: 0.8rem;
     outline: none;
     transition: border 0.2s ease-in-out;
+    background-color: transparent;
 
     &:hover,
     &:focus {

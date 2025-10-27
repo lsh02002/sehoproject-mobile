@@ -192,6 +192,10 @@ const Container = styled.div`
   margin: 10px 0;
   position: relative;
 
+  &:hover {
+    background-color: #f7f9fc;
+  }
+
   label {
     width: 100%;
     color: black;
@@ -211,6 +215,7 @@ const SelectBox = styled.button<{ $isPlaceholder: boolean }>`
   background: white;
   text-align: left;
   position: relative;
+  background-color: transparent;
 
   &:hover {
     border-bottom: 1px solid #4680ff;

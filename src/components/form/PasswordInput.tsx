@@ -35,6 +35,10 @@ const Container = styled.div`
   flex-direction: column;
   margin: 10px 0;
 
+  &:hover {
+    background-color: #f7f9fc;
+  }
+
   label {
     width: 100%;
     color: black;
@@ -48,6 +52,7 @@ const Container = styled.div`
     border: none;
     border-bottom: 1px solid lightgray;    
     font-size: 0.8rem;
+    background-color: transparent;
     //*****매우 중요 outline *****//
     outline: none;
 

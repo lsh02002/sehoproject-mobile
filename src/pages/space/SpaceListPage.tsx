@@ -27,7 +27,7 @@ const SpaceListPage = () => {
   return (
     <ListLayout
       title="스페이스"
-      url={`/workspace/${workspaceId}/spaces/create`}
+      to={`/workspace/${workspaceId}/spaces/create`}
     >
       {isLoading && <div>로딩 중...</div>}
       {!isLoading && spaces?.length === 0 ? (

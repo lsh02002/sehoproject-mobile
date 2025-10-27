@@ -25,7 +25,7 @@ const SprintListPage = () => {
   }, [projectId]);
 
   return (
-    <ListLayout title="스프린트" url={`/sprints/projects/${projectId}/create`}>
+    <ListLayout title="스프린트" to={`/sprints/projects/${projectId}/create`}>
       {isLoading && <div>로딩 중...</div>}
       {!isLoading && sprints?.length === 0 ? (
         <div>해당 스프린트가 존재하지 않습니다.</div>

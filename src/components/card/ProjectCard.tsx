@@ -1,6 +1,6 @@
 import React from "react";
-import { ProjectResponseType } from "../../types/type";
 import { useNavigate } from "react-router-dom";
+import { ProjectResponseType } from "../../types/type";
 import {
   ButtonsField,
   CardContainer,
@@ -9,17 +9,28 @@ import {
   IdField,
   InfoBoxField,
   NameField,
+  SlugField,
 } from "./field/Field";
 
 const ProjectCard = ({ project }: { project: ProjectResponseType }) => {
   const navigate = useNavigate();
+
   return (
     <CardContainer onClick={() => navigate(`/boards/projects/${project.id}`)}>
       <CardWrapper>
         <InfoBoxField>
-          <IdField>{project.id}</IdField>
+          <IdField>{project.projectKey}</IdField>
           <NameField>{project.name}</NameField>
+          <SlugField>
+            {project.spaceName} • {project.status}
+          </SlugField>
+          {project.dueDate && (
+            <SlugField>
+              마감일: {new Date(project.dueDate).toLocaleDateString()}
+            </SlugField>
+          )}
         </InfoBoxField>
+
         <ButtonsField>
           <EditButtonField
             onClick={(e) => {

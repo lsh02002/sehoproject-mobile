@@ -29,7 +29,7 @@ const MilestoneListPage = () => {
   return (
     <ListLayout
       title="마일스톤"
-      url={`/milestones/projects/${projectId}/create`}
+      to={`/milestones/projects/${projectId}/create`}
     >
       {isLoading && <div>로딩 중...</div>}
       {!isLoading && milestones?.length === 0 ? (

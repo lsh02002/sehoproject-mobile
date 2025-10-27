@@ -18,7 +18,7 @@ const SprintCreatePage = () => {
   const { projectIdParam } = useParams();
   const [projectId, setProjectId] = useState(projectIdParam);
   const [name, setName] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState("PLANNED");
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [taskIds, setTaskIds] = useState<TaskResponseType[]>([]);

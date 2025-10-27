@@ -63,6 +63,10 @@ const Container = styled.div`
   flex-direction: column;
   margin: 10px 0;
 
+  &:hover {
+    background-color: #f7f9fc;
+  }
+
   label {
     width: 100%;
     color: black;
@@ -81,6 +85,7 @@ const SelectEl = styled.select<{ $isPlaceholder: boolean }>`
   background: white;
   outline: none;
   appearance: none;
+  background-color: transparent;
 
   /* placeholder 상태일 때만 스타일 적용 */
   color: ${({ $isPlaceholder }) => ($isPlaceholder ? "darkgray" : "inherit")};

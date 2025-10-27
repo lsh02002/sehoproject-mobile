@@ -14,27 +14,23 @@ import {
 
 const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
   const navigate = useNavigate();
+
   return (
-    <CardContainer
-      onClick={(e) => {
-        e.stopPropagation();
-        navigate(`/projects/spaces/${space.id}`);
-      }}
-    >
+    <CardContainer onClick={() => navigate(`/projects/spaces/${space.id}`)}>
       <CardWrapper>
         <InfoBoxField>
-          <IdField>{space.id}</IdField>
+          <IdField>#{space.id}</IdField>
           <NameField>{space.name}</NameField>
-          <SlugField>{space.slug}</SlugField>
-          <span>
-            워크스페이스:<IdField>{space.workspaceId}</IdField>
-          </span>
+          {space.slug && <SlugField>{space.slug}</SlugField>}
+          <SlugField>워크스페이스 ID: {space.workspaceId}</SlugField>
         </InfoBoxField>
+
         <ButtonsField>
           <EditButtonField
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/workspace/${space.workspaceId}/spaces/${space.id}`);
+              // 편집 페이지 경로가 다르면 아래 라우트만 맞춰주세요.
+              navigate(`/workspace/${space.workspaceId}/spaces/${space.id}/edit`);
             }}
           >
             EDIT

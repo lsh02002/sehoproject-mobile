@@ -249,6 +249,10 @@ const Container = styled.div`
   position: relative;
   margin: 10px 0;
   margin-bottom: 20px;
+
+  &:hover {
+    background-color: #f7f9fc;
+  }
 `;
 
 const Label = styled.label`
@@ -295,6 +299,7 @@ const Input = styled.input`
   outline: none;
   font-size: 0.8rem;
   box-sizing: border-box;
+  background-color: transparent;
   &:hover,
   &:focus {
     border-bottom: 1px solid #007bff;

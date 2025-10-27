@@ -13,13 +13,32 @@ import {
 
 const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
   const navigate = useNavigate();
+
   return (
-    <CardContainer>
+    <CardContainer onClick={() => navigate(`/sprints/${sprint.id}/edit`)}>
       <CardWrapper>
         <InfoBoxField>
-          <IdField>{sprint.id}</IdField>
+          <IdField>#{sprint.id}</IdField>
           <NameField>{sprint.name}</NameField>
+          {sprint.state && (
+            <div style={{ color: "gray", fontSize: "0.9rem" }}>
+              상태: {sprint.state}
+            </div>
+          )}
+          {(sprint.startDate || sprint.endDate) && (
+            <div style={{ color: "gray", fontSize: "0.9rem" }}>
+              기간:&nbsp;
+              {sprint.startDate
+                ? new Date(sprint.startDate).toLocaleDateString()
+                : "미정"}
+              {" ~ "}
+              {sprint.endDate
+                ? new Date(sprint.endDate).toLocaleDateString()
+                : "미정"}
+            </div>
+          )}
         </InfoBoxField>
+
         <ButtonsField>
           <EditButtonField
             onClick={(e) => {

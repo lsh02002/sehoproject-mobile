@@ -13,13 +13,25 @@ import {
 
 const TaskCard = ({ task }: { task: TaskResponseType }) => {
   const navigate = useNavigate();
+
   return (
-    <CardContainer>
+    <CardContainer onClick={() => navigate(`/tasks/${task.id}/edit`)}>
       <CardWrapper>
         <InfoBoxField>
-          <IdField>{task.id}</IdField>
+          <IdField>#{task.id}</IdField>
           <NameField>{task.name}</NameField>
+          {task.state && (
+            <div style={{ color: "gray", fontSize: "0.9rem" }}>
+              상태: {task.state}
+            </div>
+          )}
+          {task.dueDate && (
+            <div style={{ color: "gray", fontSize: "0.9rem" }}>
+              마감일: {new Date(task.dueDate).toLocaleDateString()}
+            </div>
+          )}
         </InfoBoxField>
+
         <ButtonsField>
           <EditButtonField
             onClick={(e) => {
