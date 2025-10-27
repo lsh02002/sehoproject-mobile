@@ -109,6 +109,7 @@ export default function SidebarMenu({
           node={root}
           selectedId={selectedId}
           onSelect={handleSelect}
+          fontSize={16}
         />
       </ul>
       <LoginMenuItem>

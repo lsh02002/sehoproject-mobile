@@ -239,6 +239,7 @@ export function rowsToWorkspaceTreeResponse(
         })),
     }));
 }
+
 /* ========= Data adapter (요청하신 식 그대로) ========= */
 // ==== 5) 요청하신 어댑터: 응답 → 렌더 트리 (disabled 반영) ====
 export function convertToTreeNode(
@@ -268,9 +269,6 @@ export function convertToTreeNode(
           const sprints = Array.isArray(project.sprintNodes)
             ? project.sprintNodes
             : [];
-          // const tasks = Array.isArray(project.taskNodes)
-          //   ? project.taskNodes
-          //   : [];
 
           const children: TreeNodeType[] = [
             ...milestones.map((m) => ({
@@ -285,12 +283,6 @@ export function convertToTreeNode(
               type: "SPRINT" as const,
               disabled: t.canEnter === false,
             })),
-            // ...tasks.map((t) => ({
-            //   id: t.id,
-            //   name: t.name,
-            //   type: "TASK" as const,
-            //   disabled: t.canEnter === false,
-            // })),
           ];
 
           return {
@@ -327,6 +319,8 @@ type Props = {
   depth?: number;
   selectedId?: string | number;
   onSelect?: (node: TreeNodeType) => void;
+  /** 트리 기본 폰트(px). 예: 12, 14, 16 ... */
+  fontSize?: number;
 };
 
 /* ========= TreeNode 컴포넌트 ========= */
@@ -337,6 +331,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   depth = 0,
   selectedId,
   onSelect,
+  fontSize, // 👈 추가
 }) {
   const redirect = useNavigate();
 
@@ -387,7 +382,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   };
 
   return (
-    <Item>
+    <Item style={{ ["--tree-font" as any]: (fontSize ?? 14) + "px" }}>
       <Row
         type="button"
         onClick={handleToggle}
@@ -397,12 +392,12 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         aria-expanded={hasChildren ? open : undefined}
         aria-label={node.name}
         $selected={isSelected}
-        $disabled={isDisabled} // 👈 추가
+        $disabled={isDisabled}
         aria-disabled={isDisabled || undefined}
         title={isDisabled ? `${node.name} (접근 권한 없음)` : node.name}
       >
         <Chevron $visible={hasChildren} $open={open} aria-hidden>
-          <svg viewBox="0 0 24 24" width="14" height="14">
+          <svg viewBox="0 0 24 24" width="1em" height="1em">
             <path
               d="M9 6l6 6-6 6"
               fill="none"
@@ -416,11 +411,17 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         {hasChildren ? (
           <FolderIcon $open={open} aria-hidden />
         ) : node.type === "MILESTONE" ? (
-          <span style={{ color: node.disabled ? "#aaa" : "inherit" }}>M</span>
+          <span style={{ color: node.disabled ? "#aaa" : "inherit", fontSize: "0.95em" }}>
+            M
+          </span>
         ) : node.type === "SPRINT" ? (
-          <span style={{ color: node.disabled ? "#aaa" : "inherit" }}>S</span>
+          <span style={{ color: node.disabled ? "#aaa" : "inherit", fontSize: "0.95em" }}>
+            S
+          </span>
         ) : node.type === "TASK" ? (
-          <span style={{ color: node.disabled ? "#aaa" : "inherit" }}>T</span>
+          <span style={{ color: node.disabled ? "#aaa" : "inherit", fontSize: "0.95em" }}>
+            T
+          </span>
         ) : (
           <FileIcon aria-hidden />
         )}
@@ -429,23 +430,25 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
           {node.type === "PROJECT" && (
             <Calendar
               onClick={(e) => {
-                if (isDisabled) {
-                  return;
-                }
+                if (isDisabled) return;
                 e.stopPropagation();
                 setOpen(false);
                 redirect(`/sprints/projects/${node.id}/calendar`);
               }}
               style={{
                 color: node.disabled ? "#aaa" : "inherit",
-                width: "40px",
+                width: "1.15em",
+                height: "1.15em",
+                marginLeft: "0.25em",
+                flexShrink: 0,
               }}
-              size={16}
             />
           )}
         </Name>
         {isDisabled && (
-          <LockIcon size={16} color="gray">
+          <LockIcon
+            style={{ width: "1em", height: "1em", color: "gray", flexShrink: 0 }}
+          >
             <title>"접근 권한이 없습니다"</title>
           </LockIcon>
         )}
@@ -464,6 +467,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
               depth={depth + 1}
               selectedId={selectedId}
               onSelect={onSelect}
+              fontSize={fontSize}
             />
           ))}
         </Content>
@@ -509,6 +513,11 @@ const Row = styled.button<{
   border-radius: ${vars.radius}px;
   cursor: pointer;
   text-align: left;
+
+  /* 폰트 사이즈: 전체 트리 스케일 */
+  font-size: clamp(12px, var(--tree-font, 14px), 20px);
+  line-height: 1.2;
+
   background: ${({ $selected }) =>
     $selected
       ? `linear-gradient(0deg, rgba(99,102,241,0.14), rgba(99,102,241,0.14))`
@@ -588,7 +597,7 @@ const Row = styled.button<{
 
 const Name = styled.span<{ $disabled?: boolean }>`
   color: ${({ $disabled }) => ($disabled ? "#94a3b8" : "inherit")};
-  font-size: 0.93rem;
+  font-size: 0.93em; /* 기본 폰트 대비 살짝 축소 */
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
@@ -599,8 +608,8 @@ const Name = styled.span<{ $disabled?: boolean }>`
 
 /** 펼침 화살표 */
 const Chevron = styled.span<{ $open: boolean; $visible: boolean }>`
-  width: 18px;
-  height: 18px;
+  width: 1.2em;
+  height: 1.2em;
   display: inline-grid;
   place-items: center;
   color: #64748b; /* slate-500 */
@@ -619,25 +628,25 @@ const Chevron = styled.span<{ $open: boolean; $visible: boolean }>`
 
 /** 폴더 / 파일 아이콘 */
 const FolderIcon = styled.i<{ $open: boolean }>`
-  width: 16px;
-  height: 16px;
+  width: 1.1em;
+  height: 1.1em;
   display: inline-block;
   color: ${({ $open }) =>
-    $open ? "#4680ff" : "#9ca3af"}; /* amber-500 / gray-400 */
+    $open ? "#4680ff" : "#9ca3af"}; /* 접힘/펼침 색상 */
   transition: color 160ms ease, transform 160ms ease;
   transform: ${({ $open }) => ($open ? "translateY(-1px)" : "none")};
 
   &::before {
     content: "";
     display: block;
-    width: 16px;
-    height: 12px;
-    border: 2px solid currentColor;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom: 2px solid transparent;
+    width: 1.1em;
+    height: 0.85em;
+    border: 0.14em solid currentColor;
+    border-top-left-radius: 0.21em;
+    border-top-right-radius: 0.21em;
+    border-bottom: 0.14em solid transparent;
     position: relative;
-    box-shadow: inset 0 -6px 0 0 currentColor;
+    box-shadow: inset 0 -0.45em 0 0 currentColor;
     background: ${({ $open }) =>
       $open ? "rgba(245, 158, 11, 0.08)" : "transparent"};
   }
@@ -645,19 +654,19 @@ const FolderIcon = styled.i<{ $open: boolean }>`
     content: "";
     position: relative;
     display: block;
-    width: 8px;
-    height: 4px;
-    margin-left: 2px;
-    margin-top: -12px;
+    width: 0.55em;
+    height: 0.3em;
+    margin-left: 0.15em;
+    margin-top: -0.9em;
     background: currentColor;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    border-top-left-radius: 0.14em;
+    border-top-right-radius: 0.14em;
   }
 `;
 
 const FileIcon = styled.i`
-  width: 16px;
-  height: 16px;
+  width: 1.1em;
+  height: 1.1em;
   display: inline-block;
   color: #9ca3af; /* gray-400 */
   transition: color 160ms ease;
@@ -667,10 +676,10 @@ const FileIcon = styled.i`
   &::before {
     content: "";
     display: block;
-    width: 12px;
-    height: 14px;
-    border: 2px solid currentColor;
-    border-radius: 2px;
+    width: 0.9em;
+    height: 1em;
+    border: 0.14em solid currentColor;
+    border-radius: 0.14em;
     position: relative;
     background: rgba(148, 163, 184, 0.06);
   }
@@ -678,13 +687,13 @@ const FileIcon = styled.i`
     content: "";
     position: relative;
     display: block;
-    width: 6px;
-    height: 2px;
-    margin-top: -12px;
-    margin-left: 3px;
+    width: 0.45em;
+    height: 0.15em;
+    margin-top: -0.9em;
+    margin-left: 0.22em;
     background: currentColor;
-    border-radius: 1px;
-    box-shadow: 0 4px 0 0 currentColor, 0 8px 0 0 currentColor;
+    border-radius: 0.1em;
+    box-shadow: 0 0.3em 0 0 currentColor, 0 0.6em 0 0 currentColor;
   }
 `;
 
