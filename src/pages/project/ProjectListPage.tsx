@@ -25,8 +25,7 @@ const ProjectListPage = () => {
   }, [spaceId]);
 
   return (
-    <ListLayout title="프로젝트" to={`/projects/spaces/${spaceId}/create`}>
-      {isLoading && <div>로딩 중...</div>}
+    <ListLayout title="프로젝트" to={`/projects/spaces/${spaceId}/create`}>      
       {!isLoading && projects?.length === 0 ? (
         <div>해당 프로젝트가 존재하지 않습니다.</div>
       ) : (

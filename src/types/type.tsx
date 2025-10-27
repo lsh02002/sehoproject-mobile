@@ -20,10 +20,12 @@ export type AssignInfoType = {
   email: string;
 };
 
-export type WorkspaceResponseType = {
-  id: number;
-  name: string;
-  slug: string;
+export type WorkspaceTreeResponseType = {
+  workspaceId: number;
+  name: string; // 필요 시 name map으로 주입
+  type: "WORKSPACE";
+  canEnter?: boolean; // (선택) 필요하면 사용
+  spaces: SpaceNodeType[];
 };
 
 export type WorkspaceRequestType = {
@@ -31,9 +33,22 @@ export type WorkspaceRequestType = {
   slug: string;
 };
 
+export type WorkspaceResponseType = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
 export type SpaceRequestType = {
   name: string;
   slug: string;
+};
+
+export type SpaceResponseType = {
+  id: number;
+  name: string;
+  slug: string;
+  workspaceId: number;
 };
 
 export type ProjectRequestType = {
@@ -45,19 +60,6 @@ export type ProjectRequestType = {
   dueDate?: Date;
   creatorId?: number | null;
   tags?: string[];
-};
-
-export type TagRequestType = {
-  projectId: number;
-  name: string;
-  description: string | null;
-};
-
-export type TagResponseType = {
-  id: number;
-  projectId: number;
-  name: string;
-  description: string;
 };
 
 export type ProjectResponseType = {
@@ -73,13 +75,6 @@ export type ProjectResponseType = {
   creatorId: number;
   creatorName: string;
   tagResponses: TagResponseType[];
-};
-
-export type AssigneeRequestType = {
-  assigneeId: number;
-  email: string;
-  dynamicAssign: boolean;
-  type: string;
 };
 
 export type TaskRequestType = {
@@ -131,6 +126,68 @@ export type TaskResponseType = {
   dependencyIds?: number[];
   dueDate?: string; // or Date/LocalDate 포맷에 맞게
   createdAt?: string; // or Date/LocalDateTime 포맷에 맞게
+};
+
+export type SprintRequestType = {
+  projectId: number;
+  name: string;
+  state: string;
+  startDate?: Date;
+  endDate?: Date;
+  taskIds: number[];
+}
+
+export type SprintResponseType = {
+  id: string;
+  projectId: number;
+  name: string;
+  state: string;
+  startDate: Date;
+  endDate: Date;
+  taskIds: TaskResponseType[];
+};
+
+export type MilestoneRequestType = {  
+  projectId: number;
+  name: string;
+  description: string;
+  startDate?: Date;
+  dueDate?: Date;
+  status: string;  
+  taskIds: number[];
+}
+
+export type MilestoneResponseType = {
+  id: number;
+  projectId: number;
+  name: string;
+  description: string;
+  startDate: Date;
+  dueDate: Date;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  taskIds: TaskResponseType[];
+}
+
+export type TagRequestType = {
+  projectId: number;
+  name: string;
+  description: string | null;
+};
+
+export type TagResponseType = {
+  id: number;
+  projectId: number;
+  name: string;
+  description: string;
+};
+
+export type AssigneeRequestType = {
+  assigneeId: number;
+  email: string;
+  dynamicAssign: boolean;
+  type: string;
 };
 
 export type SpaceNodeType = {
@@ -224,21 +281,6 @@ export type ProjectNodeType = {
   taskNodes?: TaskNodeType[];
 };
 
-export type SpaceResponseType = {
-  id: number;
-  name: string;
-  slug: string;
-  workspaceId: number;
-};
-
-export type WorkspaceTreeResponseType = {
-  workspaceId: number;
-  name: string; // 필요 시 name map으로 주입
-  type: "WORKSPACE";
-  canEnter?: boolean; // (선택) 필요하면 사용
-  spaces: SpaceNodeType[];
-};
-
 // UI 트리 노드 (disabled로 렌더 제어)
 export type TreeNodeType = {
   id: string | number;
@@ -249,48 +291,6 @@ export type TreeNodeType = {
 };
 
 export type WorkspaceRole = "OWNER" | "ADMIN" | "MEMBER" | "GUEST";
-
-export type SprintRequestType = {
-  projectId: number;
-  name: string;
-  state: string;
-  startDate?: Date;
-  endDate?: Date;
-  taskIds: number[];
-}
-
-export type SprintResponseType = {
-  id: string;
-  projectId: number;
-  name: string;
-  state: string;
-  startDate: Date;
-  endDate: Date;
-  taskIds: TaskResponseType[];
-};
-
-export type MilestoneRequestType = {  
-  projectId: number;
-  name: string;
-  description: string;
-  startDate?: Date;
-  dueDate?: Date;
-  status: string;  
-  taskIds: number[];
-}
-
-export type MilestoneResponseType = {
-  id: number;
-  projectId: number;
-  name: string;
-  description: string;
-  startDate: Date;
-  dueDate: Date;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
-  taskIds: TaskResponseType[];
-}
 
 export type SprintCalendarType = {
   id: string;

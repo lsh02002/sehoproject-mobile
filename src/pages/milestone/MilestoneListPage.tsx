@@ -30,8 +30,7 @@ const MilestoneListPage = () => {
     <ListLayout
       title="마일스톤"
       to={`/milestones/projects/${projectId}/create`}
-    >
-      {isLoading && <div>로딩 중...</div>}
+    >      
       {!isLoading && milestones?.length === 0 ? (
         <div>해당 마일스톤이 존재하지 않습니다.</div>
       ) : (
