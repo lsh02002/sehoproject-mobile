@@ -6,13 +6,11 @@ export const CardContainer = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid lightgray;
-  box-sizing: border-box;
-  margin: 10px 0;
+  box-sizing: border-box;  
   padding: 12px;
   transition: background-color 0.15s ease, border-bottom 0.15s ease;
   background-color: transparent;
-  cursor: pointer;
-  border-radius: 4px;
+  cursor: pointer;  
   outline: none;
 
   &:hover {
