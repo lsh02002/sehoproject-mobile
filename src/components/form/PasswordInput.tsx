@@ -49,6 +49,7 @@ const Container = styled.div`
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     background: #ffffff;
+    box-sizing: border-box;
     color: #111827;
     line-height: 1.5;
     transition: border-color 0.2s ease, box-shadow 0.2s ease,
