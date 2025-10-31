@@ -3,24 +3,19 @@ import styled from "styled-components";
 export const CardContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid lightgray;
-  box-sizing: border-box;  
-  padding: 12px;
-  transition: background-color 0.15s ease, border-bottom 0.15s ease;
-  background-color: transparent;
-  cursor: pointer;  
-  outline: none;
-
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
   &:hover {
-    background-color: #f7f9fc;
-  }
-
-  &:focus,
-  &:active {
-    border-bottom: 1px solid #4680ff;
-    background-color: #f0f5ff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    border-color: #d1d5db;
   }
 `;
 

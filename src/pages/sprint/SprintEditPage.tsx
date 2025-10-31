@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
@@ -14,6 +13,7 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
+import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
 
 const SprintEditPage = () => {
   const { sprintId } = useParams();
@@ -163,34 +163,3 @@ const SprintEditPage = () => {
 
 export default SprintEditPage;
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h3 {
-    font-weight: 500;
-  }
-
-  a {
-    font-size: 0.7rem;
-  }
-`;

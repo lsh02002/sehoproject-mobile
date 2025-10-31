@@ -15,10 +15,10 @@ import {
 import TextInput from "../../components/form/TextInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
-import styled from "styled-components";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
+import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
 
 const TaskEditPage = () => {
   const { taskId } = useParams();
@@ -272,34 +272,3 @@ const TaskEditPage = () => {
 
 export default TaskEditPage;
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h3 {
-    font-weight: 500;
-  }
-
-  a {
-    font-size: 0.7rem;
-  }
-`;

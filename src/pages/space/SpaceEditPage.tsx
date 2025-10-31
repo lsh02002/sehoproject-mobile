@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import TextInput from "../../components/form/TextInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import {
@@ -9,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SpaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
+import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
 
 const SpaceEditPage = () => {
   const { workspaceId, spaceId } = useParams();
@@ -78,34 +78,3 @@ const SpaceEditPage = () => {
 
 export default SpaceEditPage;
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;    
-`;
-
-const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h3 {
-    font-weight: 500;
-  }
-
-  a {
-    font-size: 0.7rem;
-  }
-`;

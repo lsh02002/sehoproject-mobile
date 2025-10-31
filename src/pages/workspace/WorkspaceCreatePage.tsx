@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import TextInput from "../../components/form/TextInput";
 import {
     createWorkspaceApi,  
@@ -7,6 +6,7 @@ import {
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { WorkspaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
+import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
 
 const WorkspaceCreatePage = () => {  
   const [name, setName] = useState("");
@@ -50,35 +50,3 @@ const WorkspaceCreatePage = () => {
 };
 
 export default WorkspaceCreatePage;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h3 {
-    font-weight: 500;
-  }
-
-  a {
-    font-size: 0.7rem;
-  }
-`;

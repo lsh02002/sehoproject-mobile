@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -13,6 +12,7 @@ import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { useParams } from "react-router-dom";
+import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
 
 const MilestoneCreatePage = () => {
   const { projectIdParam } = useParams();
@@ -87,7 +87,7 @@ const MilestoneCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>마일스톤 수정</h3>
+          <h3>마일스톤 생성</h3>
         </Title>
         <TextInput
           name="projectId"
@@ -134,42 +134,10 @@ const MilestoneCreatePage = () => {
             })) ?? []
           }
         />
-        <ConfirmButton title="수정" onClick={OnCreateSubmit} />
+        <ConfirmButton title="생성" onClick={OnCreateSubmit} />
       </Wrapper>
     </Container>
   );
 };
 
 export default MilestoneCreatePage;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h3 {
-    font-weight: 500;
-  }
-
-  a {
-    font-size: 0.7rem;
-  }
-`;

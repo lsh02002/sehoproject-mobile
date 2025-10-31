@@ -51,15 +51,13 @@ const Container = styled.div`
   flex-direction: column;
   margin: 10px 0;
 
-  &:hover {
-    background-color: #f7f9fc;
-  }
-
   label {
-    color: black;
-    font-weight: 500;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
+    width: 100%;
+    display: block;
+    margin-bottom: 8px;
+    color: #111827;
+    font-weight: 600;
+    font-size: 0.9rem;
   }
 
   .datePicker {
@@ -81,6 +79,19 @@ const Container = styled.div`
     &::placeholder {
       color: gray;
       font-style: italic;
+    }
+  }
+
+  @media (max-width: 640px) {
+    label {
+      font-size: 0.85rem;
+    }
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+      padding: 12px;
+      min-height: 44px;
     }
   }
 `;

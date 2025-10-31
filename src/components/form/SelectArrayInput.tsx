@@ -192,16 +192,26 @@ const Container = styled.div`
   margin: 10px 0;
   position: relative;
 
-  &:hover {
-    background-color: #f7f9fc;
-  }
-
   label {
     width: 100%;
-    color: black;
-    font-weight: 500;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
+    display: block;
+    margin-bottom: 8px;
+    color: #111827;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 640px) {
+    label {
+      font-size: 0.85rem;
+    }
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+      padding: 12px;
+      min-height: 44px;
+    }
   }
 `;
 
@@ -209,8 +219,8 @@ const SelectBox = styled.button<{ $isPlaceholder: boolean }>`
   width: 100%;
   padding: 0.7rem;
   box-sizing: border-box;
-  border: none;  
-  border-bottom: 1px solid lightgray;  
+  border: none;
+  border-bottom: 1px solid lightgray;
   font-size: 0.95rem;
   outline: none;
   background: white;
@@ -239,12 +249,38 @@ const Caret = styled.span`
   top: 50%;
   transform: translateY(-52%);
   pointer-events: none;
+
+  @media (max-width: 640px) {
+    label {
+      font-size: 0.85rem;
+    }
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+      padding: 12px;
+      min-height: 44px;
+    }
+  }
 `;
 
 const ChipRow = styled.div`
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    label {
+      font-size: 0.85rem;
+    }
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+      padding: 12px;
+      min-height: 44px;
+    }
+  }
 `;
 
 const Chip = styled.span`
@@ -253,6 +289,19 @@ const Chip = styled.span`
   background: #f2f4f7;
   border: 1px solid #e5e7eb;
   font-size: 0.95rem;
+
+  @media (max-width: 640px) {
+    label {
+      font-size: 0.85rem;
+    }
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+      padding: 12px;
+      min-height: 44px;
+    }
+  }
 `;
 
 const Menu = styled.ul<{ $maxH: number }>`

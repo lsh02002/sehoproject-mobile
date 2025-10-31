@@ -63,25 +63,35 @@ const Container = styled.div`
   flex-direction: column;
   margin: 10px 0;
 
-  &:hover {
-    background-color: #f7f9fc;
-  }
-
   label {
     width: 100%;
-    color: black;
-    font-weight: 500;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
+    display: block;
+    margin-bottom: 8px;
+    color: #111827;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 640px) {
+    label {
+      font-size: 0.85rem;
+    }
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+      padding: 12px;
+      min-height: 44px;
+    }
   }
 `;
 
 const SelectEl = styled.select<{ $isPlaceholder: boolean }>`
   width: 100%;
   padding: 0.7rem;
-  box-sizing: border-box;  
+  box-sizing: border-box;
   border: none;
-  border-bottom: 1px solid lightgray;  
+  border-bottom: 1px solid lightgray;
   font-size: 0.95rem;
   background: white;
   outline: none;

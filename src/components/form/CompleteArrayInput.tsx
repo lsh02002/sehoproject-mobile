@@ -256,7 +256,8 @@ const Container = styled.div`
 `;
 
 const Label = styled.label`
-  display: block;  
+  width: 100%;
+  display: block;
   font-size: 0.95rem;
   font-weight: 500;
   color: black;
@@ -306,7 +307,7 @@ const Input = styled.input`
   }
 `;
 
-const Menu = styled.div<{ $maxHeight: number }>`  
+const Menu = styled.div<{ $maxHeight: number }>`
   border-radius: 6px;
   overflow-y: auto;
   max-height: ${(p) => p.$maxHeight}px;
