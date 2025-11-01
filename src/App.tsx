@@ -35,7 +35,6 @@ import { PreferencesSettingsPage } from "./pages/settings/PreferencesSettingsPag
 import { NotificationsSettingsPage } from "./pages/settings/NotificationsSettingsPage";
 import { ProjectDefaultsSettingsPage } from "./pages/settings/ProjectDefaultsSettingsPage";
 import { SecuritySettingsPage } from "./pages/settings/SecuritySettingsPage";
-import { getWorkspacesApi } from "./api/sehomanagerapi";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -48,19 +47,6 @@ function App() {
       setIsLogin(false);
     }
   }, [setIsLogin]);
-
-  useEffect(() => {
-    if (!localStorage.getItem("workspaceId")) {
-      getWorkspacesApi()
-        .then((res) => {
-          console.log(res);
-          localStorage.setItem("workspaceId", res.data[0].id);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-  }, []);
 
   return (
     <Layout>
