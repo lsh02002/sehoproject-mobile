@@ -16,7 +16,7 @@ export default function SettingsLayout() {
   };
 
   return (
-    <Root $sidebar={showSidebar}>
+    <Root>
       <HeaderBar>
         <ToggleButton
           type="button"
@@ -66,10 +66,9 @@ export default function SettingsLayout() {
 /*********************************
  * styled-components
  *********************************/
-export const Root = styled.div<{ $sidebar: boolean }>`
+export const Root = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: ${({ $sidebar }) => ($sidebar ? "260px 1fr" : "1fr")};
   gap: 20px;  
 `;
 
