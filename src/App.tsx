@@ -36,6 +36,7 @@ import { NotificationsSettingsPage } from "./pages/settings/NotificationsSetting
 import { ProjectDefaultsSettingsPage } from "./pages/settings/ProjectDefaultsSettingsPage";
 import { SecuritySettingsPage } from "./pages/settings/SecuritySettingsPage";
 import { getWorkspacesApi } from "./api/sehomanagerapi";
+import { InvitationMessageBoxPage } from "./pages/accept-decline/InvitationMessageBoxPage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -131,6 +132,7 @@ function App() {
             path="workspace/:workspaceId/spaces/create"
             element={<SpaceCreatePage />}
           />
+          <Route path="invitation-message" element={<InvitationMessageBoxPage />} />
           <Route path="profile" element={<ProfileSettingsPage />} />
           <Route path="preferences" element={<PreferencesSettingsPage />} />
           <Route path="notifications" element={<NotificationsSettingsPage />} />

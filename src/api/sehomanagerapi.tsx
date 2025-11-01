@@ -122,8 +122,16 @@ const getWorkspaceMembersApi = async (workspaceId: number) => {
   return api.get(`/workspaces/${workspaceId}/members`);
 }
 
-const getInvitationAcceptedUsersApi = async () => {
-  return api.get(`/workspaces/giveprivileges`);
+const getInvitationMessageApi = async () => {
+  return api.get(`/workspaces/invitations`);
+}
+
+const postInvitationAcceptApi = async (workspaceId: number, inviteId: number) => {
+  return api.post(`workspaces/${workspaceId}/invites/${inviteId}/accept`);
+}
+
+const postInvitationDeclineApi = async (workspaceId: number, inviteId: number) => {
+  return api.post(`workspaces/${workspaceId}/invites/${inviteId}/decline`);
 }
 
 const getProjectsBySpaceApi = async (spaceId: number) => {
@@ -230,7 +238,9 @@ export {
   putOneWorkspaceApi,
   postWorkspaceInvite,
   getWorkspaceMembersApi,
-  getInvitationAcceptedUsersApi,
+  getInvitationMessageApi,
+  postInvitationAcceptApi,
+  postInvitationDeclineApi,
   getSpacesByWorkspaceApi,
   getOneSpaceByWorkspaceAndSpaceApi,
   putOneSpaceByWorkspaceAndSpaceApi,

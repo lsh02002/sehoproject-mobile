@@ -113,6 +113,14 @@ export default function SidebarMenu({
         />
       </ul>
       <LoginMenuItem>
+        <span
+          onClick={() => {
+            setOpen(false);
+            navigate("/settings/invitation-message");
+          }}
+        >
+          워크스페이스 초대함
+        </span>
         {isLogin ? (
           <span
             onClick={() => {
@@ -143,4 +151,8 @@ const LoginMenuItem = styled.div`
   left: 0;
   bottom: 0;
   padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
 `;
