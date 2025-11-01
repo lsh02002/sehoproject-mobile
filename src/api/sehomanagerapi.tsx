@@ -7,6 +7,7 @@ import {
   TaskRequestType,
   TaskUpdateRequestType,
   UserSignupType,
+  WorkspaceInviteType,
   WorkspaceRequestType,
 } from "../types/type";
 import { BASE_URL } from "./BASE_URL";
@@ -92,6 +93,10 @@ const putOneWorkspaceApi = async (
 ) => {
   return api.put(`/workspaces/${id}`, data);
 };
+
+const postWorkspaceInvite = async (payload: WorkspaceInviteType) => {
+  return api.post(`/workspaces/invites`, payload);
+}
 
 const getSpacesByWorkspaceApi = async (workspaceId: number) => {
   return api.get(`/workspace/${workspaceId}/spaces`);
@@ -206,6 +211,7 @@ export {
   getWorkspacesApi,
   getOneWorkspaceApi,
   putOneWorkspaceApi,
+  postWorkspaceInvite,
   getSpacesByWorkspaceApi,
   getOneSpaceByWorkspaceAndSpaceApi,
   putOneSpaceByWorkspaceAndSpaceApi,

@@ -25,7 +25,7 @@ const WorkspaceListPage = () => {
   }, []);
 
   return (
-    <ListLayout title="워크스페이스" to={`/workspaces/create`}>
+    <ListLayout title="워크스페이스" to={`/settings/workspaces/create`}>
       {!isLoading && workspaces?.length === 0 ? (
         <div>해당 스페이스가 존재하지 않습니다.</div>
       ) : (

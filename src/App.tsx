@@ -29,6 +29,13 @@ import MilestoneListPage from "./pages/milestone/MilestoneListPage";
 import MilestoneEditPage from "./pages/milestone/MilestoneEditPage";
 import MilestoneCreatePage from "./pages/milestone/MilestoneCreatePage";
 import TaskByAssigneePage from "./pages/task/task-list/TasksByAssigneePage";
+import SettingsLayout from "./pages/settings/SettingsLayout";
+import { ProfileSettingsPage } from "./pages/settings/ProfileSettingsPage";
+import { PreferencesSettingsPage } from "./pages/settings/PreferencesSettingsPage";
+import { NotificationsSettingsPage } from "./pages/settings/NotificationsSettingsPage";
+import { ProjectDefaultsSettingsPage } from "./pages/settings/ProjectDefaultsSettingsPage";
+import { SecuritySettingsPage } from "./pages/settings/SecuritySettingsPage";
+import { getWorkspacesApi } from "./api/sehomanagerapi";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -42,15 +49,25 @@ function App() {
     }
   }, [setIsLogin]);
 
+  useEffect(() => {
+    if (!localStorage.getItem("workspaceId")) {
+      getWorkspacesApi()
+        .then((res) => {
+          console.log(res);
+          localStorage.setItem("workspaceId", res.data[0].id);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, []);
+
   return (
     <Layout>
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
-        <Route path="/workspaces" element={<WorkspaceListPage />} />
-        <Route path="/workspace/:id/edit" element={<WorkspaceEditPage />} />
-        <Route path="/workspaces/create" element={<WorkspaceCreatePage />} />
         <Route
           path="/workspace/:workspaceId/spaces"
           element={<SpaceListPage />}
@@ -107,7 +124,22 @@ function App() {
         <Route path="/boards/projects/:projectId" element={<BoardList />} />
 
         <Route path="/task-list" element={<TaskByAssigneePage />} />
+
+        <Route path="/settings" element={<SettingsLayout />}>
+          <Route path="workspaces" element={<WorkspaceListPage />} />
+          <Route path="workspace/:id/edit" element={<WorkspaceEditPage />} />
+          <Route path="workspaces/create" element={<WorkspaceCreatePage />} />
+          <Route path="profile" element={<ProfileSettingsPage />} />
+          <Route path="preferences" element={<PreferencesSettingsPage />} />
+          <Route path="notifications" element={<NotificationsSettingsPage />} />
+          <Route
+            path="project-defaults"
+            element={<ProjectDefaultsSettingsPage />}
+          />
+          <Route path="security" element={<SecuritySettingsPage />} />
+        </Route>
       </Routes>
+
       <StyledToastContainer
         position="bottom-center"
         autoClose={3000}

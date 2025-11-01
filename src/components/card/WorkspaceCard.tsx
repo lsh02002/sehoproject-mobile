@@ -1,54 +1,50 @@
 import React from "react";
-import { WorkspaceResponseType } from "../../types/type";
-import Invitation from "../../assets/invitation.svg";
 import { useNavigate } from "react-router-dom";
 import {
-  ButtonsField,
   CardContainer,
-  EditButtonField,
-  IdField,
+  CardWrapper,
   InfoBoxField,
+  IdField,
   NameField,
   SlugField,
-  CardWrapper,
-} from "./field/Field";
+  ButtonsField,
+  EditButtonField,
+} from "./field/Field"; // styled 분리되어 있다면 해당 경로 유지
+import styled from "styled-components";
+import { WorkspaceResponseType } from "../../types/type";
+import { TwoDiv } from "../form/TwoDiv";
 
 const WorkspaceCard = ({ workspace }: { workspace: WorkspaceResponseType }) => {
   const navigate = useNavigate();
+  const currentWorkspaceId = localStorage.getItem("workspaceId");
+  const isCurrent = currentWorkspaceId === String(workspace.id);
 
   return (
     <CardContainer
-      onClick={() => navigate(`/workspace/${workspace.id}/spaces`)}
+      onClick={() => navigate(`/settings/workspace/${workspace.id}/edit`)}
     >
       <CardWrapper>
         <InfoBoxField>
-          <IdField>#{workspace.id}</IdField>
+          <TwoDiv>
+            <IdField>#{workspace.id}</IdField>
+            {isCurrent && <CurrentBadge>현재 워크스페이스</CurrentBadge>}
+          </TwoDiv>
+
           <NameField>{workspace.name}</NameField>
           <SlugField>{workspace.slug}</SlugField>
         </InfoBoxField>
 
         <ButtonsField
           style={{
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             filter:
               "invert(47%) sepia(79%) saturate(1448%) hue-rotate(194deg) brightness(103%) contrast(101%)",
           }}
         >
-          <img
-            src={Invitation}
-            alt="Invite"
-            width={24}
-            height={24}
-            style={{ cursor: "pointer" }}
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/workspace/${workspace.id}/invite`);
-            }}
-          />
           <EditButtonField
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/workspace/${workspace.id}/edit`);
+              navigate(`/settings/workspace/${workspace.id}/edit`);
             }}
           >
             EDIT
@@ -60,3 +56,29 @@ const WorkspaceCard = ({ workspace }: { workspace: WorkspaceResponseType }) => {
 };
 
 export default WorkspaceCard;
+
+/* ================================
+   Styled (이전에 있던 이름 유지)
+================================ */
+
+const CurrentBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid #bfdbfe;
+  background: #dbeafe;
+  color: #1e3a8a;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+
+  &::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #3b82f6;
+  }
+`;

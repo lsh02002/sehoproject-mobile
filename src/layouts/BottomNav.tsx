@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Home from "../assets/home.svg";
 import Inbox from "../assets/inbox.svg";
 import TaskList from "../assets/task-list.svg";
-import DashBoard from "../assets/dashboard.svg";
+import Settings from "../assets/dashboard.svg";
 import { NavLink } from "react-router-dom";
 
 const BottomNav = () => {
@@ -28,11 +28,11 @@ const BottomNav = () => {
           </div>
           <div>나의 태스크들</div>
         </IconLink>
-        <IconLink to="/dashboard">
+        <IconLink to="/settings">
           <div>
-            <img src={DashBoard} alt="" />
+            <img src={Settings} alt="" />
           </div>
-          <div>대시보드</div>
+          <div>설정</div>
         </IconLink>
       </Wrapper>
     </Container>

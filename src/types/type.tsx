@@ -135,7 +135,7 @@ export type SprintRequestType = {
   startDate?: Date;
   endDate?: Date;
   taskIds: number[];
-}
+};
 
 export type SprintResponseType = {
   id: string;
@@ -147,15 +147,15 @@ export type SprintResponseType = {
   taskIds: TaskResponseType[];
 };
 
-export type MilestoneRequestType = {  
+export type MilestoneRequestType = {
   projectId: number;
   name: string;
   description: string;
   startDate?: Date;
   dueDate?: Date;
-  status: string;  
+  status: string;
   taskIds: number[];
-}
+};
 
 export type MilestoneResponseType = {
   id: number;
@@ -168,7 +168,7 @@ export type MilestoneResponseType = {
   createdAt: Date;
   updatedAt: Date;
   taskIds: TaskResponseType[];
-}
+};
 
 export type TagRequestType = {
   projectId: number;
@@ -299,4 +299,11 @@ export type SprintCalendarType = {
   endDate: Date;
   display: string;
   color: string;
+};
+
+export type WorkspaceInviteType = {
+  invitedUserId: number;
+  message: string | null;
+  requestedRole: string | null;
+  workspaceId: number;
 };
