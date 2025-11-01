@@ -143,8 +143,6 @@ export const Section = styled.section`
   width: 100%;
   padding: 18px 16px;
   margin: 16px 0;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
   background: #fff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
