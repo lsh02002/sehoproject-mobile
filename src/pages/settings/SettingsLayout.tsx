@@ -71,9 +71,6 @@ export const Root = styled.div<{ $sidebar: boolean }>`
   display: grid;
   grid-template-columns: ${({ $sidebar }) => ($sidebar ? "260px 1fr" : "1fr")};
   gap: 20px;  
-  @media (max-width: 860px) {
-    grid-template-columns: 1fr; /* 모바일에선 항상 1열 */
-  }
 `;
 
 export const Sidebar = styled.aside`
