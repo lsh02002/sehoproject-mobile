@@ -1,7 +1,12 @@
 import { useState } from "react";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
-import { FooterBar, Section, SectionHeader } from "./SettingsLayout";
+import {
+  FooterBar,
+  Section,
+  SectionHeader,
+  SettingsContainer,
+} from "./SettingsLayout";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 
 export function PreferencesSettingsPage() {
@@ -33,19 +38,45 @@ export function PreferencesSettingsPage() {
   const onSave = () => alert("환경 설정이 저장되었습니다.");
 
   return (
-    <Section>
-      <SectionHeader>환경 설정</SectionHeader>
-      <TwoDiv>
-        <SelectInput name="language" title="언어" value={language} setValue={setLanguage} options={languageOptions} />
-        <SelectInput name="timezone" title="시간대" value={timezone} setValue={setTimezone} options={timezoneOptions} />
-      </TwoDiv>
-      <TwoDiv>
-        <SelectInput name="dateFormat" title="날짜 형식" value={dateFormat} setValue={setDateFormat} options={dateFormatOptions} />
-        <SelectInput name="weekStart" title="주 시작 요일" value={weekStart} setValue={setWeekStart} options={weekStartOptions} />
-      </TwoDiv>
-      <FooterBar>
-        <ConfirmButton title="저장하기" onClick={onSave} />
-      </FooterBar>
-    </Section>
+    <SettingsContainer>
+      <Section>
+        <SectionHeader>환경 설정</SectionHeader>
+        <TwoDiv>
+          <SelectInput
+            name="language"
+            title="언어"
+            value={language}
+            setValue={setLanguage}
+            options={languageOptions}
+          />
+          <SelectInput
+            name="timezone"
+            title="시간대"
+            value={timezone}
+            setValue={setTimezone}
+            options={timezoneOptions}
+          />
+        </TwoDiv>
+        <TwoDiv>
+          <SelectInput
+            name="dateFormat"
+            title="날짜 형식"
+            value={dateFormat}
+            setValue={setDateFormat}
+            options={dateFormatOptions}
+          />
+          <SelectInput
+            name="weekStart"
+            title="주 시작 요일"
+            value={weekStart}
+            setValue={setWeekStart}
+            options={weekStartOptions}
+          />
+        </TwoDiv>
+        <FooterBar>
+          <ConfirmButton title="저장하기" onClick={onSave} />
+        </FooterBar>
+      </Section>
+    </SettingsContainer>
   );
 }

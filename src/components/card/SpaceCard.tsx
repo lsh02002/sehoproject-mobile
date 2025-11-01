@@ -16,7 +16,7 @@ const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
   const navigate = useNavigate();
 
   return (
-    <CardContainer onClick={() => navigate(`/projects/spaces/${space.id}`)}>
+    <CardContainer onClick={() => navigate(`/settings/workspace/${space.workspaceId}/spaces/${space.id}/edit`)}>
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{space.id}</IdField>
@@ -30,7 +30,7 @@ const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
             onClick={(e) => {
               e.stopPropagation();
               // 편집 페이지 경로가 다르면 아래 라우트만 맞춰주세요.
-              navigate(`/workspace/${space.workspaceId}/spaces/${space.id}/edit`);
+              navigate(`/settings/workspace/${space.workspaceId}/spaces/${space.id}/edit`);
             }}
           >
             EDIT

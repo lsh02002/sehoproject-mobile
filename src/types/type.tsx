@@ -307,3 +307,27 @@ export type WorkspaceInviteType = {
   requestedRole: string | null;
   workspaceId: number;
 };
+
+export type WorkspaceInviteResponseType = {
+  id: number;
+  workspaceId: number;
+  workspaceName: string;
+  inviterEmail: string;
+  invitedUserEmail: string;
+  message: string;
+  requestedRole: WorkspaceRole;
+  status: string;
+  expiresAt: Date;
+  createdAt: string;
+};
+
+// ===== 타입 =====
+export type RequestRoleType = "ADMIN" | "MEMBER" | "VIEWER";
+export type RoleProjectType = "MANAGER" | "CONTRIBUTOR" | "VIEWER";
+
+export type AddMemberRequestType = {
+  email: string;
+  requestRole: RequestRoleType; // "ADMIN" | "MEMBER" | "VIEWER"
+  roleProject: RoleProjectType;
+  note: string | undefined;
+};

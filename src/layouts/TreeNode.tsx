@@ -348,7 +348,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
     if (isDisabled) return;
 
     if (node.id === "root") {
-      redirect("/workspaces");
+      redirect("/settings/workspaces");
       return;
     }
 
@@ -356,7 +356,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
     switch (node.type) {
       case "WORKSPACE":
         setOpen(false);
-        redirect(`/workspace/${node.id}/spaces`);
+        redirect(`/settings/workspace/${node.id}/spaces`);
         break;
       case "SPACE":
         setOpen(false);

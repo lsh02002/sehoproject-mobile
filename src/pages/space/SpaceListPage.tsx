@@ -27,7 +27,7 @@ const SpaceListPage = () => {
   return (
     <ListLayout
       title="스페이스"
-      to={`/workspace/${workspaceId}/spaces/create`}
+      to={`/settings/workspace/${workspaceId}/spaces/create`}
     >      
       {!isLoading && spaces?.length === 0 ? (
         <div>프로젝트가 존재하지 않습니다.</div>

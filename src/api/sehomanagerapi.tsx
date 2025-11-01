@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  AddMemberRequestType,
   MilestoneRequestType,
   ProjectRequestType,
   SpaceRequestType,
@@ -117,6 +118,14 @@ const putOneSpaceByWorkspaceAndSpaceApi = async (
   return api.put(`/workspace/${workspaceId}/spaces/${spaceId}`, data);
 };
 
+const getWorkspaceMembersApi = async (workspaceId: number) => {
+  return api.get(`/workspaces/${workspaceId}/members`);
+}
+
+const getInvitationAcceptedUsersApi = async () => {
+  return api.get(`/workspaces/giveprivileges`);
+}
+
 const getProjectsBySpaceApi = async (spaceId: number) => {
   return api.get(`/projects/spaces/${spaceId}`);
 };
@@ -187,9 +196,17 @@ const createSpaceApi = async (workspaceId: number, data: SpaceRequestType) => {
   return api.post(`/workspace/${workspaceId}/spaces/create`, data);
 };
 
+const createSpaceMemberApi = async (workspaceId: number, spaceId: number, data: AddMemberRequestType) => {
+  return api.post(`/workspaces/${workspaceId}/spaces/${spaceId}/members`, data);
+}
+
 const createProjectApi = async (data: ProjectRequestType) => {
   return api.post(`/projects/create`, data);
 };
+
+const createProjectMemberApi = async (projectId: number, data: AddMemberRequestType) => {
+  return api.post(`/projects/${projectId}/members`, data);
+}
 
 const createTaskApi = async (data: TaskRequestType) => {
   return api.post(`/tasks/create`, data);
@@ -212,6 +229,8 @@ export {
   getOneWorkspaceApi,
   putOneWorkspaceApi,
   postWorkspaceInvite,
+  getWorkspaceMembersApi,
+  getInvitationAcceptedUsersApi,
   getSpacesByWorkspaceApi,
   getOneSpaceByWorkspaceAndSpaceApi,
   putOneSpaceByWorkspaceAndSpaceApi,
@@ -232,7 +251,9 @@ export {
   putOneSprintApi,
   createWorkspaceApi,
   createSpaceApi,
+  createSpaceMemberApi,
   createProjectApi,
+  createProjectMemberApi,
   createTaskApi,
   createSprintApi,
   createMilestoneApi,

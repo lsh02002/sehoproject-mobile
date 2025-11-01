@@ -7,6 +7,8 @@ export default function SettingsLayout() {
   const isBaseSettingsPath = location.pathname === "/settings";
   const [showSidebar, setShowSidebar] = useState(false);
 
+  const workspaceId = localStorage.getItem("workspaceId");
+
   const handleNavClick = () => {
     setShowSidebar(false); // 메뉴 클릭 시 사이드바 숨김
   };
@@ -32,6 +34,9 @@ export default function SettingsLayout() {
           <Nav>
             <NavItem to={`/settings/workspaces`} onClick={handleNavClick}>
               워크스페이스
+            </NavItem>
+            <NavItem to={`/settings/workspace/${workspaceId}/spaces`} onClick={handleNavClick}>
+              스페이스
             </NavItem>
             <NavItem to="/settings/profile" onClick={handleNavClick}>
               프로필
@@ -69,7 +74,7 @@ export default function SettingsLayout() {
 export const Root = styled.div`
   width: 100%;
   display: grid;
-  gap: 20px;  
+  gap: 20px;
 `;
 
 export const Sidebar = styled.aside`
@@ -140,12 +145,10 @@ export const ToggleButton = styled.button`
 `;
 
 export const Section = styled.section`
-  width: 100%;
-  padding: 18px 16px;
+  width: 100%;  
   margin: 16px 0;
   background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  box-sizing: border-box;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);  
 `;
 
 export const SectionHeader = styled.h4`
@@ -157,6 +160,11 @@ export const SectionHeader = styled.h4`
 
 export const FooterBar = styled.div`
   position: sticky;
+`;
+
+export const SettingsContainer = styled.div`
+  padding: 20px;
+  box-sizing: border-box;
 `;
 
 /* 필요하다면 FooterBar에 bottom, 배경 그라데이션 등 추가:

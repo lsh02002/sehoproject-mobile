@@ -35,6 +35,7 @@ import { PreferencesSettingsPage } from "./pages/settings/PreferencesSettingsPag
 import { NotificationsSettingsPage } from "./pages/settings/NotificationsSettingsPage";
 import { ProjectDefaultsSettingsPage } from "./pages/settings/ProjectDefaultsSettingsPage";
 import { SecuritySettingsPage } from "./pages/settings/SecuritySettingsPage";
+import { getWorkspacesApi } from "./api/sehomanagerapi";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -48,24 +49,27 @@ function App() {
     }
   }, [setIsLogin]);
 
+  useEffect(() => {
+    getWorkspacesApi()
+      .then((res) => {
+        console.log(res);
+        const workspaceId = localStorage.getItem("workspaceId");
+
+        if (!workspaceId) {
+          localStorage.setItem("workspaceId", res.data[0].id);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <Layout>
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
-        <Route
-          path="/workspace/:workspaceId/spaces"
-          element={<SpaceListPage />}
-        />
-        <Route
-          path="/workspace/:workspaceId/spaces/:spaceId/edit"
-          element={<SpaceEditPage />}
-        />
-        <Route
-          path="/workspace/:workspaceId/spaces/create"
-          element={<SpaceCreatePage />}
-        />
         <Route path="/projects/spaces/:spaceId" element={<ProjectListPage />} />
         <Route path="/projects/:projectId/edit" element={<ProjectEditPage />} />
         <Route
@@ -115,6 +119,18 @@ function App() {
           <Route path="workspaces" element={<WorkspaceListPage />} />
           <Route path="workspace/:id/edit" element={<WorkspaceEditPage />} />
           <Route path="workspaces/create" element={<WorkspaceCreatePage />} />
+          <Route
+            path="workspace/:workspaceId/spaces"
+            element={<SpaceListPage />}
+          />
+          <Route
+            path="workspace/:workspaceId/spaces/:spaceId/edit"
+            element={<SpaceEditPage />}
+          />
+          <Route
+            path="workspace/:workspaceId/spaces/create"
+            element={<SpaceCreatePage />}
+          />
           <Route path="profile" element={<ProfileSettingsPage />} />
           <Route path="preferences" element={<PreferencesSettingsPage />} />
           <Route path="notifications" element={<NotificationsSettingsPage />} />

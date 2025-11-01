@@ -8,7 +8,16 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SpaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  TabH3,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { Section } from "../settings/SettingsLayout";
+import SpaceMemberPage from "./SpaceConfirmBox";
+
+type TabKey = "info" | "members";
 
 const SpaceEditPage = () => {
   const { workspaceId, spaceId } = useParams();
@@ -17,6 +26,7 @@ const SpaceEditPage = () => {
   const [workspaceIdState, setWorkspaceIdState] = useState<string>(
     workspaceId?.toString() ?? ""
   );
+  const [currentTab, setCurrentTab] = useState<TabKey>("info");
 
   useEffect(() => {
     getOneSpaceByWorkspaceAndSpaceApi(Number(workspaceId), Number(spaceId))
@@ -53,28 +63,66 @@ const SpaceEditPage = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>
-          <h3>스페이스 수정</h3>
+        <Title role="tablist" aria-label="스페이스 설정">
+          <TabH3
+            role="tab"
+            aria-selected={currentTab === "info"}
+            $active={currentTab === "info"}
+            tabIndex={0}
+            onClick={() => setCurrentTab("info")}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") setCurrentTab("info");
+            }}
+          >
+            스페이스 정보
+          </TabH3>
+          <TabH3
+            role="tab"
+            aria-selected={currentTab === "members"}
+            $active={currentTab === "members"}
+            tabIndex={0}
+            onClick={() => setCurrentTab("members")}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") setCurrentTab("members");
+            }}
+          >
+            스페이스 회원
+          </TabH3>
         </Title>
-        <TextInput
-          name="name"
-          title="스페이스 이름"
-          data={name}
-          setData={setName}
-        />
-        <TextInput name="slug" title="슬러그" data={slug} setData={setSlug} />
-        <TextInput
-          name="workspaceId"
-          title="워크스페이스"
-          disabled
-          data={workspaceIdState}
-          setData={setWorkspaceIdState}
-        />
-        <ConfirmButton title="수정" onClick={OnEditSubmit} />
+        {currentTab === "info" ? (
+          <Section aria-labelledby="tab-info">
+            <TextInput
+              name="name"
+              title="스페이스 이름"
+              data={name}
+              setData={setName}
+            />
+            <TextInput
+              name="slug"
+              title="슬러그"
+              data={slug}
+              setData={setSlug}
+            />
+            <TextInput
+              name="workspaceId"
+              title="워크스페이스"
+              disabled
+              data={workspaceIdState}
+              setData={setWorkspaceIdState}
+            />
+            <ConfirmButton title="수정" onClick={OnEditSubmit} />
+          </Section>
+        ) : (
+          <Section aria-labelledby="tab-members">
+            <SpaceMemberPage
+              workspaceId={Number(workspaceId)}
+              spaceId={Number(spaceId)}              
+            />
+          </Section>
+        )}
       </Wrapper>
     </Container>
   );
 };
 
 export default SpaceEditPage;
-

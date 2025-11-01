@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
-import { FooterBar, Section, SectionHeader } from "./SettingsLayout";
+import { FooterBar, Section, SectionHeader, SettingsContainer } from "./SettingsLayout";
 import TextInput from "../../components/form/TextInput";
 
 export function ProjectDefaultsSettingsPage() {
@@ -10,6 +10,7 @@ export function ProjectDefaultsSettingsPage() {
   const onSave = () => alert("프로젝트 기본값이 저장되었습니다.");
 
   return (
+    <SettingsContainer>
     <Section>
       <SectionHeader>프로젝트 기본값</SectionHeader>
       <TwoDiv>
@@ -20,5 +21,6 @@ export function ProjectDefaultsSettingsPage() {
         <ConfirmButton title="저장하기" onClick={onSave} />
       </FooterBar>
     </Section>
+    </SettingsContainer>
   );
 }
