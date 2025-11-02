@@ -16,6 +16,7 @@ import {
   getProjectsBySpaceApi,
   getWorkspaceMembersApi,
 } from "../../api/sehomanagerapi";
+import { toast } from "react-toastify";
 
 type ProjectLite = { id: number | string; name: string };
 
@@ -150,33 +151,37 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
     requestRole: RequestRoleType;
     roleProject: RoleProjectType;
   }) => {
-    const requestRole = values.requestRole ?? "VIEWER";
-    const roleProject = values.roleProject ?? "VIEWER";
-    await createSpaceMember({
-      workspaceId,
-      spaceId,
-      email: invitedUserEmail,
-      requestRole: requestRole ?? "VIEWER",
-      roleProject: roleProject || undefined,
-      note: note?.trim(),
-    });
+    try {
+      const requestRole = values.requestRole ?? "VIEWER";
+      const roleProject = values.roleProject ?? "VIEWER";
+      await createSpaceMember({
+        workspaceId,
+        spaceId,
+        email: invitedUserEmail,
+        requestRole: requestRole ?? "VIEWER",
+        roleProject: roleProject || undefined,
+        note: note?.trim(),
+      });
 
-    // 2) 프로젝트 권한 (선택): 프로젝트가 선택되어 있고, 프로젝트 역할이 선택된 경우만
-    if (projectIds.length > 0 && roleProject) {
-      const calls = projectIds
-        .map((pid) => Number(pid))
-        .filter((n) => Number.isFinite(n))
-        .map((projectId) =>
-          createProjectMember({
-            projectId,
-            email: invitedUserEmail,
-            requestRole,
-            roleProject,
-            note: note?.trim() || undefined,
-          })
-        );
-      await Promise.allSettled(calls);
-    }
+      // 2) 프로젝트 권한 (선택): 프로젝트가 선택되어 있고, 프로젝트 역할이 선택된 경우만
+      if (projectIds.length > 0 && roleProject) {
+        const calls = projectIds
+          .map((pid) => Number(pid))
+          .filter((n) => Number.isFinite(n))
+          .map((projectId) =>
+            createProjectMember({
+              projectId,
+              email: invitedUserEmail,
+              requestRole,
+              roleProject,
+              note: note?.trim() || undefined,
+            })
+          );
+        await Promise.allSettled(calls);
+      }
+
+      toast.success("권한부여에 성공했습니다.");
+    } catch (err) {}
   };
 
   const handleClickSave: React.MouseEventHandler<HTMLButtonElement> = async (
