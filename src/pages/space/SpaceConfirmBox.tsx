@@ -99,89 +99,96 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
     [projects]
   );
 
-  async function createSpaceMember(args: {
-    workspaceId: number | string;
-    spaceId: number | string;
-    email: string;
-    requestRole: RequestRoleType;
-    roleProject: RoleProjectType;
-    note: string;
-  }) {
-    const { workspaceId, spaceId, email, requestRole, roleProject, note } =
-      args;
+  type SubmitValues = {
+    requestRole?: RequestRoleType | null;
+    roleProject?: RoleProjectType | null;
+  };
 
-    createSpaceMemberApi(Number(workspaceId), Number(spaceId), {
-      email,
-      requestRole,
-      roleProject,
-      note,
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);        
-      });
-  }
+  const onSubmit = async (values: SubmitValues) => {
+    // Resolve defaults once
+    const requestRole: RequestRoleType = values.requestRole ?? "VIEWER";
+    // Treat missing / falsy project role as undefined so it won’t be sent
+    const roleProject: RoleProjectType | undefined =
+      values.roleProject ?? undefined;
 
-  async function createProjectMember(args: {
-    projectId: number | string;
-    email: string;
-    requestRole: RequestRoleType;
-    roleProject: RoleProjectType;
-    note?: string;
-  }) {
-    const { projectId, email, requestRole, roleProject, note } = args;
+    const noteTrimmed = note?.trim() || undefined;
 
-    createProjectMemberApi(Number(projectId), {
-      email,
-      requestRole,
-      roleProject,
-      note,
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);        
-      });
-  }
-
-  const onSubmit = async (values: {
-    requestRole: RequestRoleType;
-    roleProject: RoleProjectType;
-  }) => {
-    try {
-      const requestRole = values.requestRole ?? "VIEWER";
-      const roleProject = values.roleProject ?? "VIEWER";
-      await createSpaceMember({
-        workspaceId,
-        spaceId,
-        email: invitedUserEmail,
-        requestRole: requestRole ?? "VIEWER",
-        roleProject: roleProject || undefined,
-        note: note?.trim(),
-      });
-
-      // 2) 프로젝트 권한 (선택): 프로젝트가 선택되어 있고, 프로젝트 역할이 선택된 경우만
-      if (projectIds.length > 0 && roleProject) {
-        const calls = projectIds
-          .map((pid) => Number(pid))
+    // Parse & sanitize project IDs (dedupe + numeric only)
+    const projectIdList: number[] = Array.from(
+      new Set(
+        (projectIds ?? [])
+          .map((id) => Number(id))
           .filter((n) => Number.isFinite(n))
-          .map((projectId) =>
-            createProjectMember({
-              projectId,
-              email: invitedUserEmail,
-              requestRole,
-              roleProject,
-              note: note?.trim() || undefined,
-            })
-          );
-        await Promise.allSettled(calls);
+      )
+    );
+
+    try {
+      // 1) 워크스페이스 멤버 생성
+      const workspaceRes = await createSpaceMemberApi(
+        Number(workspaceId),
+        Number(spaceId),
+        {
+          email: invitedUserEmail,
+          requestRole,
+          roleProject: roleProject ?? "VIEWER", // may be undefined → omitted server-side
+          note: noteTrimmed,
+        }
+      );
+
+      console.log(workspaceRes);
+
+      // 2) 프로젝트 권한 (선택): 프로젝트가 있고 + roleProject가 명시된 경우만
+      let projectResults: PromiseSettledResult<unknown>[] | undefined =
+        undefined;
+
+      if (projectIdList.length > 0 && roleProject) {
+        const calls = projectIdList.map((projectId) =>
+          createProjectMemberApi(projectId, {
+            email: invitedUserEmail,
+            requestRole,
+            roleProject,
+            note: noteTrimmed,
+          })
+        );
+
+        projectResults = await Promise.allSettled(calls);
+        projectResults.forEach((r) => {
+          if (r.status === "fulfilled") {
+            console.log(r.value);
+          } else {
+            console.error(r.reason);
+          }
+        });
       }
 
-      toast.success("권한부여에 성공했습니다.");
-    } catch (err) {}
+      // Toast logic
+      if (!projectResults) {
+        // Only workspace invite was attempted
+        toast.success("권한부여에 성공했습니다. (워크스페이스)");
+        return;
+      }
+
+      const failed = projectResults.filter(
+        (r) => r.status === "rejected"
+      ).length;
+      const total = projectResults.length;
+
+      if (failed === 0) {
+        toast.success("권한부여에 성공했습니다. (워크스페이스 + 프로젝트)");
+      } else if (failed < total) {
+        toast.success(
+          `일부 프로젝트에만 권한 부여가 완료되었습니다. (${
+            total - failed
+          }/${total})`
+        );
+      } else {
+        toast.error("프로젝트 권한 부여에 실패했습니다. (워크스페이스만 완료)");
+      }
+    } catch (err) {
+      // If workspace creation fails, we shouldn’t proceed or claim success
+      console.error(err);
+      toast.error("권한 부여 중 오류가 발생했습니다.");
+    }
   };
 
   const handleClickSave: React.MouseEventHandler<HTMLButtonElement> = async (
