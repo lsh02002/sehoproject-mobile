@@ -16,7 +16,7 @@ import { useLogin } from "../context/LoginContext";
 const Panel = styled.aside<{ $open: boolean }>`
   min-width: ${({ $open }) => ($open ? 240 : 64)}px;
   padding: 8px;
-  height: calc(100vh + 80px);
+  height: calc(100vh);
   box-sizing: border-box;  
 `;
 
