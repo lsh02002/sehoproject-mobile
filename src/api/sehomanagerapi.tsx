@@ -45,12 +45,10 @@ api.interceptors.response.use(
     // ✅ detailMessage가 있으면 가장 먼저 콘솔에 출력
     if (error.response?.data?.detailMessage) {
       toast.error(error.response.data.detailMessage);
-      return Promise.reject(error);
     }
     // 그 외의 에러도 같이 로깅
     if (error.message) {
       toast.error(error.message);
-      return Promise.reject(error);
     }
     console.error("⚠️ Axios Error:", error);
     return Promise.reject(error);
@@ -97,7 +95,7 @@ const putOneWorkspaceApi = async (
 
 const postWorkspaceInvite = async (payload: WorkspaceInviteType) => {
   return api.post(`/workspaces/invites`, payload);
-}
+};
 
 const getSpacesByWorkspaceApi = async (workspaceId: number) => {
   return api.get(`/workspace/${workspaceId}/spaces`);
@@ -120,19 +118,25 @@ const putOneSpaceByWorkspaceAndSpaceApi = async (
 
 const getWorkspaceMembersApi = async (workspaceId: number) => {
   return api.get(`/workspaces/${workspaceId}/members`);
-}
+};
 
 const getInvitationMessageApi = async () => {
   return api.get(`/workspaces/invitations`);
-}
+};
 
-const postInvitationAcceptApi = async (workspaceId: number, inviteId: number) => {
+const postInvitationAcceptApi = async (
+  workspaceId: number,
+  inviteId: number
+) => {
   return api.post(`workspaces/${workspaceId}/invites/${inviteId}/accept`);
-}
+};
 
-const postInvitationDeclineApi = async (workspaceId: number, inviteId: number) => {
+const postInvitationDeclineApi = async (
+  workspaceId: number,
+  inviteId: number
+) => {
   return api.post(`workspaces/${workspaceId}/invites/${inviteId}/decline`);
-}
+};
 
 const getProjectsBySpaceApi = async (spaceId: number) => {
   return api.get(`/projects/spaces/${spaceId}`);
@@ -172,9 +176,9 @@ const getOneTaskApi = async (taskId: number) => {
   return api.get(`/tasks/${taskId}`);
 };
 
-const getTasksByAssigneeApi = async() => {
+const getTasksByAssigneeApi = async () => {
   return api.get(`/tasks/assignee`);
-}
+};
 
 const putOneTaskApi = async (taskId: number, data: TaskUpdateRequestType) => {
   return api.put(`/tasks/${taskId}/edit`, data);
@@ -204,17 +208,24 @@ const createSpaceApi = async (workspaceId: number, data: SpaceRequestType) => {
   return api.post(`/workspace/${workspaceId}/spaces/create`, data);
 };
 
-const createSpaceMemberApi = async (workspaceId: number, spaceId: number, data: AddMemberRequestType) => {
+const createSpaceMemberApi = async (
+  workspaceId: number,
+  spaceId: number,
+  data: AddMemberRequestType
+) => {
   return api.post(`/workspaces/${workspaceId}/spaces/${spaceId}/members`, data);
-}
+};
 
 const createProjectApi = async (data: ProjectRequestType) => {
   return api.post(`/projects/create`, data);
 };
 
-const createProjectMemberApi = async (projectId: number, data: AddMemberRequestType) => {
+const createProjectMemberApi = async (
+  projectId: number,
+  data: AddMemberRequestType
+) => {
   return api.post(`/projects/${projectId}/members`, data);
-}
+};
 
 const createTaskApi = async (data: TaskRequestType) => {
   return api.post(`/tasks/create`, data);
