@@ -174,20 +174,17 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
       const total = projectResults.length;
 
       if (failed === 0) {
-        toast.success("권한부여에 성공했습니다. (워크스페이스 + 프로젝트)");
+        toast.success("권한부여에 성공했습니다");
       } else if (failed < total) {
         toast.success(
           `일부 프로젝트에만 권한 부여가 완료되었습니다. (${
             total - failed
           }/${total})`
         );
-      } else {
-        toast.error("프로젝트 권한 부여에 실패했습니다. (워크스페이스만 완료)");
       }
     } catch (err) {
       // If workspace creation fails, we shouldn’t proceed or claim success
       console.error(err);
-      toast.error("권한 부여 중 오류가 발생했습니다.");
     }
   };
 
