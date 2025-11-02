@@ -8,11 +8,11 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import {
   RequestRoleType,
   RoleProjectType,
-  UsersInfoType,  
+  UsersInfoType,
 } from "../../types/type";
 import {
   createProjectMemberApi,
-  createSpaceMemberApi,  
+  createSpaceMemberApi,
   getProjectsBySpaceApi,
   getWorkspaceMembersApi,
 } from "../../api/sehomanagerapi";
@@ -60,7 +60,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
   const [projects, setProjects] = useState<ProjectLite[]>([]);
   const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
     getWorkspaceMembersApi(Number(workspaceId))
       .then((res) => {
         console.log(res);

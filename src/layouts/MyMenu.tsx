@@ -16,9 +16,8 @@ import { useLogin } from "../context/LoginContext";
 const Panel = styled.aside<{ $open: boolean }>`
   min-width: ${({ $open }) => ($open ? 240 : 64)}px;
   padding: 8px;
-  height: calc(100vh - 150px);
-  box-sizing: border-box;
-  position: relative;
+  height: calc(100vh + 80px);
+  box-sizing: border-box;  
 `;
 
 export default function SidebarMenu({
@@ -147,12 +146,33 @@ export default function SidebarMenu({
 }
 
 const LoginMenuItem = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: 0 20px;
+  padding: 10px 20px;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  background: #fafafa;
+  border-top: 1px solid #eee;
+  box-sizing: border-box;
+
+  span {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;    
+
+    &:hover {
+      background-color: #f0f0f0;
+      color: #007aff;      
+    }
+
+    &:active {
+      background-color: #e6e6e6;
+      transform: scale(0.98);
+    }
+  }
 `;
+
