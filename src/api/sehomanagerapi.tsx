@@ -48,7 +48,7 @@ api.interceptors.response.use(
     }
     // 그 외의 에러도 같이 로깅
     if (error.message) {
-      toast.error(error.message);
+      console.error(error.message);
     }
     console.error("⚠️ Axios Error:", error);
     return Promise.reject(error);
