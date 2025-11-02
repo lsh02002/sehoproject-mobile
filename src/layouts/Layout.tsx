@@ -246,7 +246,7 @@ const CloseX = styled.button`
 const Nav = styled.nav`
   padding: 8px;
   overflow-y: scroll;
-  height: calc(100% - 150px);
+  height: 100%;
   ul {
     list-style: none;
     padding: 0;
