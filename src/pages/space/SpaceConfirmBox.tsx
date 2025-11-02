@@ -181,7 +181,9 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
       }
 
       toast.success("권한부여에 성공했습니다.");
-    } catch (err) {}
+    } catch (err) {
+      toast.error("권한부여에 실패했습니다.");
+    }
   };
 
   const handleClickSave: React.MouseEventHandler<HTMLButtonElement> = async (
