@@ -134,7 +134,7 @@ const SprintCalendarPage = () => {
     >
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <GiSprint />
-        <h3>스프린트 생성</h3>
+        <h3>스프린트 달력</h3>
       </div>
       {/* 상단 커스텀 헤더 */}
       <div
