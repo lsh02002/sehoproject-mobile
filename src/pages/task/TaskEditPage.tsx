@@ -20,6 +20,7 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import {
   Container,
+  PageIconAndNameWrapper,
   Title,
   Wrapper,
 } from "../../components/pages-style/PageStyle";
@@ -176,10 +177,7 @@ const TaskEditPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <MdAddTask />
-            <h3>태스크 수정</h3>
-          </div>
+          <PageIconAndNameWrapper icon={<MdAddTask />} name="태스크 수정" />
         </Title>
         <TwoDiv>
           <TextInput

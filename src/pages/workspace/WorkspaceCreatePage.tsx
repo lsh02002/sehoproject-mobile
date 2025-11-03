@@ -6,6 +6,7 @@ import { WorkspaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 import {
   Container,
+  PageIconAndNameWrapper,
   Title,
   Wrapper,
 } from "../../components/pages-style/PageStyle";
@@ -37,10 +38,10 @@ const WorkspaceCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <MdWorkspaces />
-            <h3>워크스페이스 생성</h3>
-          </div>
+          <PageIconAndNameWrapper
+            icon={<MdWorkspaces />}
+            name="워크스페이스 수정"
+          />
         </Title>
         <TextInput
           name="name"

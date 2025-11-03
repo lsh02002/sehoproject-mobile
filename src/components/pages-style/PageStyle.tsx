@@ -32,6 +32,21 @@ export const Title = styled.div`
   }
 `;
 
+export const PageIconAndNameWrapper = ({
+  icon,
+  name,
+}: {
+  icon: React.ReactNode;
+  name: string;
+}) => {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      {icon}
+      <h3>{name}</h3>
+    </div>
+  );
+};
+
 export const TabH3 = styled.h3<{ $active?: boolean }>`
   position: relative;
   margin: 0;

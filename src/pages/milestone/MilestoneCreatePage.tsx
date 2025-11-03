@@ -14,6 +14,7 @@ import SelectInput, { Option } from "../../components/form/SelectInput";
 import { useParams } from "react-router-dom";
 import {
   Container,
+  PageIconAndNameWrapper,
   Title,
   Wrapper,
 } from "../../components/pages-style/PageStyle";
@@ -92,10 +93,7 @@ const MilestoneCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <LuMilestone />
-            <h3>마일스톤 생성</h3>
-          </div>
+          <PageIconAndNameWrapper icon={<LuMilestone />} name="마일스톤 생성" />
         </Title>
         <TextInput
           name="projectId"

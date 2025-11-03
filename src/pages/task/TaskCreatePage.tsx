@@ -20,6 +20,7 @@ import DateInput from "../../components/form/DateInput";
 import { toast } from "react-toastify";
 import {
   Container,
+  PageIconAndNameWrapper,
   Title,
   Wrapper,
 } from "../../components/pages-style/PageStyle";
@@ -147,10 +148,7 @@ const TaskCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <MdAddTask />
-            <h3>태스크 생성</h3>
-          </div>
+          <PageIconAndNameWrapper icon={<MdAddTask />} name="태스크 생성" />
         </Title>
         <TextInput
           name="projectId"

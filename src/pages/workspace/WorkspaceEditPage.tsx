@@ -10,6 +10,7 @@ import {
 } from "../../api/sehomanagerapi";
 import {
   Container,
+  PageIconAndNameWrapper,
   TabH3,
   Title,
   Wrapper,
@@ -60,10 +61,10 @@ const WorkspaceEditPage = () => {
               if (e.key === "Enter" || e.key === " ") setCurrentTab("info");
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <MdWorkspaces />
-              워크스페이스 정보
-            </div>
+            <PageIconAndNameWrapper
+              icon={<MdWorkspaces />}
+              name="워크스페이스 정보"
+            />
           </TabH3>
           <TabH3
             role="tab"

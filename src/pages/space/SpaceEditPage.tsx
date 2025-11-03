@@ -10,6 +10,7 @@ import { SpaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 import {
   Container,
+  PageIconAndNameWrapper,
   TabH3,
   Title,
   Wrapper,
@@ -75,10 +76,10 @@ const SpaceEditPage = () => {
               if (e.key === "Enter" || e.key === " ") setCurrentTab("info");
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <FaSpaceAwesome />
-              스페이스 정보
-            </div>
+            <PageIconAndNameWrapper
+              icon={<FaSpaceAwesome />}
+              name="스페이스 정보"
+            />
           </TabH3>
           <TabH3
             role="tab"

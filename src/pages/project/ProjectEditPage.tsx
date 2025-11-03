@@ -10,6 +10,7 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import {
   Container,
+  PageIconAndNameWrapper,
   Title,
   Wrapper,
 } from "../../components/pages-style/PageStyle";
@@ -116,10 +117,10 @@ const ProjectEditPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <SiPolymerproject />
-            <h3>프로젝트 수정</h3>
-          </div>
+          <PageIconAndNameWrapper
+            icon={<SiPolymerproject />}
+            name="프로젝트 수정"
+          />
         </Title>
         <TwoDiv>
           <TextInput

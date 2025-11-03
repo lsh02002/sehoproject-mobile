@@ -15,6 +15,7 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import {
   Container,
+  PageIconAndNameWrapper,
   Title,
   Wrapper,
 } from "../../components/pages-style/PageStyle";
@@ -113,10 +114,7 @@ const MilestoneEditPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <LuMilestone />
-            <h3>마일스톤 수정</h3>
-          </div>
+          <PageIconAndNameWrapper icon={<LuMilestone />} name="마일스톤 수정" />
         </Title>
         <TwoDiv>
           <TextInput

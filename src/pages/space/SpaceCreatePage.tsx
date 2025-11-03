@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Container,
+  PageIconAndNameWrapper,
   Title,
   Wrapper,
 } from "../../components/pages-style/PageStyle";
@@ -39,10 +40,10 @@ const SpaceCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <FaSpaceAwesome />
-            <h3>스페이스 생성</h3>
-          </div>
+          <PageIconAndNameWrapper
+            icon={<FaSpaceAwesome />}
+            name="스페이스 생성"
+          />
         </Title>
         <TextInput
           name="name"

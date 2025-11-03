@@ -14,6 +14,7 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import {
   Container,
+  PageIconAndNameWrapper,
   Title,
   Wrapper,
 } from "../../components/pages-style/PageStyle";
@@ -91,10 +92,7 @@ const SprintCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <GiSprint />
-            <h3>스프린트 생성</h3>
-          </div>
+          <PageIconAndNameWrapper icon={<GiSprint />} name="스프린트 생성" />
         </Title>
         <TwoDiv>
           <TextInput
