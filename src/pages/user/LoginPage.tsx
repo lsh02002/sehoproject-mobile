@@ -6,13 +6,14 @@ import { UserLoginApi } from "../../api/sehomanagerapi";
 import TextInput from "../../components/form/TextInput";
 import PasswordInput from "../../components/form/PasswordInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
+import { SlLogin } from "react-icons/sl";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { setIsLogin } = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const OnLoginSubmit = () => {
     UserLoginApi(email, password)
       .then((res) => {
@@ -32,7 +33,9 @@ const LoginPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>로그인</h3>
+          <h3>
+            <SlLogin /> 로그인
+          </h3>
           <Link
             style={{ color: "#4680ff", textDecoration: "none" }}
             to="/register"
@@ -51,7 +54,7 @@ const LoginPage = () => {
           title="비밀 번호"
           data={password}
           setData={setPassword}
-        />        
+        />
         <ConfirmButton title="로그인" onClick={OnLoginSubmit} />
       </Wrapper>
     </Container>

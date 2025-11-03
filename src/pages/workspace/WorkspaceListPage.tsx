@@ -3,6 +3,7 @@ import { WorkspaceResponseType } from "../../types/type";
 import { getWorkspacesApi } from "../../api/sehomanagerapi";
 import WorkspaceCard from "../../components/card/WorkspaceCard";
 import ListLayout from "../../layouts/ListLayout";
+import { MdWorkspaces } from "react-icons/md";
 
 const WorkspaceListPage = () => {
   const [workspaces, setWorkspaces] = useState<WorkspaceResponseType[] | null>(
@@ -25,7 +26,11 @@ const WorkspaceListPage = () => {
   }, []);
 
   return (
-    <ListLayout title="워크스페이스" to={`/settings/workspaces/create`}>
+    <ListLayout
+      title="워크스페이스"
+      to={`/settings/workspaces/create`}
+      icon={<MdWorkspaces />}
+    >
       {!isLoading && workspaces?.length === 0 ? (
         <div>해당 스페이스가 존재하지 않습니다.</div>
       ) : (

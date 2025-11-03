@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getSprintsByProjectApi } from "../../api/sehomanagerapi";
 import ListLayout from "../../layouts/ListLayout";
 import SprintCard from "../../components/card/SprintCard";
+import { GiSprint } from "react-icons/gi";
 
 const SprintListPage = () => {
   const { projectId } = useParams();
@@ -25,7 +26,7 @@ const SprintListPage = () => {
   }, [projectId]);
 
   return (
-    <ListLayout title="스프린트" to={`/sprints/projects/${projectId}/create`}>      
+    <ListLayout title="스프린트" to={`/sprints/projects/${projectId}/create`} icon={<GiSprint />}>      
       {!isLoading && sprints?.length === 0 ? (
         <div>해당 스프린트가 존재하지 않습니다.</div>
       ) : (

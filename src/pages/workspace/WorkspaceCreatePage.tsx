@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import TextInput from "../../components/form/TextInput";
-import {
-    createWorkspaceApi,  
-} from "../../api/sehomanagerapi";
+import { createWorkspaceApi } from "../../api/sehomanagerapi";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { WorkspaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { MdWorkspaces } from "react-icons/md";
 
-const WorkspaceCreatePage = () => {  
+const WorkspaceCreatePage = () => {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
 
-  const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {    
+  const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
     const data: WorkspaceRequestType = {
@@ -34,7 +37,10 @@ const WorkspaceCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>워크스페이스 생성</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <MdWorkspaces />
+            <h3>워크스페이스 생성</h3>
+          </div>
         </Title>
         <TextInput
           name="name"

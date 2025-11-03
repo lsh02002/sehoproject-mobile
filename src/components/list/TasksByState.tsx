@@ -6,18 +6,20 @@ import TaskCard from "../card/TaskCard";
 const TasksByState = ({
   title,
   tasksByState,
+  icon,
 }: {
   title: string;
   tasksByState: TaskResponseType[];
+  icon?: React.ReactNode;
 }) => {
   return (
-    <ListLayout title={title}>
-      {tasksByState?.length === 0 ? (
-        <div>해당 태스크가 존재하지 않습니다.</div>
-      ) : (
-        tasksByState?.map((task) => <TaskCard key={task.id} task={task} />)
-      )}
-    </ListLayout>
+      <ListLayout title={title} icon={icon}>
+        {tasksByState?.length === 0 ? (
+          <div>해당 태스크가 존재하지 않습니다.</div>
+        ) : (
+          tasksByState?.map((task) => <TaskCard key={task.id} task={task} />)
+        )}
+      </ListLayout>
   );
 };
 

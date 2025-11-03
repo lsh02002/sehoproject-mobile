@@ -13,6 +13,7 @@ import koLocale from "@fullcalendar/core/locales/ko";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Mousewheel } from "swiper/modules";
 import "swiper/css";
+import { GiSprint } from "react-icons/gi";
 
 const addDaysISO = (iso: string, days: number) => {
   const dt = new Date(iso);
@@ -34,8 +35,18 @@ const ymKey = (d: Date) => `${d.getFullYear()}-${d.getMonth() + 1}`;
 
 // 🎨 색상 팔레트 + 해시
 const PALETTE = [
-  "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899",
-  "#14b8a6", "#f97316", "#6366f1", "#22c55e", "#eab308", "#dc2626",
+  "#3b82f6",
+  "#10b981",
+  "#f59e0b",
+  "#ef4444",
+  "#8b5cf6",
+  "#ec4899",
+  "#14b8a6",
+  "#f97316",
+  "#6366f1",
+  "#22c55e",
+  "#eab308",
+  "#dc2626",
 ];
 
 const hashString = (s: string | number) => {
@@ -117,16 +128,25 @@ const SprintCalendarPage = () => {
   };
 
   return (
-    <div className="sprint-page" style={{padding: "20px", boxSizing: "border-box"}}>
+    <div
+      className="sprint-page"
+      style={{ padding: "20px", boxSizing: "border-box" }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <GiSprint />
+        <h3>스프린트 생성</h3>
+      </div>
       {/* 상단 커스텀 헤더 */}
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}
+      >
         <h2 style={{ margin: 0 }}>{formatYM(currMonth)}</h2>
       </div>
 
       <div style={{ height: 720 }}>
         <Swiper
           modules={[A11y, Mousewheel]}
-          initialSlide={1}                 // 0: 이전, 1: 현재, 2: 다음
+          initialSlide={1} // 0: 이전, 1: 현재, 2: 다음
           onSlideChange={handleSlideChange}
           onTransitionEnd={handleTransitionEnd}
           mousewheel={{ forceToAxis: true }}
@@ -140,7 +160,7 @@ const SprintCalendarPage = () => {
           {/* 이전 달 */}
           <SwiperSlide>
             <FullCalendar
-              key={`prev-${ymKey(prevMonth)}`}   // 🔑 리마운트 트리거
+              key={`prev-${ymKey(prevMonth)}`} // 🔑 리마운트 트리거
               height={"700px"}
               initialView="dayGridMonth"
               initialDate={prevMonth}
@@ -154,7 +174,7 @@ const SprintCalendarPage = () => {
           {/* 현재 달 */}
           <SwiperSlide>
             <FullCalendar
-              key={`curr-${ymKey(currMonth)}`}   // 🔑 리마운트 트리거
+              key={`curr-${ymKey(currMonth)}`} // 🔑 리마운트 트리거
               height={"700px"}
               initialView="dayGridMonth"
               initialDate={currMonth}
@@ -168,7 +188,7 @@ const SprintCalendarPage = () => {
           {/* 다음 달 */}
           <SwiperSlide>
             <FullCalendar
-              key={`next-${ymKey(nextMonth)}`}   // 🔑 리마운트 트리거
+              key={`next-${ymKey(nextMonth)}`} // 🔑 리마운트 트리거
               height={"700px"}
               initialView="dayGridMonth"
               initialDate={nextMonth}

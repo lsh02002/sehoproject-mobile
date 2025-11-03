@@ -11,6 +11,7 @@ import {
   NameField,
   SlugField,
 } from "./field/Field";
+import { SiPolymerproject } from "react-icons/si";
 
 const ProjectCard = ({ project }: { project: ProjectResponseType }) => {
   const navigate = useNavigate();
@@ -20,7 +21,10 @@ const ProjectCard = ({ project }: { project: ProjectResponseType }) => {
       <CardWrapper>
         <InfoBoxField>
           <IdField>{project.projectKey}</IdField>
-          <NameField>{project.name}</NameField>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <SiPolymerproject />
+            <NameField>{project.name}</NameField>
+          </div>
           <SlugField>
             {project.spaceName} • {project.status}
           </SlugField>

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import {
   createSprintApi,
-  getTasksByProjectApi,  
+  getTasksByProjectApi,
 } from "../../api/sehomanagerapi";
 import { SprintRequestType, TaskResponseType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
@@ -12,7 +12,12 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { GiSprint } from "react-icons/gi";
 
 const SprintCreatePage = () => {
   const { projectIdParam } = useParams();
@@ -27,7 +32,7 @@ const SprintCreatePage = () => {
   const sprintStateOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
     { label: "ACTIVE", value: "ACTIVE" },
-    { label: "CLOSED", value: "CLOSED" },    
+    { label: "CLOSED", value: "CLOSED" },
   ];
 
   useEffect(() => {
@@ -86,7 +91,10 @@ const SprintCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>스프린트 생성</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <GiSprint />
+            <h3>스프린트 생성</h3>
+          </div>
         </Title>
         <TwoDiv>
           <TextInput
@@ -136,4 +144,3 @@ const SprintCreatePage = () => {
 };
 
 export default SprintCreatePage;
-

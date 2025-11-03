@@ -12,7 +12,12 @@ import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { useParams } from "react-router-dom";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { LuMilestone } from "react-icons/lu";
 
 const MilestoneCreatePage = () => {
   const { projectIdParam } = useParams();
@@ -87,7 +92,10 @@ const MilestoneCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>마일스톤 생성</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <LuMilestone />
+            <h3>마일스톤 생성</h3>
+          </div>
         </Title>
         <TextInput
           name="projectId"

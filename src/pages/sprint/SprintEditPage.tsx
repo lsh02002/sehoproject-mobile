@@ -13,7 +13,12 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { GiSprint } from "react-icons/gi";
 
 const SprintEditPage = () => {
   const { sprintId } = useParams();
@@ -29,9 +34,8 @@ const SprintEditPage = () => {
   const sprintStateOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
     { label: "ACTIVE", value: "ACTIVE" },
-    { label: "CLOSED", value: "CLOSED" },    
+    { label: "CLOSED", value: "CLOSED" },
   ];
-
 
   useEffect(() => {
     getOneSprintApi(Number(sprintId))
@@ -105,7 +109,10 @@ const SprintEditPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>스프린트 수정</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <GiSprint />
+            <h3>스프린트 수정</h3>
+          </div>
         </Title>
         <TwoDiv>
           <TextInput
@@ -162,4 +169,3 @@ const SprintEditPage = () => {
 };
 
 export default SprintEditPage;
-

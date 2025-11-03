@@ -6,6 +6,7 @@ import { UserSignupType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
 import PasswordInput from "../../components/form/PasswordInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
+import { FaRegistered } from "react-icons/fa6";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,9 @@ const SignupPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>회원가입</h3>
+          <h3>
+            <FaRegistered /> 회원가입
+          </h3>
           <Link
             style={{ color: "#4680ff", textDecoration: "none" }}
             to="/login"

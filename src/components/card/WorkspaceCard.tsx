@@ -13,6 +13,7 @@ import {
 import styled from "styled-components";
 import { WorkspaceResponseType } from "../../types/type";
 import { TwoDiv } from "../form/TwoDiv";
+import { MdWorkspaces } from "react-icons/md";
 
 const WorkspaceCard = ({ workspace }: { workspace: WorkspaceResponseType }) => {
   const navigate = useNavigate();
@@ -29,8 +30,10 @@ const WorkspaceCard = ({ workspace }: { workspace: WorkspaceResponseType }) => {
             <IdField>#{workspace.id}</IdField>
             {isCurrent && <CurrentBadge>현재 워크스페이스</CurrentBadge>}
           </TwoDiv>
-
-          <NameField>{workspace.name}</NameField>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <MdWorkspaces />
+            <NameField>{workspace.name}</NameField>
+          </div>
           <SlugField>{workspace.slug}</SlugField>
         </InfoBoxField>
 

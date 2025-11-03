@@ -1,10 +1,10 @@
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
-import {  
-    getOneMilestoneApi,
+import {
+  getOneMilestoneApi,
   getTasksByProjectApi,
-  putOneMilestoneApi,  
+  putOneMilestoneApi,
 } from "../../api/sehomanagerapi";
 import { MilestoneRequestType, TaskResponseType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
@@ -13,7 +13,12 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { LuMilestone } from "react-icons/lu";
 
 const MilestoneEditPage = () => {
   const { milestoneId } = useParams();
@@ -50,7 +55,7 @@ const MilestoneEditPage = () => {
       })
       .catch((err) => {
         console.error(err);
-      })
+      });
   }, [milestoneId]);
 
   useEffect(() => {
@@ -104,11 +109,14 @@ const MilestoneEditPage = () => {
       });
   };
 
-  return (    
+  return (
     <Container>
       <Wrapper>
         <Title>
-          <h3>마일스톤 수정</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <LuMilestone />
+            <h3>마일스톤 수정</h3>
+          </div>
         </Title>
         <TwoDiv>
           <TextInput

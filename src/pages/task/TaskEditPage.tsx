@@ -18,7 +18,12 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { MdAddTask } from "react-icons/md";
 
 const TaskEditPage = () => {
   const { taskId } = useParams();
@@ -171,7 +176,10 @@ const TaskEditPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>태스크 수정</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <MdAddTask />
+            <h3>태스크 수정</h3>
+          </div>
         </Title>
         <TwoDiv>
           <TextInput
@@ -271,4 +279,3 @@ const TaskEditPage = () => {
 };
 
 export default TaskEditPage;
-

@@ -16,6 +16,7 @@ import {
 } from "../../components/pages-style/PageStyle";
 import { Section } from "../settings/SettingsLayout";
 import SpaceMemberPage from "./SpaceConfirmBox";
+import { FaSpaceAwesome } from "react-icons/fa6";
 
 type TabKey = "info" | "members";
 
@@ -74,7 +75,10 @@ const SpaceEditPage = () => {
               if (e.key === "Enter" || e.key === " ") setCurrentTab("info");
             }}
           >
-            스페이스 정보
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <FaSpaceAwesome />
+              스페이스 정보
+            </div>
           </TabH3>
           <TabH3
             role="tab"
@@ -116,7 +120,7 @@ const SpaceEditPage = () => {
           <Section aria-labelledby="tab-members">
             <SpaceMemberPage
               workspaceId={Number(workspaceId)}
-              spaceId={Number(spaceId)}              
+              spaceId={Number(spaceId)}
             />
           </Section>
         )}

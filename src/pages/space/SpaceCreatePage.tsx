@@ -1,25 +1,28 @@
 import React, { useState } from "react";
 import TextInput from "../../components/form/TextInput";
-import {
-    createSpaceApi,
-} from "../../api/sehomanagerapi";
+import { createSpaceApi } from "../../api/sehomanagerapi";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { SpaceRequestType } from "../../types/type";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { FaSpaceAwesome } from "react-icons/fa6";
 
 const SpaceCreatePage = () => {
-    const { workspaceId } = useParams();
+  const { workspaceId } = useParams();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
 
-  const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {    
+  const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
     const data: SpaceRequestType = {
       name,
-      slug,      
+      slug,
     };
 
     createSpaceApi(Number(workspaceId), data)
@@ -36,7 +39,10 @@ const SpaceCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>스페이스 생성</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <FaSpaceAwesome />
+            <h3>스페이스 생성</h3>
+          </div>
         </Title>
         <TextInput
           name="name"
@@ -52,4 +58,3 @@ const SpaceCreatePage = () => {
 };
 
 export default SpaceCreatePage;
-

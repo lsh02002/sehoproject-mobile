@@ -10,6 +10,8 @@ import {
   NameField,
   CardWrapper,
 } from "./field/Field";
+import { SiGoogletasks } from "react-icons/si";
+import { GrInProgress } from "react-icons/gr";
 
 const TaskCard = ({ task }: { task: TaskResponseType }) => {
   const navigate = useNavigate();
@@ -19,18 +21,25 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{task.id}</IdField>
-          <NameField>{task.name}</NameField>
-
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {task.state === "TODO" && <SiGoogletasks />}
+            {task.state === "IN_PROGRESS" && <GrInProgress />}
+            <NameField>{" "}{task.name}</NameField>
+          </div>
           {/* 상태 */}
           {task.state && (
-            <div style={{ color: "gray", fontSize: "0.9rem", marginTop: "4px" }}>
+            <div
+              style={{ color: "gray", fontSize: "0.9rem", marginTop: "4px" }}
+            >
               상태: {task.state}
             </div>
           )}
 
           {/* 마감일 */}
           {task.dueDate && (
-            <div style={{ color: "gray", fontSize: "0.9rem", marginTop: "2px" }}>
+            <div
+              style={{ color: "gray", fontSize: "0.9rem", marginTop: "2px" }}
+            >
               마감일: {new Date(task.dueDate).toLocaleDateString()}
             </div>
           )}

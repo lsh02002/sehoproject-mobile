@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { TaskResponseType } from "../../../types/type";
 import { getTasksByAssigneeApi } from "../../../api/sehomanagerapi";
 import TasksByState from "../../../components/list/TasksByState";
+import { GrInProgress } from "react-icons/gr";
+import { MdAddTask } from "react-icons/md";
 
 const TaskByAssigneePage = () => {
   const [myTasks, setMyTasks] = useState<TaskResponseType[] | null>([]);
@@ -30,10 +32,11 @@ const TaskByAssigneePage = () => {
     <>
       {!isLoading && (
         <>
-          <TasksByState title="TODO" tasksByState={todoTasks ?? []} />
+          <TasksByState title="TODO" tasksByState={todoTasks ?? []} icon={<MdAddTask />} />
           <TasksByState
             title="IN_PROGRESS"
             tasksByState={inProgressTasks ?? []}
+            icon={<GrInProgress />}
           />
         </>
       )}

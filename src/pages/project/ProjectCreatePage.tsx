@@ -7,7 +7,12 @@ import TextInput from "../../components/form/TextInput";
 import DateInput from "../../components/form/DateInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { SiPolymerproject } from "react-icons/si";
 
 const ProjectCreatePage = () => {
   const { spaceIdParam } = useParams();
@@ -42,7 +47,10 @@ const ProjectCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>프로젝트 생성</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <SiPolymerproject />
+            <h3>프로젝트 생성</h3>
+          </div>
         </Title>
         <TwoDiv>
           <TextInput

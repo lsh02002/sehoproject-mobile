@@ -4,7 +4,7 @@ import {
   AssigneeRequestType,
   AssignInfoType,
   TagResponseType,
-  TaskRequestType,  
+  TaskRequestType,
 } from "../../types/type";
 import {
   createTaskApi,
@@ -18,7 +18,12 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import DateInput from "../../components/form/DateInput";
 import { toast } from "react-toastify";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { MdAddTask } from "react-icons/md";
 
 const TaskCreatePage = () => {
   const { projectIdParam } = useParams();
@@ -142,7 +147,10 @@ const TaskCreatePage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>태스크 생성</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <MdAddTask />
+            <h3>태스크 생성</h3>
+          </div>
         </Title>
         <TextInput
           name="projectId"
@@ -217,4 +225,3 @@ const TaskCreatePage = () => {
 };
 
 export default TaskCreatePage;
-

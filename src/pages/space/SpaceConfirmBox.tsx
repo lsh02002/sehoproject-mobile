@@ -164,7 +164,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
       // Toast logic
       if (!projectResults) {
         // Only workspace invite was attempted
-        toast.success("권한부여에 성공했습니다. (워크스페이스)");
+        toast.success("권한부여에 성공했습니다.");
         return;
       }
 
@@ -174,7 +174,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
       const total = projectResults.length;
 
       if (failed === 0) {
-        toast.success("권한부여에 성공했습니다");
+        toast.success("권한부여에 성공했습니다.");
       } else if (failed < total) {
         toast.success(
           `일부 프로젝트에만 권한 부여가 완료되었습니다. (${

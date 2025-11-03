@@ -4,6 +4,7 @@ import { SpaceResponseType } from "../../types/type";
 import { getSpacesByWorkspaceApi } from "../../api/sehomanagerapi";
 import SpaceCard from "../../components/card/SpaceCard";
 import ListLayout from "../../layouts/ListLayout";
+import { FaSpaceAwesome } from "react-icons/fa6";
 
 const SpaceListPage = () => {
   const { workspaceId } = useParams();
@@ -28,6 +29,7 @@ const SpaceListPage = () => {
     <ListLayout
       title="스페이스"
       to={`/settings/workspace/${workspaceId}/spaces/create`}
+      icon={<FaSpaceAwesome />}
     >      
       {!isLoading && spaces?.length === 0 ? (
         <div>프로젝트가 존재하지 않습니다.</div>

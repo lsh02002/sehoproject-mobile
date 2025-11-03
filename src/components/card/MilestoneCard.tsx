@@ -10,12 +10,9 @@ import {
   InfoBoxField,
   NameField,
 } from "./field/Field";
+import { LuMilestone } from "react-icons/lu";
 
-const MilestoneCard = ({
-  milestone,
-}: {
-  milestone: MilestoneResponseType;
-}) => {
+const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {
   const navigate = useNavigate();
 
   return (
@@ -23,8 +20,10 @@ const MilestoneCard = ({
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{milestone.id}</IdField>
-          <NameField>{milestone.name}</NameField>
-
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <LuMilestone />
+            <NameField>{milestone.name}</NameField>
+          </div>
           {milestone.status && (
             <div style={{ color: "gray", fontSize: "0.9rem" }}>
               상태: {milestone.status}

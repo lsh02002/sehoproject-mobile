@@ -8,7 +8,12 @@ import DateInput from "../../components/form/DateInput";
 import { CompleteArrayInput } from "../../components/form/CompleteArrayInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
-import { Container, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  Container,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
+import { SiPolymerproject } from "react-icons/si";
 
 const ProjectEditPage = () => {
   const { projectId } = useParams();
@@ -111,7 +116,10 @@ const ProjectEditPage = () => {
     <Container>
       <Wrapper>
         <Title>
-          <h3>프로젝트 수정</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <SiPolymerproject />
+            <h3>프로젝트 수정</h3>
+          </div>
         </Title>
         <TwoDiv>
           <TextInput
@@ -179,4 +187,3 @@ const ProjectEditPage = () => {
 };
 
 export default ProjectEditPage;
-

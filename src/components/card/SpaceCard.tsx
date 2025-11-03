@@ -11,16 +11,26 @@ import {
   SlugField,
   CardWrapper,
 } from "./field/Field";
+import { FaSpaceAwesome } from "react-icons/fa6";
 
 const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
   const navigate = useNavigate();
 
   return (
-    <CardContainer onClick={() => navigate(`/settings/workspace/${space.workspaceId}/spaces/${space.id}/edit`)}>
+    <CardContainer
+      onClick={() =>
+        navigate(
+          `/settings/workspace/${space.workspaceId}/spaces/${space.id}/edit`
+        )
+      }
+    >
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{space.id}</IdField>
-          <NameField>{space.name}</NameField>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <FaSpaceAwesome />
+            <NameField>{space.name}</NameField>
+          </div>
           {space.slug && <SlugField>{space.slug}</SlugField>}
           <SlugField>워크스페이스 ID: {space.workspaceId}</SlugField>
         </InfoBoxField>
@@ -30,7 +40,9 @@ const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
             onClick={(e) => {
               e.stopPropagation();
               // 편집 페이지 경로가 다르면 아래 라우트만 맞춰주세요.
-              navigate(`/settings/workspace/${space.workspaceId}/spaces/${space.id}/edit`);
+              navigate(
+                `/settings/workspace/${space.workspaceId}/spaces/${space.id}/edit`
+              );
             }}
           >
             EDIT

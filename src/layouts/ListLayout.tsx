@@ -12,6 +12,7 @@ type ListLayoutProps = {
   isEmpty?: boolean; // 빈 상태 여부
   emptyMessage?: string; // 빈 상태 메시지
   children: React.ReactNode;
+  icon?: React.ReactNode;
 };
 
 const ListLayout = ({
@@ -24,6 +25,7 @@ const ListLayout = ({
   isEmpty,
   emptyMessage = "표시할 항목이 없습니다.",
   children,
+  icon,
 }: ListLayoutProps) => {
   const hasCreate = Boolean(to);
 
@@ -35,6 +37,7 @@ const ListLayout = ({
             <TitleBlock>
               {title && (
                 <TitleRow>
+                  {icon}
                   <Title>{title}</Title>
                   {typeof count === "number" && (
                     <CountBadge>{count}</CountBadge>

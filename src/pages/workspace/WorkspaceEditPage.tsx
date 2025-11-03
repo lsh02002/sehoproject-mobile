@@ -4,17 +4,26 @@ import { toast } from "react-toastify";
 import TextInput from "../../components/form/TextInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { WorkspaceRequestType, WorkspaceResponseType } from "../../types/type";
-import { getOneWorkspaceApi, putOneWorkspaceApi } from "../../api/sehomanagerapi";
-import { Container, TabH3, Title, Wrapper } from "../../components/pages-style/PageStyle";
+import {
+  getOneWorkspaceApi,
+  putOneWorkspaceApi,
+} from "../../api/sehomanagerapi";
+import {
+  Container,
+  TabH3,
+  Title,
+  Wrapper,
+} from "../../components/pages-style/PageStyle";
 import { Section } from "../settings/SettingsLayout";
 import InviteBox from "./WorkspaceInviteBox";
+import { MdWorkspaces } from "react-icons/md";
 
 type TabKey = "info" | "members";
 
 const WorkspaceEditPage = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");  
+  const [slug, setSlug] = useState("");
   const [currentTab, setCurrentTab] = useState<TabKey>("info");
 
   useEffect(() => {
@@ -51,7 +60,10 @@ const WorkspaceEditPage = () => {
               if (e.key === "Enter" || e.key === " ") setCurrentTab("info");
             }}
           >
-            워크스페이스 정보
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <MdWorkspaces />
+              워크스페이스 정보
+            </div>
           </TabH3>
           <TabH3
             role="tab"
