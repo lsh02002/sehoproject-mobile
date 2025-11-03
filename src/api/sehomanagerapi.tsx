@@ -153,6 +153,10 @@ const putOneProjectApi = async (
   return api.put(`/projects/${projectId}/edit`, data);
 };
 
+const getProjectMembersApi = async (projectId: number) => {
+  return api.get(`/projects/${projectId}/members`);
+}
+
 const getMilestonesByProjectApi = async (projectId: number) => {
   return api.get(`/milestones/projects/${projectId}`);
 };
@@ -258,6 +262,7 @@ export {
   getProjectsBySpaceApi,
   getOneProjectApi,
   putOneProjectApi,
+  getProjectMembersApi,
   getUserInfosApi,
   getMilestonesByProjectApi,
   getOneMilestoneApi,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useLogin } from "../../context/LoginContext";
 import { Link, useNavigate } from "react-router-dom";
-import { UserLoginApi } from "../../api/sehomanagerapi";
+import { getWorkspacesApi, UserLoginApi } from "../../api/sehomanagerapi";
 import TextInput from "../../components/form/TextInput";
 import PasswordInput from "../../components/form/PasswordInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
@@ -22,6 +22,15 @@ const LoginPage = () => {
         localStorage.setItem("name", res.data.data.name);
         localStorage.setItem("accessToken", res.headers.accesstoken);
         localStorage.setItem("refreshToken", res.headers.refreshtoken);
+
+        getWorkspacesApi()
+          .then((res) => {
+            console.log(res);
+            localStorage.setItem("workspaceId", res.data[0].id);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
 
         setIsLogin(true);
         navigate("/");
