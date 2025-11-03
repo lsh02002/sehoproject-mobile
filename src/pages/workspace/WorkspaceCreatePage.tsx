@@ -40,7 +40,7 @@ const WorkspaceCreatePage = () => {
         <Title>
           <PageIconAndNameWrapper
             icon={<MdWorkspaces />}
-            name="워크스페이스 수정"
+            name="워크스페이스 생성"
           />
         </Title>
         <TextInput
