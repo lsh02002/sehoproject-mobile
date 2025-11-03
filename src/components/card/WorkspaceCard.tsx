@@ -4,11 +4,11 @@ import {
   CardContainer,
   CardWrapper,
   InfoBoxField,
-  IdField,
-  NameField,
+  IdField,  
   SlugField,
   ButtonsField,
   EditButtonField,
+  IconAndNameField,
 } from "./field/Field"; // styled 분리되어 있다면 해당 경로 유지
 import styled from "styled-components";
 import { WorkspaceResponseType } from "../../types/type";
@@ -30,13 +30,9 @@ const WorkspaceCard = ({ workspace }: { workspace: WorkspaceResponseType }) => {
             <IdField>#{workspace.id}</IdField>
             {isCurrent && <CurrentBadge>현재 워크스페이스</CurrentBadge>}
           </TwoDiv>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <MdWorkspaces />
-            <NameField>{workspace.name}</NameField>
-          </div>
+          <IconAndNameField icon={<MdWorkspaces />} name={workspace.name} />
           <SlugField>{workspace.slug}</SlugField>
         </InfoBoxField>
-
         <ButtonsField
           style={{
             justifyContent: "flex-end",

@@ -37,6 +37,21 @@ export const IdField = styled.div`
   }
 `;
 
+export const IconAndNameField = ({
+  icon,
+  name,
+}: {
+  icon: React.ReactNode;
+  name: string;
+}) => {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      {icon}
+      <NameField>{name}</NameField>
+    </div>
+  );
+};
+
 export const NameField = styled.div`
   font-size: 1rem;
   font-weight: 500;

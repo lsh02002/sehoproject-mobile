@@ -6,10 +6,10 @@ import {
   CardContainer,
   EditButtonField,
   IdField,
-  InfoBoxField,
-  NameField,
+  InfoBoxField,  
   SlugField,
   CardWrapper,
+  IconAndNameField,
 } from "./field/Field";
 import { FaSpaceAwesome } from "react-icons/fa6";
 
@@ -27,10 +27,7 @@ const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{space.id}</IdField>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <FaSpaceAwesome />
-            <NameField>{space.name}</NameField>
-          </div>
+          <IconAndNameField icon={<FaSpaceAwesome />} name={space.name} />
           {space.slug && <SlugField>{space.slug}</SlugField>}
           <SlugField>워크스페이스 ID: {space.workspaceId}</SlugField>
         </InfoBoxField>

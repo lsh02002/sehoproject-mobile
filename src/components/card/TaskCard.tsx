@@ -6,9 +6,9 @@ import {
   CardContainer,
   EditButtonField,
   IdField,
-  InfoBoxField,
-  NameField,
+  InfoBoxField,  
   CardWrapper,
+  IconAndNameField,
 } from "./field/Field";
 import { SiGoogletasks } from "react-icons/si";
 import { GrInProgress } from "react-icons/gr";
@@ -21,11 +21,16 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{task.id}</IdField>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            {task.state === "TODO" && <SiGoogletasks />}
-            {task.state === "IN_PROGRESS" && <GrInProgress />}
-            <NameField>{" "}{task.name}</NameField>
-          </div>
+          <IconAndNameField
+            icon={
+              task.state === "TODO" ? (
+                <SiGoogletasks />
+              ) : task.state === "IN_PROGRESS" ? (
+                <GrInProgress />
+              ) : null
+            }
+            name={task.name}
+          />
           {/* 상태 */}
           {task.state && (
             <div

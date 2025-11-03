@@ -6,9 +6,9 @@ import {
   CardContainer,
   CardWrapper,
   EditButtonField,
+  IconAndNameField,
   IdField,
-  InfoBoxField,
-  NameField,
+  InfoBoxField,  
   SlugField,
 } from "./field/Field";
 import { SiPolymerproject } from "react-icons/si";
@@ -21,10 +21,7 @@ const ProjectCard = ({ project }: { project: ProjectResponseType }) => {
       <CardWrapper>
         <InfoBoxField>
           <IdField>{project.projectKey}</IdField>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <SiPolymerproject />
-            <NameField>{project.name}</NameField>
-          </div>
+          <IconAndNameField icon={<SiPolymerproject />} name={project.name} />
           <SlugField>
             {project.spaceName} • {project.status}
           </SlugField>

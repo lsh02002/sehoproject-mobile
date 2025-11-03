@@ -6,9 +6,9 @@ import {
   CardContainer,
   EditButtonField,
   IdField,
-  InfoBoxField,
-  NameField,
+  InfoBoxField,  
   CardWrapper,
+  IconAndNameField,
 } from "./field/Field";
 import { GiSprint } from "react-icons/gi";
 
@@ -20,10 +20,7 @@ const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{sprint.id}</IdField>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <GiSprint />
-            <NameField>{sprint.name}</NameField>
-          </div>
+          <IconAndNameField icon={<GiSprint />} name={sprint.name} />
           {sprint.state && (
             <div style={{ color: "gray", fontSize: "0.9rem" }}>
               상태: {sprint.state}
