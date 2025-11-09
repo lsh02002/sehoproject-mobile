@@ -3,10 +3,10 @@ import { Dispatch, SetStateAction } from "react";
 import DatePicker from "react-datepicker";
 import styled, { createGlobalStyle } from "styled-components";
 
-// ✅ 달력 기본 스타일 임포트 (가장 중요)
+// 기본 CSS
 import "react-datepicker/dist/react-datepicker.css";
 
-// (선택) 한국어 로케일
+// 한국어 로케일
 import { registerLocale } from "react-datepicker";
 import { ko } from "date-fns/locale/ko";
 registerLocale("ko", ko);
@@ -20,7 +20,6 @@ interface DateInputProps {
 const DateInput = ({ title, selected, setSelected }: DateInputProps) => {
   return (
     <Container>
-      {/* 팝업 z-index, 기본 폰트 크기 등 글로벌 보정 */}
       <DatepickerGlobalFix />
 
       <label>{title}</label>
@@ -30,14 +29,19 @@ const DateInput = ({ title, selected, setSelected }: DateInputProps) => {
         selected={selected ?? null}
         onChange={(date: Date | null) => setSelected(date ?? undefined)}
         placeholderText="날짜를 선택하세요"
-        // ✅ 보통 달력 느낌 옵션들
         locale="ko"
         fixedHeight
-        showPopperArrow
         shouldCloseOnSelect
-        popperPlacement="bottom-start"
-        // (선택) 모바일에서 키보드 대신 달력만
-        // onFocus={(e) => e.target.blur()}
+
+        /* ✅ 부모 overflow를 넘어 body 위에서 뜨게 */
+        withPortal
+        portalId="app-datepicker-portal"
+
+        /* ✅ 타입 에러 없는 범위에서 배치만 지정 */
+        popperProps={{
+          placement: "bottom-start",
+          strategy: "fixed", // 부모의 overflow/transform 영향 최소화
+        }}
       />
     </Container>
   );
@@ -45,11 +49,15 @@ const DateInput = ({ title, selected, setSelected }: DateInputProps) => {
 
 export default DateInput;
 
+/* ===== 스타일 ===== */
+
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   margin: 10px 0;
+  height: 100%;
 
   label {
     width: 100%;
@@ -63,17 +71,17 @@ const Container = styled.div`
   .datePicker {
     width: 100%;
     padding: 0.7rem;
-    box-sizing: border-box;
-    border: none;
-    border-bottom: 1px solid lightgray;
-    font-size: 0.95rem;
-    outline: none;
+    box-sizing: border-box;    
+    border: 1px solid lightgray;
+    border-radius: 12px;
+    font-size: 0.95rem;    
     transition: border 0.2s ease-in-out;
     background-color: transparent;
+    width: auto;        
 
     &:hover,
     &:focus {
-      border-bottom: 1px solid #4680ff;
+      border: 1px solid #4680ff;
     }
 
     &::placeholder {
@@ -81,34 +89,18 @@ const Container = styled.div`
       font-style: italic;
     }
   }
-
-  @media (max-width: 640px) {
-    label {
-      font-size: 0.85rem;
-    }
-    input,
-    select,
-    textarea {
-      font-size: 16px;
-      padding: 12px;
-      min-height: 44px;
-    }
-  }
 `;
 
-// ✅ 달력 팝업이 모달/헤더 등에 가려지는 문제 해결 + 기본 look 정돈
+/* 팝업이 다른 요소에 가려지지 않게 + 기본 룩 보정 */
 const DatepickerGlobalFix = createGlobalStyle`
-  /* 팝업이 다른 요소에 가려질 때 */
-  .react-datepicker-popper {
-    z-index: 9999;
-  }
+  .react-datepicker-popper { z-index: 9999; }
 
-  /* 기본 달력 폰트/여백 살짝 정돈 (보통 모양) */
   .react-datepicker {
     font-size: 14px;
     border: 1px solid #e6e6e6;
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     border-radius: 8px;
+    background: #fff;
   }
   .react-datepicker__header {
     background: #fff;

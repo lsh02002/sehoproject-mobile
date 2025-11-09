@@ -179,14 +179,14 @@ const TaskCreatePage = () => {
             setValue={setPriority}
             options={priorityOptions}
           />
-          <SelectInput
-            name="type"
-            title="태스크 타입"
-            value={type}
-            setValue={setType}
-            options={typeOptions}
-          />
         </TwoDiv>
+        <SelectInput
+          name="type"
+          title="태스크 타입"
+          value={type}
+          setValue={setType}
+          options={typeOptions}
+        />
         <SelectArrayInput
           name="assignees"
           title="작업할당자"

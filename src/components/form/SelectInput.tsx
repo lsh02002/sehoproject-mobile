@@ -61,7 +61,9 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  margin: 10px 0;
+  /* margin: 10px 0; */
+  height: 100%;  
+  box-sizing: border-box;
 
   label {
     width: 100%;
@@ -89,25 +91,23 @@ const Container = styled.div`
 const SelectEl = styled.select<{ $isPlaceholder: boolean }>`
   width: 100%;
   padding: 0.7rem;
-  box-sizing: border-box;
-  border: none;
-  border-bottom: 1px solid lightgray;
   font-size: 0.95rem;
   background: white;
-  outline: none;
-  appearance: none;
+  border-radius: 12px;
   background-color: transparent;
+  border: 1px solid lightgray;
+  box-sizing: border-box;
 
   /* placeholder 상태일 때만 스타일 적용 */
   color: ${({ $isPlaceholder }) => ($isPlaceholder ? "darkgray" : "inherit")};
   font-style: ${({ $isPlaceholder }) => ($isPlaceholder ? "italic" : "normal")};
 
   &:hover {
-    border-bottom: 1px solid #4680ff;
+    border: 1px solid #4680ff;
     cursor: pointer;
   }
   &:focus {
-    border-bottom: 1px solid #4680ff;
+    border: 1px solid #4680ff;
   }
 
   option {

@@ -12,7 +12,6 @@ type SelectArrayProps = {
   options: Option[];
   placeholder?: string;
   maxMenuHeight?: number;
-  style?: React.CSSProperties;
 };
 
 const SelectArrayInput = ({
@@ -23,7 +22,6 @@ const SelectArrayInput = ({
   options,
   placeholder,
   maxMenuHeight = 220,
-  style,
 }: SelectArrayProps) => {
   const [open, setOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
@@ -160,7 +158,7 @@ const SelectArrayInput = ({
     .filter(Boolean);
 
   return (
-    <Container ref={wrapRef} style={style}>
+    <Container ref={wrapRef}>
       <label htmlFor={name}>{title}</label>
 
       <SelectBox

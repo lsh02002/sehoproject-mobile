@@ -9,13 +9,31 @@ import { GrInProgress } from "react-icons/gr";
 import { getProjectMembersApi } from "../../api/sehomanagerapi";
 import SelectArrayInput from "../form/SelectArrayInput";
 import styled from "styled-components";
+import SelectInput, { Option } from "../form/SelectInput";
+import DateInput from "../form/DateInput";
+
+const stateOptions: Option[] = [
+  { label: "TODO", value: "TODO" },
+  { label: "IN_PROGRESS", value: "IN_PROGRESS" },
+  { label: "BLOCKED", value: "BLOCKED" },
+  { label: "DONE", value: "DONE" },
+];
+
+const priorityOptions: Option[] = [
+  { label: "LOW", value: "LOW" },
+  { label: "MEDIUM", value: "MEDIUM" },
+  { label: "HIGH", value: "HIGH" },
+  { label: "URGENT", value: "URGENT" },
+];
 
 const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
   const [assignees, setAssignees] = useState(task.assignees || []);
   const [assigneeOptions, setAssigneeOptions] = useState([]);
   const [priority, setPriority] = useState(task.priority || "Medium");
   const [state, setState] = useState(task.state || "TODO");
-  const [dueDate, setDueDate] = useState(task.dueDate || "");
+  const [dueDate, setDueDate] = useState<Date | undefined>(
+    task.dueDate ? new Date(task.dueDate) : undefined
+  );
 
   useEffect(() => {
     getProjectMembersApi(task.projectId)
@@ -67,7 +85,6 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
       </div>
       <div
         style={{
-          marginTop: "5px",
           display: "flex",
           alignItems: "stretch",
           gap: "8px",
@@ -75,7 +92,7 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
           overflowY: "hidden",
           whiteSpace: "nowrap",
           boxSizing: "border-box",
-          justifyContent: "space-between",
+          justifyContent: "space-between",          
         }}
       >
         <SelectArrayInput
@@ -87,71 +104,24 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
             label: assignee.email,
             value: assignee.email,
           }))}
-          style={{            
-            width: "auto", // ★ 콘텐츠 만큼만 차지
-          }}
         />
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             margin: "10px",
-            boxSizing: "border-box",
+            boxSizing: "border-box",            
+            flex: "0 0 120px",
+            backgroundColor: "white",
           }}
         >
-          <Label>🔥작업순위</Label>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center", // ✅ 세로 중앙 정렬
-              height: "80px",
-            }}
-          >
-            <select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "4px",
-                borderRadius: "6px",
-              }}
-            >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Urgent">Urgent</option>
-            </select>
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "10px",
-            boxSizing: "border-box",
-          }}
-        >
-          <Label>📋 진행상태</Label>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center", // ✅ 세로 중앙 정렬
-              height: "80px",
-            }}
-          >
-            <select
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-              style={{ width: "100%", padding: "4px", borderRadius: "6px" }}
-            >
-              <option value="TODO">TODO</option>
-              <option value="IN_PROGRESS">IN_PROGRESS</option>
-              <option value="DONE">DONE</option>
-            </select>
-          </div>
+          <SelectInput
+            name="priority"
+            title="🔥작업순위"
+            value={priority}
+            setValue={setPriority}
+            options={priorityOptions}
+          />
         </div>
         <div
           style={{
@@ -159,26 +129,32 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
             flexDirection: "column",
             margin: "10px",
             boxSizing: "border-box",
+            flex: "0 0 120px",
+            backgroundColor: "white",
           }}
         >
-          <Label>⏰ 마감일</Label>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center", // ✅ 세로 중앙 정렬
-              height: "80px",
-            }}
-          >
-            <input
-              type="date"
-              value={
-                dueDate ? new Date(dueDate).toISOString().slice(0, 10) : ""
-              }
-              onChange={(e) => setDueDate(e.target.value)}
-              style={{ width: "100%", padding: "4px", borderRadius: "6px" }}
-            />
-          </div>
+          <SelectInput
+            name="state"
+            title="📋 진행상태"
+            value={state}
+            setValue={setState}
+            options={stateOptions}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",            
+            boxSizing: "border-box",
+            flex: "0 0 120px",
+            backgroundColor: "white",
+          }}
+        >
+          <DateInput
+            title="⏰ 마감일"
+            selected={dueDate}
+            setSelected={setDueDate}
+          />
         </div>
         <div
           style={{
@@ -186,6 +162,7 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
             flexDirection: "column",
             margin: "10px",
             boxSizing: "border-box",
+            width: "100%",            
           }}
         >
           <Label>수정하기</Label>

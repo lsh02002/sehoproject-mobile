@@ -9,7 +9,7 @@ import {
 import {
   getOneTaskApi,
   getProjectMembersApi,
-  getTagsByProjectApi,  
+  getTagsByProjectApi,
   putOneTaskApi,
 } from "../../api/sehomanagerapi";
 import TextInput from "../../components/form/TextInput";
@@ -226,14 +226,14 @@ const TaskEditPage = () => {
             setValue={setPriority}
             options={priorityOptions}
           />
-          <SelectInput
-            name="type"
-            title="태스크 타입"
-            value={type}
-            setValue={setType}
-            options={typeOptions}
-          />
         </TwoDiv>
+        <SelectInput
+          name="type"
+          title="태스크 타입"
+          value={type}
+          setValue={setType}
+          options={typeOptions}
+        />
         <SelectArrayInput
           name="assignees"
           title="작업할당자"
