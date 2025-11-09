@@ -198,7 +198,7 @@ export type SpaceNodeType = {
   projectNodes: ProjectNodeType[];
 };
 
-export type MenuType = "WORKSPACE" | "SPACE" | "PROJECT" | "MILESTONE" | "TASK";
+export type MenuType = "WORKSPACE" | "SPACE" | "PROJECT" | "MILESTONE" | "SPRINT" | "TASK";
 
 export type TaskNodeType = {
   id: number;

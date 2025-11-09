@@ -1,7 +1,7 @@
 import React from "react";
 import ListLayout from "../../layouts/ListLayout";
 import { TaskResponseType } from "../../types/type";
-import TaskCard from "../card/TaskCard";
+import TaskMultiCard from "../card/TaskMultiCard";
 
 const TasksByState = ({
   title,
@@ -17,7 +17,7 @@ const TasksByState = ({
         {tasksByState?.length === 0 ? (
           <div>해당 태스크가 존재하지 않습니다.</div>
         ) : (
-          tasksByState?.map((task) => <TaskCard key={task.id} task={task} />)
+          tasksByState?.map((task) => <TaskMultiCard key={task.id} task={task} />)
         )}
       </ListLayout>
   );

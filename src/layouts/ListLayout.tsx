@@ -12,7 +12,7 @@ type ListLayoutProps = {
   isEmpty?: boolean; // 빈 상태 여부
   emptyMessage?: string; // 빈 상태 메시지
   children: React.ReactNode;
-  icon?: React.ReactNode;
+  icon?: React.ReactNode;  
 };
 
 const ListLayout = ({

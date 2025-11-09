@@ -8,8 +8,8 @@ import {
 } from "../../types/type";
 import {
   getOneTaskApi,
-  getTagsByProjectApi,
-  getUserInfosApi,
+  getProjectMembersApi,
+  getTagsByProjectApi,  
   putOneTaskApi,
 } from "../../api/sehomanagerapi";
 import TextInput from "../../components/form/TextInput";
@@ -68,15 +68,17 @@ const TaskEditPage = () => {
   ];
 
   useEffect(() => {
-    getUserInfosApi()
-      .then((res) => {
-        console.log(res.data);
-        setAssigneeOptions(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+    if (projectId) {
+      getProjectMembersApi(Number(projectId))
+        .then((res) => {
+          console.log(res.data);
+          setAssigneeOptions(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [projectId]);
 
   useEffect(() => {
     getOneTaskApi(Number(taskId))
