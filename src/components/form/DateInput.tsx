@@ -32,11 +32,9 @@ const DateInput = ({ title, selected, setSelected }: DateInputProps) => {
         locale="ko"
         fixedHeight
         shouldCloseOnSelect
-
         /* ✅ 부모 overflow를 넘어 body 위에서 뜨게 */
         withPortal
         portalId="app-datepicker-portal"
-
         /* ✅ 타입 에러 없는 범위에서 배치만 지정 */
         popperProps={{
           placement: "bottom-start",
@@ -56,6 +54,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: stretch;
   margin: 10px 0;
   height: 100%;
 
@@ -71,13 +70,12 @@ const Container = styled.div`
   .datePicker {
     width: 100%;
     padding: 0.7rem;
-    box-sizing: border-box;    
+    box-sizing: border-box;
     border: 1px solid lightgray;
     border-radius: 12px;
-    font-size: 0.95rem;    
+    font-size: 0.95rem;
     transition: border 0.2s ease-in-out;
     background-color: transparent;
-    width: auto;        
 
     &:hover,
     &:focus {
@@ -95,12 +93,12 @@ const Container = styled.div`
 const DatepickerGlobalFix = createGlobalStyle`
   .react-datepicker-popper { z-index: 9999; }
 
-  .react-datepicker {
+  .react-datepicker {    
     font-size: 14px;
     border: 1px solid #e6e6e6;
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     border-radius: 8px;
-    background: #fff;
+    background: #fff;    
   }
   .react-datepicker__header {
     background: #fff;

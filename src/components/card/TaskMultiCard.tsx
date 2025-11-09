@@ -111,7 +111,7 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
             flexDirection: "column",
             margin: "10px",
             boxSizing: "border-box",            
-            flex: "0 0 120px",
+            flex: "0 0 130px",
             backgroundColor: "white",
           }}
         >
@@ -129,7 +129,7 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
             flexDirection: "column",
             margin: "10px",
             boxSizing: "border-box",
-            flex: "0 0 120px",
+            flex: "0 0 130px",
             backgroundColor: "white",
           }}
         >
@@ -144,10 +144,10 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
         <div
           style={{
             display: "flex",
-            flexDirection: "column",            
-            boxSizing: "border-box",
-            flex: "0 0 120px",
+            flexDirection: "column",
+            boxSizing: "border-box",            
             backgroundColor: "white",
+            flex: "0 0 130px",
           }}
         >
           <DateInput
@@ -162,16 +162,16 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
             flexDirection: "column",
             margin: "10px",
             boxSizing: "border-box",
-            width: "100%",            
+            flex: "0 0 100px",
           }}
         >
           <Label>수정하기</Label>
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "center", // ✅ 세로 중앙 정렬
-              height: "80px",
+              flexDirection: "column",              
+              height: "100%",
+              justifyContent: "flex-end",
             }}
           >
             <button
@@ -184,9 +184,10 @@ const TaskMultiCard = ({ task }: { task: TaskResponseType }) => {
                 background: "#4a90e2",
                 color: "white",
                 border: "none",
-                padding: "6px",
+                padding: "0.7rem",
                 borderRadius: "8px",
                 cursor: "pointer",
+                fontSize: "0.95rem",
               }}
             >
               수정
