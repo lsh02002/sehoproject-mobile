@@ -151,9 +151,7 @@ const TaskEditPage = () => {
       priority,
       type,
       storyPoints: Number(storyPoints),
-      assignees: assigneeOptions.filter((option) =>
-        assignees.some((user) => user.email === option.email)
-      ),
+      assignees,      
       sprintId: Number(sprintId),
       milestoneId: Number(milestoneId),
       tags: tagOptions

@@ -120,9 +120,7 @@ const TaskCreatePage = () => {
       priority,
       type,
       storyPoints: Number(storyPoints),
-      assignees: assigneeOptions.filter((option) =>
-        assignees.some((user) => user.email === option.email)
-      ),
+      assignees,
       sprintId: null,
       milestoneId: null,
       tags: tagOptions
