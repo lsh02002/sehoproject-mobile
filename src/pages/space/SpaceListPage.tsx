@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { SpaceResponseType } from "../../types/type";
 import { getSpacesByWorkspaceApi } from "../../api/sehomanagerapi";
 import SpaceCard from "../../components/card/SpaceCard";
-import ListLayout from "../../layouts/ListLayout";
+import ListLayout from "../../components/layouts/ListLayout";
 import { FaSpaceAwesome } from "react-icons/fa6";
 
 const SpaceListPage = () => {

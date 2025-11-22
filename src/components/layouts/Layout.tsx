@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Menu } from "lucide-react";
 import SidebarMenu from "./MyMenu";
-import { useLogin } from "../context/LoginContext";
+import { useLogin } from "../../context/LoginContext";
 
 // 사용 예시
 // <HamburgerLayoutSC

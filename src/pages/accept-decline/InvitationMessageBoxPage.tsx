@@ -101,7 +101,7 @@ export const InvitationMessageBoxPage: React.FC = () => {
                 </Row>
                 <RowFull>
                   <Label>메시지</Label>
-                  <Value multiline>{r.message ?? "-"}</Value>
+                  <Value $multiline>{r.message ?? "-"}</Value>
                 </RowFull>
                 <Row>
                   <Label>받은 시각</Label>
@@ -236,10 +236,10 @@ const Label = styled.div`
   color: #111827;
 `;
 
-const Value = styled.div<{ multiline?: boolean }>`
+const Value = styled.div<{ $multiline?: boolean }>`
   font-size: 0.95rem;
   color: #374151;
-  white-space: ${({ multiline }) => (multiline ? "pre-wrap" : "normal")};
+  white-space: ${({ $multiline }) => ($multiline ? "pre-wrap" : "normal")};
   word-break: break-word;
 `;
 

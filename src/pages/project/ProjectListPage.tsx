@@ -3,7 +3,7 @@ import { ProjectResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
 import { getProjectsBySpaceApi } from "../../api/sehomanagerapi";
 import ProjectCard from "../../components/card/ProjectCard";
-import ListLayout from "../../layouts/ListLayout";
+import ListLayout from "../../components/layouts/ListLayout";
 import { SiPolymerproject } from "react-icons/si";
 
 const ProjectListPage = () => {

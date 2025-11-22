@@ -9,7 +9,7 @@ import {
   SprintNodeType,
   TreeNodeType,
   WorkspaceTreeResponseType,
-} from "../types/type";
+} from "../../types/type";
 import { LockIcon, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -411,15 +411,30 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         {hasChildren ? (
           <FolderIcon $open={open} aria-hidden />
         ) : node.type === "MILESTONE" ? (
-          <span style={{ color: node.disabled ? "#aaa" : "inherit", fontSize: "0.95em" }}>
+          <span
+            style={{
+              color: node.disabled ? "#aaa" : "inherit",
+              fontSize: "0.95em",
+            }}
+          >
             M
           </span>
         ) : node.type === "SPRINT" ? (
-          <span style={{ color: node.disabled ? "#aaa" : "inherit", fontSize: "0.95em" }}>
+          <span
+            style={{
+              color: node.disabled ? "#aaa" : "inherit",
+              fontSize: "0.95em",
+            }}
+          >
             S
           </span>
         ) : node.type === "TASK" ? (
-          <span style={{ color: node.disabled ? "#aaa" : "inherit", fontSize: "0.95em" }}>
+          <span
+            style={{
+              color: node.disabled ? "#aaa" : "inherit",
+              fontSize: "0.95em",
+            }}
+          >
             T
           </span>
         ) : (
@@ -447,7 +462,12 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         </Name>
         {isDisabled && (
           <LockIcon
-            style={{ width: "1em", height: "1em", color: "gray", flexShrink: 0 }}
+            style={{
+              width: "1em",
+              height: "1em",
+              color: "gray",
+              flexShrink: 0,
+            }}
           >
             <title>"접근 권한이 없습니다"</title>
           </LockIcon>
@@ -631,8 +651,7 @@ const FolderIcon = styled.i<{ $open: boolean }>`
   width: 1.1em;
   height: 1.1em;
   display: inline-block;
-  color: ${({ $open }) =>
-    $open ? "#4680ff" : "#9ca3af"}; /* 접힘/펼침 색상 */
+  color: ${({ $open }) => ($open ? "#4680ff" : "#9ca3af")}; /* 접힘/펼침 색상 */
   transition: color 160ms ease, transform 160ms ease;
   transform: ${({ $open }) => ($open ? "translateY(-1px)" : "none")};
 

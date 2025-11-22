@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { MilestoneResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
 import { getMilestonesByProjectApi } from "../../api/sehomanagerapi";
-import ListLayout from "../../layouts/ListLayout";
+import ListLayout from "../../components/layouts/ListLayout";
 import MilestoneCard from "../../components/card/MilestoneCard";
 import { LuMilestone } from "react-icons/lu";
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { WorkspaceResponseType } from "../../types/type";
 import { getWorkspacesApi } from "../../api/sehomanagerapi";
 import WorkspaceCard from "../../components/card/WorkspaceCard";
-import ListLayout from "../../layouts/ListLayout";
+import ListLayout from "../../components/layouts/ListLayout";
 import { MdWorkspaces } from "react-icons/md";
 
 const WorkspaceListPage = () => {

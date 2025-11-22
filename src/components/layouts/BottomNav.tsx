@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import Home from "../assets/home.svg";
-import Inbox from "../assets/inbox.svg";
-import TaskList from "../assets/task-list.svg";
-import Settings from "../assets/dashboard.svg";
+import Home from "../../assets/home.svg";
+import Inbox from "../../assets/inbox.svg";
+import TaskList from "../../assets/task-list.svg";
+import Settings from "../../assets/dashboard.svg";
 import { NavLink } from "react-router-dom";
 
 const BottomNav = () => {

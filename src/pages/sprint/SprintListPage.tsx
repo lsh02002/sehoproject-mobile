@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { SprintResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
 import { getSprintsByProjectApi } from "../../api/sehomanagerapi";
-import ListLayout from "../../layouts/ListLayout";
+import ListLayout from "../../components/layouts/ListLayout";
 import SprintCard from "../../components/card/SprintCard";
 import { GiSprint } from "react-icons/gi";
 

@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { getTasksByProjectApi } from "../../api/sehomanagerapi";
 import { TaskResponseType } from "../../types/type";
 import { useEffect, useState } from "react";
-import ListLayout from "../../layouts/ListLayout";
+import ListLayout from "../../components/layouts/ListLayout";
 import TaskCard from "../../components/card/TaskCard";
 import { MdAddTask } from "react-icons/md";
 

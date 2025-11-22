@@ -74,8 +74,12 @@ const getUserInfosApi = async () => {
   return api.get(`/user`);
 };
 
-const getWorkspacesTreeApi = async () => {
-  return api.get(`/workspaces/tree`);
+const setUserWorkspaceId = async (workspaceId: number) => {
+  return api.post(`/user/workspaces/${workspaceId}`);
+}
+
+const getWorkspacesTreeApi = async (workspaceId: number) => {
+  return api.get(`/workspaces/tree/${workspaceId}`);
 };
 
 const getWorkspacesApi = async () => {
@@ -247,6 +251,7 @@ export {
   UserLoginApi,
   UserSignupApi,
   UserLogoutApi,
+  setUserWorkspaceId,
   getWorkspacesTreeApi,
   getWorkspacesApi,
   getOneWorkspaceApi,

@@ -9,15 +9,15 @@ import {
   convertToRootTreeNode,
   rowsToWorkspaceTreeResponse,
 } from "./TreeNode";
-import type { TreeNodeType } from "../types/type";
-import { getWorkspacesTreeApi } from "../api/sehomanagerapi";
-import { useLogin } from "../context/LoginContext";
+import type { TreeNodeType } from "../../types/type";
+import { getWorkspacesTreeApi } from "../../api/sehomanagerapi";
+import { useLogin } from "../../context/LoginContext";
 
 const Panel = styled.aside<{ $open: boolean }>`
   min-width: ${({ $open }) => ($open ? 240 : 64)}px;
   padding: 8px;
   height: calc(100vh - 250px);
-  box-sizing: border-box;  
+  box-sizing: border-box;
 `;
 
 export default function SidebarMenu({
@@ -48,7 +48,9 @@ export default function SidebarMenu({
     let aborted = false;
     (async () => {
       // 백엔드 연동 (예: GET /api/workspaces/{workspaceId}/tree)
-      getWorkspacesTreeApi()
+      const workspaceId = localStorage.getItem("workspaceId");
+
+      getWorkspacesTreeApi(Number(workspaceId))
         .then((res) => {
           const rows = res.data;
           const list = rowsToWorkspaceTreeResponse(rows);
@@ -162,11 +164,11 @@ const LoginMenuItem = styled.div`
     cursor: pointer;
     padding: 6px 10px;
     border-radius: 6px;
-    transition: all 0.2s ease-in-out;    
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       background-color: #f0f0f0;
-      color: #007aff;      
+      color: #007aff;
     }
 
     &:active {
@@ -175,4 +177,3 @@ const LoginMenuItem = styled.div`
     }
   }
 `;
-
