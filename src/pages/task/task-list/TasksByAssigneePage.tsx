@@ -10,7 +10,9 @@ const TaskByAssigneePage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getTasksByAssigneeApi()
+    const workspaceId = localStorage.getItem("workspaceId");
+
+    getTasksByAssigneeApi(Number(workspaceId))
       .then((res) => {
         console.log(res);
         setMyTasks(res.data);
