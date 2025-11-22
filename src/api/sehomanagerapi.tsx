@@ -185,7 +185,7 @@ const getOneTaskApi = async (taskId: number) => {
 };
 
 const getTasksByAssigneeApi = async (workspaceId: number) => {
-  return api.get(`/tasks/assignee/${workspaceId}`);
+  return api.get(`/tasks/assignee/workspaces/${workspaceId}`);
 };
 
 const putOneTaskApi = async (taskId: number, data: TaskUpdateRequestType) => {
