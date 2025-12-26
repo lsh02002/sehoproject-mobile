@@ -124,7 +124,13 @@ export default function SidebarMenu({
         </span>
         {isLogin ? (
           <span
-            onClick={() => {
+            onClick={() => {              
+              localStorage.removeItem("userId");
+              localStorage.removeItem("name");
+              localStorage.removeItem("workspaceId");
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("refreshToken");
+
               setIsLogin(false);
               setOpen(false);
               navigate("/login");
