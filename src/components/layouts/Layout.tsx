@@ -41,20 +41,7 @@ export default function Layout({
     if (open) setIsMenuRefresh(!isMemuRefresh);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
-
-  // 키보드 단축키: M 키로 메뉴 토글
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e?.key?.toLowerCase() === "m") {
-        e.preventDefault();
-        setOpen((v) => !v);
-      }
-      if (e?.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
+  
   // 포커스 트랩 단순 구현: 열릴 때 첫 링크에 포커스
   const firstLinkRef = React.useRef<HTMLAnchorElement | null>(null);
   React.useEffect(() => {
