@@ -61,8 +61,8 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  /* margin: 10px 0; */
-  height: 100%;  
+  margin: 10px 0;
+  height: 100%;
   box-sizing: border-box;
 
   label {
