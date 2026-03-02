@@ -12,18 +12,20 @@ import { ko } from "date-fns/locale/ko";
 registerLocale("ko", ko);
 
 interface DateInputProps {
+  disabled?: boolean;
   title: string;
   selected: Date | undefined;
   setSelected: Dispatch<SetStateAction<Date | undefined>>;
 }
 
-const DateInput = ({ title, selected, setSelected }: DateInputProps) => {
+const DateInput = ({ disabled, title, selected, setSelected }: DateInputProps) => {
   return (
     <Container>
       <DatepickerGlobalFix />
 
       <label>{title}</label>
       <DatePicker
+        disabled={disabled}
         className="datePicker"
         dateFormat="yyyy-MM-dd"
         selected={selected ?? null}

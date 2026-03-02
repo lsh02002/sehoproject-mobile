@@ -8,6 +8,7 @@ export type Option = {
 };
 
 const SelectInput = ({
+  disabled,
   name,
   title,
   value,
@@ -15,6 +16,7 @@ const SelectInput = ({
   options,
   placeholder,
 }: {
+  disabled?: boolean;
   name: string;
   title: string;
   value: string;
@@ -28,6 +30,7 @@ const SelectInput = ({
     <Container>
       <label htmlFor={name}>{title}</label>
       <SelectEl
+        disabled={disabled}
         name={name}
         id={name}
         value={value}

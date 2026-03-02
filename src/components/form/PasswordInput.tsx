@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 const PasswordInput = ({
+  disabled,
   name,
   title,
   data,
   setData,
 }: {
+  disabled?: boolean;
   name: string;
   title: string;
   data: string;
@@ -15,6 +17,7 @@ const PasswordInput = ({
     <Container>
       <label htmlFor={name}>{title}</label>
       <input
+        disabled={disabled}
         type="password"
         name={name}
         value={data}

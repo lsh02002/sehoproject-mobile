@@ -2,13 +2,15 @@ import React from "react";
 import styled from "styled-components";
 
 const ConfirmButton = ({
+  disabled,
   title,
   onClick,
 }: {
+  disabled?: boolean;
   title: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
-  return <Button onClick={onClick}>{title}</Button>;
+  return <Button disabled={disabled} onClick={onClick}>{title}</Button>;
 };
 
 export default ConfirmButton;

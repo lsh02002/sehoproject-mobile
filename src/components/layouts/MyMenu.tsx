@@ -48,7 +48,30 @@ export default function SidebarMenu({
     let aborted = false;
     (async () => {
       // 백엔드 연동 (예: GET /api/workspaces/{workspaceId}/tree)
-      const workspaceId = localStorage.getItem("workspaceId");
+      const workspaceId = Number(localStorage.getItem("workspaceId"));
+
+      if(Number.isNaN(workspaceId)) {
+        setRoot({
+              id: "workspace",
+              name: "Workspace",
+              type: "WORKSPACE",
+              children: [
+                {
+                  id: "space-1",
+                  name: "Space A",
+                  type: "SPACE",
+                  children: [{ id: "p1", name: "Project 1", type: "PROJECT" }],
+                },
+                {
+                  id: "space-2",
+                  name: "Space B",
+                  type: "SPACE",
+                  children: [{ id: "p2", name: "Project 2", type: "PROJECT" }],
+                },
+              ],
+            });
+        return;
+      }
 
       getWorkspacesTreeApi(Number(workspaceId))
         .then((res) => {
