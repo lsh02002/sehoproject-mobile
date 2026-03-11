@@ -27,9 +27,17 @@ const WorkspaceCreatePage = () => {
     createWorkspaceApi(data)
       .then((res) => {
         console.log(res);
-        if (localStorage.getItem("workspaceId") === null) {
-          localStorage.setItem("workspaceId", res?.data.id);
+
+        const workspaceId = res?.data?.id;
+        const storedWorkspaceId = localStorage.getItem("workspaceId");
+
+        if (
+          workspaceId &&
+          (!storedWorkspaceId || storedWorkspaceId === "null")
+        ) {
+          localStorage.setItem("workspaceId", workspaceId);
         }
+
         toast.success("생성을 성공했습니다!");
       })
       .catch((err) => {

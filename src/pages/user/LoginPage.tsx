@@ -19,7 +19,7 @@ const LoginPage = () => {
       .then((res) => {
         console.log("login ", res);
         localStorage.setItem("userId", res.data.data.userId);
-        localStorage.setItem("name", res.data.data.name);
+        localStorage.setItem("nickname", res.data.data.nickname);
         localStorage.setItem("workspaceId", res.data.data.workspaceId);
         localStorage.setItem("accessToken", res.headers.accesstoken);
         localStorage.setItem("refreshToken", res.headers.refreshtoken);
