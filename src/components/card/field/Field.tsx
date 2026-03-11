@@ -65,6 +65,12 @@ export const SlugField = styled.div`
   font-style: italic;
 `;
 
+export const ContentField = styled.div`
+  margin-top: 2px;
+  font-size: 0.9rem;
+  width: 100%;  
+`;
+
 export const EditButtonField = styled.span`
   color: #4680ff;
   font-weight: 500;

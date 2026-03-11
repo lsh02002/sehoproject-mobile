@@ -345,3 +345,9 @@ export type AddMemberRequestType = {
   roleProject: RoleProjectType;
   note: string | undefined;
 };
+
+export type ActivityLogResponseType = {
+  id: number;
+  message: string;
+  createdAt: string;
+};

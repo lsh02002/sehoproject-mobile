@@ -257,6 +257,10 @@ const createMilestoneApi = async (data: MilestoneRequestType) => {
   return api.post(`/milestones/create`, data);
 };
 
+const getLogMessagesByUserApi = async () => {
+  return api.get(`/activitylog/user`);
+}
+
 export {
   UserLoginApi,
   UserSignupApi,
@@ -298,4 +302,5 @@ export {
   createTaskApi,
   createSprintApi,
   createMilestoneApi,
+  getLogMessagesByUserApi,
 };
