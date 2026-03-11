@@ -14,6 +14,16 @@ import {
 import { BASE_URL } from "./BASE_URL";
 import { toast } from "react-toastify";
 
+type ToastType = "success" | "error" | "info" | "warning";
+
+export const showToast = (message: string, type: ToastType = "error") => {
+  const id = message;
+
+  if (!toast.isActive(id)) {
+    toast[type](message, { toastId: id });
+  }
+};
+
 export const api = axios.create({
   baseURL: BASE_URL,
 });
@@ -44,7 +54,7 @@ api.interceptors.response.use(
   (error) => {
     // ✅ detailMessage가 있으면 가장 먼저 콘솔에 출력
     if (error.response?.data?.detailMessage) {
-      toast.error(error.response.data.detailMessage);
+      showToast(error.response.data.detailMessage);
     }
     // 그 외의 에러도 같이 로깅
     if (error.message) {

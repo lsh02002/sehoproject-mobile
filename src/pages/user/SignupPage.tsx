@@ -11,7 +11,7 @@ import { FaRegistered } from "react-icons/fa6";
 const SignupPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
@@ -20,7 +20,7 @@ const SignupPage = () => {
       email,
       password,
       passwordConfirm,
-      name,
+      nickname,
     };
 
     UserSignupApi(userInfo)
@@ -51,7 +51,7 @@ const SignupPage = () => {
           data={email}
           setData={setEmail}
         />
-        <TextInput name="name" title="이름" data={name} setData={setName} />
+        <TextInput name="nickname" title="닉네임" data={nickname} setData={setNickname} />
         <PasswordInput
           name="password"
           title="비밀번호"

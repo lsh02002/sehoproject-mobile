@@ -63,7 +63,7 @@ const MilestoneCreatePage = () => {
 
       setTaskIds(newTaskOptions);
     },
-    [projectId, taskOptions]
+    [projectId, taskOptions],
   );
 
   const OnCreateSubmit = () => {

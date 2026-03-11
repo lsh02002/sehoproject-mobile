@@ -2,15 +2,15 @@ export type UserSignupType = {
   email: string;
   password: string;
   passwordConfirm: string;
-  name: string;
+  nickname: string;
 };
 
 export type UsersInfoType = {
   userId: number;
-  name: string;
+  nickname: string;
   email: string;
-  createdAt: string;
-  deletedAt: string;
+  createdAt?: string;
+  deletedAt?: string;
 };
 
 export type AssignInfoType = {
@@ -26,6 +26,8 @@ export type WorkspaceTreeResponseType = {
   type: "WORKSPACE";
   canEnter?: boolean; // (선택) 필요하면 사용
   spaces: SpaceNodeType[];
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type WorkspaceRequestType = {
@@ -37,6 +39,8 @@ export type WorkspaceResponseType = {
   id: number;
   name: string;
   slug: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type SpaceRequestType = {
@@ -49,6 +53,8 @@ export type SpaceResponseType = {
   name: string;
   slug: string;
   workspaceId: number;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type ProjectRequestType = {
@@ -75,6 +81,8 @@ export type ProjectResponseType = {
   creatorId: number;
   creatorName: string;
   tagResponses: TagResponseType[];
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type TaskRequestType = {
@@ -126,6 +134,7 @@ export type TaskResponseType = {
   dependencyIds?: number[];
   dueDate?: string; // or Date/LocalDate 포맷에 맞게
   createdAt?: string; // or Date/LocalDateTime 포맷에 맞게
+  updatedAt?: string;
 };
 
 export type SprintRequestType = {
@@ -145,6 +154,8 @@ export type SprintResponseType = {
   startDate: Date;
   endDate: Date;
   taskIds: TaskResponseType[];
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type MilestoneRequestType = {
@@ -165,8 +176,8 @@ export type MilestoneResponseType = {
   startDate: Date;
   dueDate: Date;
   status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: string;
+  updatedAt?: string;  
   taskIds: TaskResponseType[];
 };
 
@@ -181,6 +192,8 @@ export type TagResponseType = {
   projectId: number;
   name: string;
   description: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type AssigneeRequestType = {
@@ -318,7 +331,8 @@ export type WorkspaceInviteResponseType = {
   requestedRole: WorkspaceRole;
   status: string;
   expiresAt: Date;
-  createdAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 // ===== 타입 =====
