@@ -15,6 +15,7 @@ import {
 import { Container, Wrapper } from "../../components/pages-style/PageStyle";
 import SelectInput from "../../components/form/SelectInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
+import { toast } from "react-toastify";
 
 export const UserProjectIdSettingsPage = () => {
   const [userInfo, setUserInfo] = useState<SignupResponseType>();
@@ -46,9 +47,9 @@ export const UserProjectIdSettingsPage = () => {
         setWorkspaces(workspaceList);
 
         if (userInfo?.workspaceId == null) {
-          setSelectWorkspaceId(String(workspaceList[0]?.id ?? ""));
+          setSelectWorkspaceId("");          
         } else {
-          setSelectWorkspaceId(String(userInfo.workspaceId));
+          setSelectWorkspaceId(String(userInfo.workspaceId));          
         }
       })
       .catch((err) => {
@@ -70,9 +71,9 @@ export const UserProjectIdSettingsPage = () => {
         setSpaces(spaceList);
 
         if (userInfo?.spaceId == null) {
-          setSelectSpaceId(String(spaceList[0]?.id ?? ""));
+          setSelectSpaceId("");          
         } else {
-          setSelectSpaceId(String(userInfo.spaceId));
+          setSelectSpaceId(String(userInfo.spaceId));          
         }
       })
       .catch((err) => {
@@ -94,9 +95,9 @@ export const UserProjectIdSettingsPage = () => {
         setProjects(projectList);
 
         if (userInfo?.projectId == null) {
-          setSelectProjectId(String(projectList[0]?.id ?? ""));
+          setSelectProjectId("");          
         } else {
-          setSelectProjectId(String(userInfo.projectId));
+          setSelectProjectId(String(userInfo.projectId));          
         }
       })
       .catch((err) => {
@@ -116,6 +117,8 @@ export const UserProjectIdSettingsPage = () => {
         localStorage.setItem("workspaceId", selectWorkspaceId);
         localStorage.setItem("spaceId", selectSpaceId);
         localStorage.setItem("projectId", selectProjectId);
+
+        toast.success("설정 변경에 성공했습니다!");
       })
       .catch((err) => {
         console.error(err);
@@ -134,9 +137,8 @@ export const UserProjectIdSettingsPage = () => {
             label: workspace.name,
             value: String(workspace.id),
           }))}
-          placeholder="워크스페이스를 선택하세요"
-        />
-
+          placeholder="워크스페이스가 미설정 되있습니다"
+        />        
         <SelectInput
           name="spaces"
           title="스페이스"
@@ -146,9 +148,8 @@ export const UserProjectIdSettingsPage = () => {
             label: space.name,
             value: String(space.id),
           }))}
-          placeholder="스페이스를 선택하세요"
-        />
-
+          placeholder="스페이스가 미설정 되있습니다"
+        />        
         <SelectInput
           name="projects"
           title="프로젝트"
@@ -158,9 +159,8 @@ export const UserProjectIdSettingsPage = () => {
             label: project.name,
             value: String(project.id),
           }))}
-          placeholder="프로젝트를 선택하세요"
-        />
-
+          placeholder="프로젝트가 미설정 되있습니다"
+        />        
         <ConfirmButton title="설정값 저장" onClick={handleSetUserProjectId} />
       </Wrapper>
     </Container>
