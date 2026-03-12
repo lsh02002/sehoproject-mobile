@@ -46,10 +46,15 @@ export const UserProjectIdSettingsPage = () => {
         const workspaceList = res.data ?? [];
         setWorkspaces(workspaceList);
 
-        if (userInfo?.workspaceId == null) {
-          setSelectWorkspaceId("");          
+        if (
+          !workspaceList?.find(
+            (workspace: WorkspaceResponseType) =>
+              workspace?.id === userInfo?.workspaceId,
+          )
+        ) {
+          setSelectWorkspaceId("");
         } else {
-          setSelectWorkspaceId(String(userInfo.workspaceId));          
+          setSelectWorkspaceId(String(userInfo?.workspaceId));
         }
       })
       .catch((err) => {
@@ -70,10 +75,14 @@ export const UserProjectIdSettingsPage = () => {
         const spaceList = res.data ?? [];
         setSpaces(spaceList);
 
-        if (userInfo?.spaceId == null) {
-          setSelectSpaceId("");          
+        if (
+          !spaceList?.find(
+            (space: SpaceResponseType) => space?.id === userInfo?.spaceId,
+          )
+        ) {
+          setSelectSpaceId("");
         } else {
-          setSelectSpaceId(String(userInfo.spaceId));          
+          setSelectSpaceId(String(userInfo?.spaceId));
         }
       })
       .catch((err) => {
@@ -94,10 +103,15 @@ export const UserProjectIdSettingsPage = () => {
         const projectList = res.data ?? [];
         setProjects(projectList);
 
-        if (userInfo?.projectId == null) {
-          setSelectProjectId("");          
+        if (
+          !projectList?.find(
+            (project: ProjectResponseType) =>
+              project?.id === userInfo?.projectId,
+          )
+        ) {
+          setSelectProjectId("");
         } else {
-          setSelectProjectId(String(userInfo.projectId));          
+          setSelectProjectId(String(userInfo?.projectId));
         }
       })
       .catch((err) => {
@@ -137,8 +151,8 @@ export const UserProjectIdSettingsPage = () => {
             label: workspace.name,
             value: String(workspace.id),
           }))}
-          placeholder="워크스페이스가 미설정 되있습니다"
-        />        
+          placeholder="워크스페이스를 설정하세요"
+        />
         <SelectInput
           name="spaces"
           title="스페이스"
@@ -148,8 +162,8 @@ export const UserProjectIdSettingsPage = () => {
             label: space.name,
             value: String(space.id),
           }))}
-          placeholder="스페이스가 미설정 되있습니다"
-        />        
+          placeholder="스페이스를 설정하세요"
+        />
         <SelectInput
           name="projects"
           title="프로젝트"
@@ -159,8 +173,8 @@ export const UserProjectIdSettingsPage = () => {
             label: project.name,
             value: String(project.id),
           }))}
-          placeholder="프로젝트가 미설정 되있습니다"
-        />        
+          placeholder="프로젝트를 설정하세요"
+        />
         <ConfirmButton title="설정값 저장" onClick={handleSetUserProjectId} />
       </Wrapper>
     </Container>
