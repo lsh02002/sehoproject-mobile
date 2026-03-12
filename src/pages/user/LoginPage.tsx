@@ -21,6 +21,8 @@ const LoginPage = () => {
         localStorage.setItem("userId", res.data.data.userId);
         localStorage.setItem("nickname", res.data.data.nickname);
         localStorage.setItem("workspaceId", res.data.data.workspaceId);
+        localStorage.setItem("spaceId", res.data.data.spaceId);
+        localStorage.setItem("projectId", res.data.data.projectId);
         localStorage.setItem("accessToken", res.headers.accesstoken);
         localStorage.setItem("refreshToken", res.headers.refreshtoken);
 

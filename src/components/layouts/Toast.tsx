@@ -29,4 +29,6 @@ export const StyledToastContainer = styled(ToastContainer)`
   .Toastify__toast--info {
     background-color: #17a2b8;
   }
+
+  z-index: 1000;
 `;

@@ -26,7 +26,7 @@ import {
 } from "../../components/pages-style/PageStyle";
 import { MdAddTask } from "react-icons/md";
 
-const TaskEditPage = () => {
+const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const { taskId } = useParams();
   const [id, setId] = useState("");
   const [projectKey, setProjectKey] = useState("");
@@ -81,39 +81,41 @@ const TaskEditPage = () => {
   }, [projectId]);
 
   useEffect(() => {
-    getOneTaskApi(Number(taskId))
-      .then((res) => {
-        console.log(res);
+    if (windowOpenTaskId || taskId) {
+      getOneTaskApi(Number(windowOpenTaskId ?? taskId))
+        .then((res) => {
+          console.log(res);
 
-        setId(res.data.id);
-        setProjectKey(res.data.projectKey);
-        setProjectId(res.data.projectId);
-        setName(res.data.name);
-        setDescription(res.data.description);
-        setState(res.data.state);
-        setPriority(res.data.priority);
-        setType(res.data.type);
-        setStoryPoints(res.data.storyPoints);
-        setAssignees(res.data.assignees);
-        setSprintId(res.data.sprintId);
-        setMilestoneId(res.data.milestoneId);
-        setTags(res.data.tags);
-        setDependencyIds(res.data.dependencyIds);
-        setDueDate(res.data.dueDate);
+          setId(res.data.id);
+          setProjectKey(res.data.projectKey);
+          setProjectId(res.data.projectId);
+          setName(res.data.name);
+          setDescription(res.data.description);
+          setState(res.data.state);
+          setPriority(res.data.priority);
+          setType(res.data.type);
+          setStoryPoints(res.data.storyPoints);
+          setAssignees(res.data.assignees);
+          setSprintId(res.data.sprintId);
+          setMilestoneId(res.data.milestoneId);
+          setTags(res.data.tags);
+          setDependencyIds(res.data.dependencyIds);
+          setDueDate(res.data.dueDate);
 
-        getTagsByProjectApi(Number(res.data.projectId))
-          .then((res) => {
-            console.log(res);
-            setTagOptions(res.data);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [projectId, taskId]);
+          getTagsByProjectApi(Number(res.data.projectId))
+            .then((res) => {
+              console.log(res);
+              setTagOptions(res.data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [projectId, taskId, windowOpenTaskId]);
 
   const handleSetAssignees = (emails: string[]) => {
     const newAssignees: AssigneeRequestType[] = emails.map((email, index) => ({
@@ -151,7 +153,7 @@ const TaskEditPage = () => {
       priority,
       type,
       storyPoints: Number(storyPoints),
-      assignees,      
+      assignees,
       sprintId: Number(sprintId),
       milestoneId: Number(milestoneId),
       tags: tagOptions
@@ -163,7 +165,7 @@ const TaskEditPage = () => {
 
     console.log(data);
 
-    putOneTaskApi(Number(taskId), data)
+    putOneTaskApi(Number(windowOpenTaskId ?? taskId), data)
       .then((res) => {
         console.log(res);
         toast.success("수정을 성공했습니다!");

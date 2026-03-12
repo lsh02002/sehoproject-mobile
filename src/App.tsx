@@ -35,6 +35,7 @@ import { NotificationsSettingsPage } from "./pages/settings/NotificationsSetting
 import { ProjectDefaultsSettingsPage } from "./pages/settings/ProjectDefaultsSettingsPage";
 import { SecuritySettingsPage } from "./pages/settings/SecuritySettingsPage";
 import { InvitationMessageBoxPage } from "./pages/accept-decline/InvitationMessageBoxPage";
+import { UserProjectIdSettingsPage } from "./pages/settings/UserProjectIdSettingsPage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -100,6 +101,7 @@ function App() {
         <Route path="/task-list" element={<TaskByAssigneePage />} />
 
         <Route path="/settings" element={<SettingsLayout />}>
+        <Route path="userProjectId" element={<UserProjectIdSettingsPage />} />
           <Route path="workspaces" element={<WorkspaceListPage />} />
           <Route path="workspace/:id/edit" element={<WorkspaceEditPage />} />
           <Route path="workspaces/create" element={<WorkspaceCreatePage />} />

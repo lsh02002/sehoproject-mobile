@@ -33,13 +33,13 @@ const SelectInput = ({
         disabled={disabled}
         name={name}
         id={name}
-        value={value}
+        value={value ?? ""}
         onChange={(e) => setValue(e.target.value)}
         $isPlaceholder={isPlaceholder}
       >
         {placeholder && (
           <option
-            style={{ color: "darkgray", fontStyle: "italic" }}
+            style={{ color: "#94a3b8", fontStyle: "normal" }}
             value=""
             disabled
           >
@@ -61,10 +61,8 @@ export default SelectInput;
 const Container = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   flex-direction: column;
-  margin: 10px 0;
+  margin: 12px 0;
   height: 100%;
   box-sizing: border-box;
 
@@ -72,20 +70,18 @@ const Container = styled.div`
     width: 100%;
     display: block;
     margin-bottom: 8px;
-    color: #111827;
+    color: #0f172a;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
   }
 
   @media (max-width: 640px) {
     label {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
     }
-    input,
-    select,
-    textarea {
+
+    select {
       font-size: 16px;
-      padding: 12px;
       min-height: 44px;
     }
   }
@@ -93,28 +89,43 @@ const Container = styled.div`
 
 const SelectEl = styled.select<{ $isPlaceholder: boolean }>`
   width: 100%;
-  padding: 0.7rem;
+  min-height: 46px;
+  padding: 0 42px 0 14px;
   font-size: 0.95rem;
-  background: white;
-  border-radius: 12px;
-  background-color: transparent;
-  border: 1px solid lightgray;
+  color: ${({ $isPlaceholder }) => ($isPlaceholder ? "#94a3b8" : "#0f172a")};
+  background-color: #ffffff;
+  background-image: linear-gradient(45deg, transparent 50%, #64748b 50%),
+    linear-gradient(135deg, #64748b 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(50% - 2px),
+    calc(100% - 14px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  border-radius: 14px;
+  border: 1px solid #dbe2ea;
   box-sizing: border-box;
-
-  /* placeholder 상태일 때만 스타일 적용 */
-  color: ${({ $isPlaceholder }) => ($isPlaceholder ? "darkgray" : "inherit")};
-  font-style: ${({ $isPlaceholder }) => ($isPlaceholder ? "italic" : "normal")};
+  appearance: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease;
 
   &:hover {
-    border: 1px solid #4680ff;
+    border-color: #94a3b8;
     cursor: pointer;
   }
+
   &:focus {
-    border: 1px solid #4680ff;
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+  }
+
+  &:disabled {
+    background-color: #f8fafc;
+    color: #94a3b8;
+    cursor: not-allowed;
   }
 
   option {
-    color: black;
+    color: #0f172a;
     font-style: normal;
   }
 `;

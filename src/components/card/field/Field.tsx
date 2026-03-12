@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const CardContainer = styled.div`
   width: 100%;
+  min-width: 280px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,7 +24,7 @@ export const CardWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center;  
 `;
 
 export const IdField = styled.div`
@@ -92,7 +93,7 @@ export const ButtonsField = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
+  gap: 8px;  
 `;
 
 export const InfoBoxField = styled.div`

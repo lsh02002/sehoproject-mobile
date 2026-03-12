@@ -40,7 +40,6 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   const [options, setOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
-  // const [menuOpen, setMenuOpen] = useState(false);
   const [selectedMap, setSelectedMap] = useState<Map<string, Option>>(
     () => new Map()
   );
@@ -133,30 +132,15 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
     }
   }, [createOption, input, addId, onError]);
 
-  // const handleDelete = useCallback(
-  //   async (id: string) => {
-  //     if (!deleteOption) return;
-  //     try {
-  //       setLoading(true);
-  //       await deleteOption(id);
-  //       setOptions((prev) => prev.filter((o) => o.id !== id));
-  //       removeId(id);
-  //       setSelectedMap((prev) => {
-  //         const m = new Map(prev);
-  //         m.delete(id);
-  //         return m;
-  //       });
-  //     } catch (err) {
-  //       onError?.(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   },
-  //   [deleteOption, removeId, onError]
-  // );
-
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!options.length) return;
+    if (!options.length) {
+      if (e.key === "Enter" && createOption && input.trim()) {
+        e.preventDefault();
+        void handleCreate();
+      }
+      return;
+    }
+
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setFocusedIndex((i) => (i + 1) % options.length);
@@ -174,9 +158,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   };
 
   return (
-    <Container
-    // onBlur={() => setMenuOpen(false)}
-    >
+    <Container>
       {title && <Label>{title}</Label>}
 
       {values.length > 0 && (
@@ -186,53 +168,52 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
             return (
               <SelectedItem key={id}>
                 {label}
-                <RemoveButton onClick={() => removeId(id)}>✕</RemoveButton>
+                <RemoveButton type="button" onClick={() => removeId(id)}>
+                  ✕
+                </RemoveButton>
               </SelectedItem>
             );
           })}
         </SelectedList>
       )}
 
-      <Input
-        name={name}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={onKeyDown}
-        // onFocus={()=>setMenuOpen(true)}
-        placeholder={placeholder}
-      />
+      <InputWrap>
+        <Input
+          name={name}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={onKeyDown}
+          placeholder={placeholder}
+        />
+      </InputWrap>
 
       <Menu $maxHeight={maxMenuHeight}>
-        {/* {loading && <InfoText>{loadingText}</InfoText>}
-        {!loading && options.length === 0 && (
+        {loading && <InfoText>{loadingText}</InfoText>}
+        {!loading && options.length === 0 && !input.trim() && (
           <InfoText>{noOptionsText}</InfoText>
         )}
-        {!loading &&
-          menuOpen &&
-          options.map((opt, idx) => {
-            const active = idx === focusedIndex;
-            const selected = values.includes(opt.id);
-            return (
-              <OptionRow key={opt.id} $active={active}>
-                <OptionButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleId(opt.id);
-                  }}
+        {!loading && options.length > 0 && (
+          <OptionList>
+            {options.map((opt, idx) => {
+              const active = idx === focusedIndex;
+              const selected = values.includes(opt.id);
+              return (
+                <OptionRow
+                  key={opt.id}
+                  type="button"
+                  $active={active}
+                  $selected={selected}
+                  onClick={() => toggleId(opt.id)}
                 >
-                  <CheckBox>{selected ? "✓" : ""}</CheckBox>
-                  {opt.name}
-                </OptionButton>
-                {deleteOption && (
-                  <DeleteBtn onClick={() => handleDelete(opt.id)}>
-                    삭제
-                  </DeleteBtn>
-                )}
-              </OptionRow>
-            );
-          })} */}
+                  <OptionCheck>{selected ? "✓" : ""}</OptionCheck>
+                  <span>{opt.name}</span>
+                </OptionRow>
+              );
+            })}
+          </OptionList>
+        )}
         {!loading && createOption && input.trim() && (
-          <CreateBtn onClick={() => handleCreate()}>
+          <CreateBtn type="button" onClick={() => handleCreate()}>
             “{input.trim()}” 추가
           </CreateBtn>
         )}
@@ -241,137 +222,154 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   );
 };
 
-/* ---------------------- styled-components ---------------------- */
-
 const Container = styled.div`
   width: 100%;
   font-family: system-ui, sans-serif;
   position: relative;
-  margin: 10px 0;
-  margin-bottom: 20px;
-
-  &:hover {
-    background-color: #f7f9fc;
-  }
+  margin: 12px 0;
 `;
 
 const Label = styled.label`
   width: 100%;
   display: block;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: black;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 0.92rem;
 `;
 
 const SelectedList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 10px;
 `;
 
 const SelectedItem = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background-color: #f3f3f3;
-  border-radius: 16px;
-  padding: 4px 8px;
-  font-size: 0.95rem;
+  gap: 6px;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
 `;
 
 const RemoveButton = styled.button`
   border: none;
   background: transparent;
-  color: #777;
+  color: #6366f1;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
+  padding: 0;
+
   &:hover {
-    color: #000;
+    color: #312e81;
+  }
+`;
+
+const InputWrap = styled.div`
+  border: 1px solid #dbe2ea;
+  border-radius: 14px;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus-within {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
   }
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 8px 10px;
+  min-height: 46px;
+  padding: 12px 14px;
   border: none;
-  border-bottom: 1px solid #ccc;
   outline: none;
   font-size: 0.95rem;
   box-sizing: border-box;
+  color: #0f172a;
   background-color: transparent;
-  &:hover,
-  &:focus {
-    border-bottom: 1px solid #007bff;
+
+  &::placeholder {
+    color: #94a3b8;
   }
 `;
 
 const Menu = styled.div<{ $maxHeight: number }>`
-  border-radius: 6px;
+  margin-top: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
   overflow-y: auto;
   max-height: ${(p) => p.$maxHeight}px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100px;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
 `;
 
-// const InfoText = styled.div`
-//   padding: 8px 10px;
-//   font-size: 0.85rem;
-//   color: #666;
-// `;
+const InfoText = styled.div`
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  color: #64748b;
+`;
 
-// const OptionRow = styled.div<{ $active: boolean }>`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 6px 10px;
-//   background-color: ${(p) => (p.$active ? "#f0f8ff" : "white")};
-//   &:hover {
-//     background-color: #f0f8ff;
-//   }
-// `;
+const OptionList = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 6px;
+`;
 
-// const OptionButton = styled.button`
-//   flex: 1;
-//   text-align: left;
-//   background: none;
-//   border: none;
-//   padding: 0;
-//   font-size: 0.9rem;
-//   cursor: pointer;
-// `;
+const OptionRow = styled.button<{ $active: boolean; $selected: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid ${({ $selected }) => ($selected ? "#c7d2fe" : "transparent")};
+  border-radius: 12px;
+  background: ${({ $active, $selected }) =>
+    $selected ? "#eef2ff" : $active ? "#f8fafc" : "transparent"};
+  color: #0f172a;
+  font-size: 0.94rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
 
-// const CheckBox = styled.span`
-//   display: inline-block;
-//   width: 18px;
-// `;
+  &:hover {
+    background: ${({ $selected }) => ($selected ? "#eef2ff" : "#f8fafc")};
+  }
+`;
 
-// const DeleteBtn = styled.button`
-//   border: none;
-//   background: none;
-//   color: #d33;
-//   font-size: 0.8rem;
-//   cursor: pointer;
-//   padding: 2px 6px;
-//   border-radius: 4px;
-//   &:hover {
-//     background-color: #ffecec;
-//   }
-// `;
+const OptionCheck = styled.span`
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #4f46e5;
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 700;
+  flex-shrink: 0;
+`;
 
 const CreateBtn = styled.button`
-  width: 100%;
-  padding: 8px 10px;
-  background-color: #007bff;
+  width: calc(100% - 16px);
+  margin: 0 8px 8px;
+  padding: 11px 12px;
+  background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
   color: white;
   border: none;
-  border-radius: 0 0 6px 6px;
-  font-size: 0.95rem;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  font-weight: 600;
   cursor: pointer;
+
   &:hover {
-    background-color: #0064d6;
+    filter: brightness(0.98);
   }
 `;

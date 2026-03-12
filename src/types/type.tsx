@@ -5,6 +5,16 @@ export type UserSignupType = {
   nickname: string;
 };
 
+export type SignupResponseType = {
+  userId: number;
+  nickname: string;
+  workspaceId: number;
+  spaceId: number;
+  projectId: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export type UsersInfoType = {
   userId: number;
   nickname: string;
@@ -351,3 +361,22 @@ export type ActivityLogResponseType = {
   message: string;
   createdAt: string;
 };
+
+export type ImageResponseType = {
+  id: number;
+  diaryId: number;
+  uploaderId: number;
+  fileName: string;
+  fileUrl: string;
+  mimeType: string;
+  sizeBytes: number;
+  deleted: boolean;
+};
+
+export type EmotionResponseType = {
+  id: number;
+  name: string;
+  emoji: string;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { useLogin } from "../../context/LoginContext";
 
 type ListLayoutProps = {
   title?: string;
@@ -12,7 +13,7 @@ type ListLayoutProps = {
   isEmpty?: boolean; // 빈 상태 여부
   emptyMessage?: string; // 빈 상태 메시지
   children: React.ReactNode;
-  icon?: React.ReactNode;  
+  icon?: React.ReactNode;
 };
 
 const ListLayout = ({
@@ -28,6 +29,13 @@ const ListLayout = ({
   icon,
 }: ListLayoutProps) => {
   const hasCreate = Boolean(to);
+  const { setIsTaskOpen, setTask } = useLogin();
+
+  const handleOpenTask = () => {
+    setTask(undefined);
+    
+    setIsTaskOpen(true);
+  }
 
   return (
     <Container>
@@ -46,25 +54,24 @@ const ListLayout = ({
               )}
               {subtitle && <Subtitle>{subtitle}</Subtitle>}
             </TitleBlock>
-
-            <Actions>
-              {rightActions}
-              {to && hasCreate ? (
-                <CreateLink to={to!}>
-                  {createLabel ?? `${title ?? "항목"} 생성`}
-                </CreateLink>
-              ) : (
-                // 링크가 없으면 비활성 버튼으로 노출 (UX 안전)
-                <CreateButton disabled aria-disabled>
-                  {createLabel ?? `${title ?? "항목"} 생성`}
-                </CreateButton>
-              )}
-            </Actions>
           </Header>
         )}
 
         <Content>
           {isEmpty ? <EmptyState>{emptyMessage}</EmptyState> : children}
+          <Actions>
+            {rightActions}
+            {to && hasCreate ? (
+              <CreateLink to={to!}>
+                {createLabel ?? `${title ?? "항목"} 생성`}
+              </CreateLink>
+            ) : (
+              // 링크가 없으면 비활성 버튼으로 노출 (UX 안전)
+              <CreateButton onClick={handleOpenTask}>
+                {createLabel ?? `${title ?? "항목"} 생성`}
+              </CreateButton>
+            )}
+          </Actions>
         </Content>
       </Wrapper>
     </Container>
@@ -77,10 +84,11 @@ export default ListLayout;
 
 const Container = styled.div`
   width: 100%;
+  min-width: 320px;
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  padding: 24px 20px;
+  padding: 24px 20px;  
 `;
 
 const Wrapper = styled.div`
@@ -135,6 +143,7 @@ const CountBadge = styled.span`
 const Actions = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;  
   gap: 10px;
 `;
 
@@ -152,7 +161,9 @@ const buttonBase = css`
   border: 1px solid #4680ff;
   color: #4680ff;
   background: white;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 
   &:hover {
     background: #eef4ff;
@@ -165,12 +176,12 @@ const buttonBase = css`
 
 const CreateLink = styled(Link)`
   ${buttonBase}
+  width: 100%;
 `;
 
 const CreateButton = styled.button`
-  ${buttonBase}
-  opacity: 0.5;
-  cursor: not-allowed;
+  ${buttonBase}  
+  width: 100%;
 `;
 
 const Content = styled.div`

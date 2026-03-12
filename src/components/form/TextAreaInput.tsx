@@ -1,26 +1,29 @@
+import React from "react";
 import styled from "styled-components";
 
-const PasswordInput = ({
+const TextAreaInput = ({
   disabled,
   name,
   title,
   data,
   setData,
+  rows,
 }: {
   disabled?: boolean;
   name: string;
   title: string;
   data: string;
   setData: (v: string) => void;
+  rows?: number;
 }) => {
   return (
     <Container>
       <label htmlFor={name}>{title}</label>
-      <input
-        disabled={disabled}
-        type="password"
+      <textarea
         name={name}
         value={data}
+        rows={rows}
+        disabled={disabled}
         onChange={(e) => setData(e.target.value)}
         placeholder={`${title}을(를) 입력하세요`}
       />
@@ -28,7 +31,7 @@ const PasswordInput = ({
   );
 };
 
-export default PasswordInput;
+export default TextAreaInput;
 
 const Container = styled.div`
   width: 100%;
@@ -45,16 +48,17 @@ const Container = styled.div`
     font-size: 0.92rem;
   }
 
-  input {
+  textarea {
     width: 100%;
-    min-height: 46px;
+    min-height: 120px;
     padding: 12px 14px;
     border: 1px solid #dbe2ea;
     border-radius: 14px;
     background: #ffffff;
     box-sizing: border-box;
     color: #0f172a;
-    line-height: 1.5;
+    line-height: 1.6;
+    resize: vertical;
     transition: border-color 0.2s ease, box-shadow 0.2s ease,
       background-color 0.2s ease;
 
@@ -84,9 +88,9 @@ const Container = styled.div`
       font-size: 0.88rem;
     }
 
-    input {
+    textarea {
       font-size: 16px;
-      min-height: 44px;
+      min-height: 112px;
     }
   }
 `;

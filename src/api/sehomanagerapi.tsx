@@ -56,10 +56,7 @@ api.interceptors.response.use(
     if (error.response?.data?.detailMessage) {
       showToast(error.response.data.detailMessage);
     }
-    // 그 외의 에러도 같이 로깅
-    if (error.message) {
-      console.error(error.message);
-    }
+    
     console.error("⚠️ Axios Error:", error);
     return Promise.reject(error);
   }
@@ -80,9 +77,17 @@ const UserLogoutApi = async () => {
   return api.delete(`/user/logout`);
 };
 
+const getUserByUserApi = async () => {
+  return api.get(`/user/user`);
+}
+
 const getUserInfosApi = async () => {
   return api.get(`/user`);
 };
+
+const setUserIdsInfoApi = async (workspaceId: number, spaceId: number, projectId: number) => {
+  return api.post(`/user/setting/${workspaceId}/${spaceId}/${projectId}`);
+}
 
 const setUserWorkspaceId = async (workspaceId: number) => {
   return api.post(`/user/workspaces/${workspaceId}`);
@@ -104,7 +109,7 @@ const putOneWorkspaceApi = async (
   id: number,
   data: { name: string; slug: string }
 ) => {
-  return api.put(`/workspaces/${id}`, data);
+  return api.post(`/workspaces/${id}`, data);
 };
 
 const postWorkspaceInvite = async (payload: WorkspaceInviteType) => {
@@ -127,7 +132,7 @@ const putOneSpaceByWorkspaceAndSpaceApi = async (
   spaceId: number,
   data: { name: string; slug: string }
 ) => {
-  return api.put(`/workspace/${workspaceId}/spaces/${spaceId}`, data);
+  return api.post(`/workspace/${workspaceId}/spaces/${spaceId}`, data);
 };
 
 const getWorkspaceMembersApi = async (workspaceId: number) => {
@@ -164,7 +169,7 @@ const putOneProjectApi = async (
   projectId: number,
   data: ProjectRequestType
 ) => {
-  return api.put(`/projects/${projectId}/edit`, data);
+  return api.post(`/projects/${projectId}/edit`, data);
 };
 
 const getProjectMembersApi = async (projectId: number) => {
@@ -183,7 +188,7 @@ const putOneMilestoneApi = async (
   milestoneId: number,
   data: MilestoneRequestType
 ) => {
-  return api.put(`/milestones/${milestoneId}`, data);
+  return api.post(`/milestones/${milestoneId}`, data);
 };
 
 const getTasksByProjectApi = async (projectId: number) => {
@@ -194,12 +199,12 @@ const getOneTaskApi = async (taskId: number) => {
   return api.get(`/tasks/${taskId}`);
 };
 
-const getTasksByAssigneeApi = async (workspaceId: number) => {
-  return api.get(`/tasks/assignee/workspaces/${workspaceId}`);
+const getTasksByAssigneeApi = async (projectId: number) => {
+  return api.get(`/tasks/assignee/project/${projectId}`);
 };
 
 const putOneTaskApi = async (taskId: number, data: TaskUpdateRequestType) => {
-  return api.put(`/tasks/${taskId}/edit`, data);
+  return api.post(`/tasks/${taskId}/edit`, data);
 };
 
 const getTagsByProjectApi = async (projectId: number) => {
@@ -215,7 +220,7 @@ const getSprintsByProjectApi = async (projectId: number) => {
 };
 
 const putOneSprintApi = async (sprintId: number, data: SprintRequestType) => {
-  return api.put(`/sprints/${sprintId}`, data);
+  return api.post(`/sprints/${sprintId}`, data);
 };
 
 const createWorkspaceApi = async (data: WorkspaceRequestType) => {
@@ -265,6 +270,8 @@ export {
   UserLoginApi,
   UserSignupApi,
   UserLogoutApi,
+  setUserIdsInfoApi,
+  getUserByUserApi,
   setUserWorkspaceId,
   getWorkspacesTreeApi,
   getWorkspacesApi,

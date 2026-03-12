@@ -6,8 +6,7 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { WorkspaceRequestType, WorkspaceResponseType } from "../../types/type";
 import {
   getOneWorkspaceApi,
-  putOneWorkspaceApi,
-  setUserWorkspaceId,
+  putOneWorkspaceApi,  
 } from "../../api/sehomanagerapi";
 import {
   Container,
@@ -19,15 +18,13 @@ import {
 import { Section } from "../settings/SettingsLayout";
 import InviteBox from "./WorkspaceInviteBox";
 import { MdWorkspaces } from "react-icons/md";
-import CheckboxInput from "../../components/form/CheckInput";
 
 type TabKey = "info" | "members";
 
 const WorkspaceEditPage = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
-  const [defaultWorkspace, setDefaultWorkspace] = useState(false);
+  const [slug, setSlug] = useState("");  
   const [currentTab, setCurrentTab] = useState<TabKey>("info");
 
   useEffect(() => {
@@ -36,26 +33,9 @@ const WorkspaceEditPage = () => {
         const data: WorkspaceResponseType = res.data;
         setName(data.name);
         setSlug(data.slug);
-
-        if (id === localStorage.getItem("workspaceId")) {
-          setDefaultWorkspace(true);
-        }
       })
       .catch((err) => console.error(err));
   }, [id]);
-
-  useEffect(() => {
-    if (defaultWorkspace) {
-      setUserWorkspaceId(Number(id))
-        .then((res) => {
-          console.log(res);
-          localStorage.setItem("workspaceId", id ?? "");
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-  }, [defaultWorkspace, id]);
 
   const OnEditSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -113,13 +93,7 @@ const WorkspaceEditPage = () => {
               title="슬러그"
               data={slug}
               setData={setSlug}
-            />
-            <CheckboxInput
-              name="defaultWorkspace"
-              title="기본워크스페이스"
-              checked={defaultWorkspace}
-              setChecked={setDefaultWorkspace}
-            />
+            />            
             <ConfirmButton title="수정" onClick={OnEditSubmit} />
           </Section>
         ) : (

@@ -32,10 +32,16 @@ export default function SettingsLayout() {
         <Sidebar>
           <SidebarTitle>설정메뉴</SidebarTitle>
           <Nav>
+            <NavItem to={`/settings/userProjectId`} onClick={handleNavClick}>
+              대표 프로젝트 설정
+            </NavItem>
             <NavItem to={`/settings/workspaces`} onClick={handleNavClick}>
               워크스페이스
             </NavItem>
-            <NavItem to={`/settings/workspace/${workspaceId}/spaces`} onClick={handleNavClick}>
+            <NavItem
+              to={`/settings/workspace/${workspaceId}/spaces`}
+              onClick={handleNavClick}
+            >
               스페이스
             </NavItem>
             <NavItem to="/settings/profile" onClick={handleNavClick}>
@@ -145,10 +151,10 @@ export const ToggleButton = styled.button`
 `;
 
 export const Section = styled.section`
-  width: 100%;  
+  width: 100%;
   margin: 16px 0;
   background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);  
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 `;
 
 export const SectionHeader = styled.h4`

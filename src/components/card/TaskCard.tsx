@@ -6,18 +6,27 @@ import {
   CardContainer,
   EditButtonField,
   IdField,
-  InfoBoxField,  
+  InfoBoxField,
   CardWrapper,
   IconAndNameField,
 } from "./field/Field";
 import { SiGoogletasks } from "react-icons/si";
 import { GrInProgress } from "react-icons/gr";
+import { useLogin } from "../../context/LoginContext";
 
 const TaskCard = ({ task }: { task: TaskResponseType }) => {
   const navigate = useNavigate();
+  const { setIsTaskOpen, setTask } = useLogin();
+
+  const handleOpenTask = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+
+    setTask(task);
+    setIsTaskOpen(true);
+  };
 
   return (
-    <CardContainer onClick={() => navigate(`/tasks/${task.id}/edit`)}>
+    <CardContainer onClick={(e) => handleOpenTask(e)}>
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{task.id}</IdField>

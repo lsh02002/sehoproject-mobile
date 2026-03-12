@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 import { Menu } from "lucide-react";
 import SidebarMenu from "./MyMenu";
 import { useLogin } from "../../context/LoginContext";
+import TaskEditPage from "../../pages/task/TaskEditPage";
+import TaskCreatePage from "../../pages/task/TaskCreatePage";
 
 // 사용 예시
 // <HamburgerLayoutSC
@@ -35,13 +37,14 @@ export default function Layout({
   children,
 }: Props) {
   const [open, setOpen] = React.useState(false);
-  const { isMemuRefresh, setIsMenuRefresh } = useLogin();
+  const { isMemuRefresh, setIsMenuRefresh, isTaskOpen, setIsTaskOpen, task } =
+    useLogin();
 
   useEffect(() => {
     if (open) setIsMenuRefresh(!isMemuRefresh);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
-  
+
   // 포커스 트랩 단순 구현: 열릴 때 첫 링크에 포커스
   const firstLinkRef = React.useRef<HTMLAnchorElement | null>(null);
   React.useEffect(() => {
@@ -70,6 +73,13 @@ export default function Layout({
         aria-hidden={!open}
       />
 
+      <TaskOverLay
+        role="presentation"
+        $isTaskOpen={isTaskOpen}
+        onClick={() => setIsTaskOpen(false)}
+        aria-hidden={!open}
+      />
+
       {/* 사이드바 */}
       <Sidebar id="side-nav" $open={open} aria-hidden={!open}>
         <SidebarHeader>
@@ -84,6 +94,23 @@ export default function Layout({
         </Nav>
       </Sidebar>
 
+      <Taskbar id="side-nav" $open={isTaskOpen} aria-hidden={!isTaskOpen}>
+        <SidebarHeader>
+          <AppName>{"태스크 창"}</AppName>
+          <CloseX onClick={() => setIsTaskOpen(false)} aria-label="메뉴 닫기">
+            ×
+          </CloseX>
+        </SidebarHeader>
+
+        <Nav role="navigation" aria-label="주 메뉴">
+          {task ? (
+            <TaskEditPage windowOpenTaskId={task?.id} />
+          ) : (
+            <TaskCreatePage />
+          )}
+        </Nav>
+      </Taskbar>
+
       {/* 상단 바 (선택) */}
       <TopBar>
         <TopBarInner>
@@ -94,7 +121,7 @@ export default function Layout({
       {/* 메인 컨텐츠 */}
       <Main id="main">{children}</Main>
 
-      <LockBodyScroll when={open} />
+      <LockBodyScroll when={open || isTaskOpen} />
     </Container>
   );
 }
@@ -180,6 +207,22 @@ const Overlay = styled.div<{ $open: boolean }>`
     `}
 `;
 
+const TaskOverLay = styled.div<{ $isTaskOpen: boolean }>`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+  z-index: 40;
+  ${({ $isTaskOpen }) =>
+    $isTaskOpen &&
+    css`
+      opacity: 1;
+      pointer-events: auto;
+    `}
+`;
+
 const Sidebar = styled.aside<{ $open: boolean }>`
   position: fixed;
   top: 0;
@@ -195,6 +238,29 @@ const Sidebar = styled.aside<{ $open: boolean }>`
     $open &&
     css`
       transform: translateX(0);
+    `}
+`;
+
+const Taskbar = styled.aside<{ $open: boolean }>`
+  position: fixed;
+  top: 200px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(100%);
+  transition: transform 220ms ease;
+  z-index: 45;
+  border-radius: 20px 20px 0 0;  
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  ${({ $open }) =>
+    $open &&
+    css`
+      transform: translateY(0);
     `}
 `;
 
@@ -232,8 +298,10 @@ const CloseX = styled.button`
 
 const Nav = styled.nav`
   padding: 8px;
-  overflow-y: scroll;
-  height: (100% - 250px);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  margin-bottom: 80px;
   ul {
     list-style: none;
     padding: 0;

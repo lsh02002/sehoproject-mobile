@@ -36,23 +36,29 @@ export default CheckboxInput;
 const Container = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   flex-direction: column;
-  margin: 10px 0;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 16px 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  box-sizing: border-box;
 
   label {
     width: 100%;
     display: block;
-    margin-bottom: 8px;
-    color: #111827;
+    color: #0f172a;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
+    line-height: 1.4;
   }
 
   @media (max-width: 640px) {
+    padding: 14px 16px;
+
     label {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
     }
   }
 `;
@@ -66,39 +72,44 @@ const CheckboxWrapper = styled.div`
     appearance: none;
     width: 22px;
     height: 22px;
-    border: 2px solid #e5e7eb;
-    border-radius: 6px;
-    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 7px;
+    background: #f8fafc;
     cursor: pointer;
     transition: border-color 0.2s ease, background-color 0.2s ease,
-      box-shadow 0.2s ease;
-
+      box-shadow 0.2s ease, transform 0.2s ease;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    &:hover {
+      border-color: #6366f1;
+      background: #eef2ff;
+    }
+
     &:checked {
-      background-color: #3b82f6;
-      border-color: #3b82f6;
+      background-color: #4f46e5;
+      border-color: #4f46e5;
     }
 
     &:checked::after {
       content: "✓";
       color: white;
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 15px;
+      font-weight: 700;
     }
 
-    &:focus {
+    &:focus-visible {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.14);
     }
 
     &:disabled {
-      background: #f9fafb;
-      border-color: #d1d5db;
+      background: #f1f5f9;
+      border-color: #dbe2ea;
       cursor: not-allowed;
+      opacity: 0.72;
     }
   }
 `;

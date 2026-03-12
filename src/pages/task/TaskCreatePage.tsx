@@ -25,8 +25,11 @@ import {
   Wrapper,
 } from "../../components/pages-style/PageStyle";
 import { MdAddTask } from "react-icons/md";
+import { useLogin } from "../../context/LoginContext";
 
 const TaskCreatePage = () => {
+  const { isTaskOpen } = useLogin();
+
   const { projectIdParam } = useParams();
   const [projectId, setProjectId] = useState(projectIdParam);
   const [name, setName] = useState("");
@@ -63,6 +66,12 @@ const TaskCreatePage = () => {
   ];
 
   useEffect(() => {
+    if (isTaskOpen) {
+      setProjectId(String(localStorage.getItem("projectId")) ?? projectIdParam);
+    }
+  }, [isTaskOpen, projectIdParam]);
+
+  useEffect(() => {
     getUserInfosApi()
       .then((res) => {
         console.log(res.data);
@@ -74,14 +83,16 @@ const TaskCreatePage = () => {
   }, []);
 
   useEffect(() => {
-    getTagsByProjectApi(Number(projectId))
-      .then((res) => {
-        console.log(res);
-        setTagOptions(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if (projectId) {
+      getTagsByProjectApi(Number(projectId))
+        .then((res) => {
+          console.log(res);
+          setTagOptions(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }, [projectId]);
 
   const handleSetAssignees = (emails: string[]) => {
