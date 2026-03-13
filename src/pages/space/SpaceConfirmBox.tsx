@@ -13,7 +13,7 @@ import {
 import {  
   createSpaceAndProjectMembersApi,
   getProjectsBySpaceApi,
-  getWorkspaceMembersApi,
+  getUsersNotInSpaceApi,
 } from "../../api/sehomanagerapi";
 import { toast } from "react-toastify";
 
@@ -63,7 +63,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getWorkspaceMembersApi(Number(workspaceId))
+    getUsersNotInSpaceApi(Number(workspaceId), Number(spaceId))
       .then((res) => {
         console.log(res);
         setAcceptUsers(res.data);        
@@ -71,7 +71,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
       .catch((err) => {
         console.error(err);
       });
-  }, [workspaceId]);
+  }, [spaceId, workspaceId]);
 
   useEffect(() => {
     const wsIdNum = Number(spaceId);
