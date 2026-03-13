@@ -14,6 +14,7 @@ type ListLayoutProps = {
   emptyMessage?: string; // 빈 상태 메시지
   children: React.ReactNode;
   icon?: React.ReactNode;
+  componentType?: "null" | "task" | "sprint";
 };
 
 const ListLayout = ({
@@ -27,15 +28,24 @@ const ListLayout = ({
   emptyMessage = "표시할 항목이 없습니다.",
   children,
   icon,
+  componentType = "null",
 }: ListLayoutProps) => {
   const hasCreate = Boolean(to);
-  const { setIsTaskOpen, setTask } = useLogin();
+  const { setIsTaskOpen, setTask, setIsSprintOpen, setSprint } = useLogin();
 
-  const handleOpenTask = () => {
-    setTask(undefined);
-    
-    setIsTaskOpen(true);
-  }
+  const handleOpen = () => {
+    if (componentType === "task") {
+      setTask(undefined);
+      setIsTaskOpen(true);
+
+      return;
+    } else if (componentType === "sprint") {
+      setSprint(undefined);
+      setIsSprintOpen(true);
+
+      return;
+    }
+  };
 
   return (
     <Container>
@@ -67,7 +77,7 @@ const ListLayout = ({
               </CreateLink>
             ) : (
               // 링크가 없으면 비활성 버튼으로 노출 (UX 안전)
-              <CreateButton onClick={handleOpenTask}>
+              <CreateButton onClick={handleOpen}>
                 {createLabel ?? `${title ?? "항목"} 생성`}
               </CreateButton>
             )}
@@ -88,7 +98,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  padding: 24px 20px;  
+  padding: 24px 20px;
 `;
 
 const Wrapper = styled.div`
@@ -143,7 +153,7 @@ const CountBadge = styled.span`
 const Actions = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;  
+  width: 100%;
   gap: 10px;
 `;
 
@@ -180,7 +190,7 @@ const CreateLink = styled(Link)`
 `;
 
 const CreateButton = styled.button`
-  ${buttonBase}  
+  ${buttonBase}
   width: 100%;
 `;
 

@@ -5,6 +5,8 @@ import SidebarMenu from "./MyMenu";
 import { useLogin } from "../../context/LoginContext";
 import TaskEditPage from "../../pages/task/TaskEditPage";
 import TaskCreatePage from "../../pages/task/TaskCreatePage";
+import SprintEditPage from "../../pages/sprint/SprintEditPage";
+import SprintCreatePage from "../../pages/sprint/SprintCreatePage";
 
 // 사용 예시
 // <HamburgerLayoutSC
@@ -39,6 +41,8 @@ export default function Layout({
   const [open, setOpen] = React.useState(false);
   const { isMemuRefresh, setIsMenuRefresh, isTaskOpen, setIsTaskOpen, task } =
     useLogin();
+
+  const { isSprintOpen, setIsSprintOpen, sprint } = useLogin();
 
   useEffect(() => {
     if (open) setIsMenuRefresh(!isMemuRefresh);
@@ -80,6 +84,13 @@ export default function Layout({
         aria-hidden={!open}
       />
 
+      <SprintOverLay
+        role="presentation"
+        $isSprintOpen={isSprintOpen}
+        onClick={() => setIsSprintOpen(false)}
+        aria-hidden={!isSprintOpen}
+      />
+
       {/* 사이드바 */}
       <Sidebar id="side-nav" $open={open} aria-hidden={!open}>
         <SidebarHeader>
@@ -110,6 +121,27 @@ export default function Layout({
           )}
         </Nav>
       </Taskbar>
+
+      <Sprintbar
+        id="side-nav"
+        $isSprintOpen={isSprintOpen}
+        aria-hidden={!isSprintOpen}
+      >
+        <SidebarHeader>
+          <AppName>{"스프린트 창"}</AppName>
+          <CloseX onClick={() => setIsSprintOpen(false)} aria-label="메뉴 닫기">
+            ×
+          </CloseX>
+        </SidebarHeader>
+
+        <Nav role="navigation" aria-label="주 메뉴">
+          {sprint ? (
+            <SprintEditPage windowOpenSprintId={sprint?.id} />
+          ) : (
+            <SprintCreatePage />
+          )}
+        </Nav>
+      </Sprintbar>
 
       {/* 상단 바 (선택) */}
       <TopBar>
@@ -223,6 +255,22 @@ const TaskOverLay = styled.div<{ $isTaskOpen: boolean }>`
     `}
 `;
 
+const SprintOverLay = styled.div<{ $isSprintOpen: boolean }>`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+  z-index: 40;
+  ${({ $isSprintOpen }) =>
+    $isSprintOpen &&
+    css`
+      opacity: 1;
+      pointer-events: auto;
+    `}
+`;
+
 const Sidebar = styled.aside<{ $open: boolean }>`
   position: fixed;
   top: 0;
@@ -253,12 +301,35 @@ const Taskbar = styled.aside<{ $open: boolean }>`
   transform: translateY(100%);
   transition: transform 220ms ease;
   z-index: 45;
-  border-radius: 20px 20px 0 0;  
+  border-radius: 20px 20px 0 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   ${({ $open }) =>
     $open &&
+    css`
+      transform: translateY(0);
+    `}
+`;
+
+const Sprintbar = styled.aside<{ $isSprintOpen: boolean }>`
+  position: fixed;
+  top: 200px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(100%);
+  transition: transform 220ms ease;
+  z-index: 45;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  ${({ $isSprintOpen }) =>
+    $isSprintOpen &&
     css`
       transform: translateY(0);
     `}

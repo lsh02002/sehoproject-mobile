@@ -157,7 +157,7 @@ export type SprintRequestType = {
 };
 
 export type SprintResponseType = {
-  id: string;
+  id: number;
   projectId: number;
   name: string;
   state: string;

@@ -6,7 +6,7 @@ import {
   SetStateAction,
   useContext,
 } from "react";
-import { TaskResponseType } from "../types/type";
+import { SprintResponseType, TaskResponseType } from "../types/type";
 
 type LoginContextValue = {
   isLogin: boolean;
@@ -17,6 +17,10 @@ type LoginContextValue = {
   setIsTaskOpen: Dispatch<SetStateAction<boolean>>;
   task: TaskResponseType | undefined;
   setTask: Dispatch<SetStateAction<TaskResponseType | undefined>>;  
+  isSprintOpen: boolean;
+  setIsSprintOpen: Dispatch<SetStateAction<boolean>>;
+  sprint: SprintResponseType | undefined;
+  setSprint: Dispatch<SetStateAction<SprintResponseType | undefined>>;
 };
 
 export const LoginContext = createContext<LoginContextValue | undefined>(
@@ -28,6 +32,8 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [isMemuRefresh, setIsMenuRefresh] = useState(false);
   const [isTaskOpen, setIsTaskOpen] = useState(false);
   const [task, setTask] = useState<TaskResponseType>();
+  const [isSprintOpen, setIsSprintOpen] = useState(false);
+  const [sprint, setSprint] = useState<SprintResponseType>();
   
   const value: LoginContextValue = {
     isLogin,
@@ -38,6 +44,10 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
     setIsTaskOpen,
     task,
     setTask,
+    isSprintOpen,
+    setIsSprintOpen,
+    sprint,
+    setSprint,
   };
 
   return (

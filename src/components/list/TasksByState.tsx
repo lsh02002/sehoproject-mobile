@@ -13,7 +13,7 @@ const TasksByState = ({
   icon?: React.ReactNode;
 }) => {
   return (
-    <ListLayout title={title} icon={icon}>
+    <ListLayout title={title} icon={icon} componentType="task">
       {tasksByState?.length === 0 ? (
         <div>해당 태스크가 존재하지 않습니다.</div>
       ) : (

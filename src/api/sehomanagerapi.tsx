@@ -215,6 +215,10 @@ const getOneSprintApi = async (sprintId: number) => {
   return api.get(`/sprints/${sprintId}`);
 };
 
+const getSprintsByAssigneeApi = async (projectId: number) => {
+  return api.get(`/sprints/assignee/project/${projectId}`);
+};
+
 const getSprintsByProjectApi = async (projectId: number) => {
   return api.get(`/sprints/projects/${projectId}`);
 };
@@ -300,6 +304,7 @@ export {
   getTasksByAssigneeApi,
   getSprintsByProjectApi,
   getOneSprintApi,
+  getSprintsByAssigneeApi,  
   putOneSprintApi,
   createWorkspaceApi,
   createSpaceApi,

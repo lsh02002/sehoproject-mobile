@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
-import { TaskResponseType } from "../../../types/type";
-import { getTasksByAssigneeApi } from "../../../api/sehomanagerapi";
+import { SprintResponseType, TaskResponseType } from "../../../types/type";
+import {
+  getSprintsByAssigneeApi,
+  getTasksByAssigneeApi,
+} from "../../../api/sehomanagerapi";
 import TasksByState from "../../../components/list/TasksByState";
 import { GrInProgress } from "react-icons/gr";
 import { SiGoogletasks } from "react-icons/si";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
+import { GiSprint } from "react-icons/gi";
 import styled from "styled-components";
+import SprintsByState from "../../../components/list/SprintsByState";
 
 const TaskByAssigneePage = () => {
   const [myTasks, setMyTasks] = useState<TaskResponseType[] | null>([]);
+  const [mySprints, setMySprints] = useState<SprintResponseType[] | null>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -27,19 +33,37 @@ const TaskByAssigneePage = () => {
       });
   }, []);
 
+  useEffect(() => {
+    const projectId = localStorage.getItem("projectId");
+
+    getSprintsByAssigneeApi(Number(projectId))
+      .then((res) => {
+        console.log(res);
+        setMySprints(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
   const todoTasks = myTasks?.filter((task) => task.state === "TODO");
   const inProgressTasks = myTasks?.filter(
-    (task) => task.state === "IN_PROGRESS"
+    (task) => task.state === "IN_PROGRESS",
   );
-  const inDoneTasks = myTasks?.filter(
-    (task) => task.state === "DONE"
-  );
+  const inDoneTasks = myTasks?.filter((task) => task.state === "DONE");
 
   return (
     <>
       {!isLoading && (
         <TaskContainer>
-          <TasksByState title="TODO" tasksByState={todoTasks ?? []} icon={<SiGoogletasks />} />
+          <TasksByState
+            title="TODO"
+            tasksByState={todoTasks ?? []}
+            icon={<SiGoogletasks />}
+          />
           <TasksByState
             title="IN_PROGRESS"
             tasksByState={inProgressTasks ?? []}
@@ -49,6 +73,11 @@ const TaskByAssigneePage = () => {
             title="DONE"
             tasksByState={inDoneTasks ?? []}
             icon={<MdOutlineFileDownloadDone />}
+          />
+          <SprintsByState
+            title="스프린트"
+            sprintsByState={mySprints ?? []}
+            icon={<GiSprint />}
           />
         </TaskContainer>
       )}

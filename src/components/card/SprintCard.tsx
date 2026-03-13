@@ -6,17 +6,26 @@ import {
   CardContainer,
   EditButtonField,
   IdField,
-  InfoBoxField,  
+  InfoBoxField,
   CardWrapper,
   IconAndNameField,
 } from "./field/Field";
 import { GiSprint } from "react-icons/gi";
+import { useLogin } from "../../context/LoginContext";
 
 const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
   const navigate = useNavigate();
+  const { setSprint, setIsSprintOpen } = useLogin();
+
+  const handleOpenSprint = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+
+    setSprint(sprint);
+    setIsSprintOpen(true);
+  };
 
   return (
-    <CardContainer onClick={() => navigate(`/sprints/${sprint.id}/edit`)}>
+    <CardContainer onClick={(e) => handleOpenSprint(e)}>
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{sprint.id}</IdField>

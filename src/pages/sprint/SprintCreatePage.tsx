@@ -19,8 +19,11 @@ import {
   Wrapper,
 } from "../../components/pages-style/PageStyle";
 import { GiSprint } from "react-icons/gi";
+import { useLogin } from "../../context/LoginContext";
 
 const SprintCreatePage = () => {
+  const { isSprintOpen } = useLogin();
+
   const { projectIdParam } = useParams();
   const [projectId, setProjectId] = useState(projectIdParam);
   const [name, setName] = useState("");
@@ -35,6 +38,12 @@ const SprintCreatePage = () => {
     { label: "ACTIVE", value: "ACTIVE" },
     { label: "CLOSED", value: "CLOSED" },
   ];
+
+  useEffect(() => {
+    if (isSprintOpen) {
+      setProjectId(String(localStorage.getItem("projectId")) ?? projectIdParam);
+    }
+  }, [isSprintOpen, projectIdParam]);
 
   useEffect(() => {
     if (projectId) {
@@ -61,7 +70,7 @@ const SprintCreatePage = () => {
 
       setTaskIds(newTaskOptions);
     },
-    [projectId, taskOptions]
+    [projectId, taskOptions],
   );
 
   const OnCreateSubmit = () => {

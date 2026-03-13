@@ -21,7 +21,11 @@ import {
 } from "../../components/pages-style/PageStyle";
 import { GiSprint } from "react-icons/gi";
 
-const SprintEditPage = () => {
+const SprintEditPage = ({
+  windowOpenSprintId,
+}: {
+  windowOpenSprintId?: number;
+}) => {
   const { sprintId } = useParams();
   const [id, setId] = useState(sprintId);
   const [projectId, setProjectId] = useState("");
@@ -39,22 +43,24 @@ const SprintEditPage = () => {
   ];
 
   useEffect(() => {
-    getOneSprintApi(Number(sprintId))
-      .then((res) => {
-        console.log(res);
+    if (windowOpenSprintId || sprintId) {
+      getOneSprintApi(Number(windowOpenSprintId ?? sprintId))
+        .then((res) => {
+          console.log(res);
 
-        setId(res.data.id);
-        setProjectId(res.data.projectId);
-        setName(res.data.name);
-        setState(res.data.state);
-        setStartDate(res.data.startDate);
-        setEndDate(res.data.endDate);
-        setTaskIds(res.data.taskIds);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [sprintId]);
+          setId(res.data.id);
+          setProjectId(res.data.projectId);
+          setName(res.data.name);
+          setState(res.data.state);
+          setStartDate(res.data.startDate);
+          setEndDate(res.data.endDate);
+          setTaskIds(res.data.taskIds);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [sprintId, windowOpenSprintId]);
 
   useEffect(() => {
     if (projectId) {
@@ -81,7 +87,7 @@ const SprintEditPage = () => {
 
       setTaskIds(newTaskOptions);
     },
-    [projectId, taskOptions]
+    [projectId, taskOptions],
   );
 
   const OnEditSubmit = () => {
