@@ -66,6 +66,7 @@ const ListLayout = ({
                   {componentType === "sprint" && (
                     <Calendar
                       onClick={(e) => {
+                        e.stopPropagation();
                         navigator(`/sprints/projects/${projectId}/calendar`);
                       }}
                       style={{                        
@@ -73,6 +74,7 @@ const ListLayout = ({
                         height: "1.15em",
                         marginLeft: "0.25em",
                         flexShrink: 0,
+                        cursor: "pointer",
                       }}
                     />
                   )}

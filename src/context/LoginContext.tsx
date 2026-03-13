@@ -16,7 +16,7 @@ type LoginContextValue = {
   isTaskOpen: boolean;
   setIsTaskOpen: Dispatch<SetStateAction<boolean>>;
   task: TaskResponseType | undefined;
-  setTask: Dispatch<SetStateAction<TaskResponseType | undefined>>;  
+  setTask: Dispatch<SetStateAction<TaskResponseType | undefined>>;
   isSprintOpen: boolean;
   setIsSprintOpen: Dispatch<SetStateAction<boolean>>;
   sprint: SprintResponseType | undefined;
@@ -34,7 +34,7 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [task, setTask] = useState<TaskResponseType>();
   const [isSprintOpen, setIsSprintOpen] = useState(false);
   const [sprint, setSprint] = useState<SprintResponseType>();
-  
+
   const value: LoginContextValue = {
     isLogin,
     setIsLogin,
