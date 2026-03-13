@@ -14,7 +14,7 @@ const SprintsByState = ({
   return (
     <ListLayout title={title} icon={icon} componentType="sprint">
       {sprintsByState?.length === 0 ? (
-        <div>해당 태스크가 존재하지 않습니다.</div>
+        <div>해당 스프린트가 존재하지 않습니다.</div>
       ) : (
         sprintsByState?.map((sprint) => (
           <SprintCard key={sprint.id} sprint={sprint} />

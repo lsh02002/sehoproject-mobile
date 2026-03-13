@@ -7,6 +7,7 @@ import TaskEditPage from "../../pages/task/TaskEditPage";
 import TaskCreatePage from "../../pages/task/TaskCreatePage";
 import SprintEditPage from "../../pages/sprint/SprintEditPage";
 import SprintCreatePage from "../../pages/sprint/SprintCreatePage";
+import { BackwardButton } from "../form/BackwardButton";
 
 // 사용 예시
 // <HamburgerLayoutSC
@@ -72,23 +73,13 @@ export default function Layout({
       {/* 오버레이 */}
       <Overlay
         role="presentation"
-        $open={open}
-        onClick={() => setOpen(false)}
-        aria-hidden={!open}
-      />
-
-      <TaskOverLay
-        role="presentation"
-        $isTaskOpen={isTaskOpen}
-        onClick={() => setIsTaskOpen(false)}
-        aria-hidden={!open}
-      />
-
-      <SprintOverLay
-        role="presentation"
-        $isSprintOpen={isSprintOpen}
-        onClick={() => setIsSprintOpen(false)}
-        aria-hidden={!isSprintOpen}
+        $open={open || isTaskOpen || isSprintOpen}
+        onClick={() => {
+          setOpen(false);
+          setIsTaskOpen(false);
+          setIsSprintOpen(false);
+        }}
+        aria-hidden={!(open || isTaskOpen || isSprintOpen)}
       />
 
       {/* 사이드바 */}
@@ -151,7 +142,11 @@ export default function Layout({
       </TopBar>
 
       {/* 메인 컨텐츠 */}
-      <Main id="main">{children}</Main>
+      <Main id="main">
+        {/* 뒤로가기 버튼 */}
+        <BackwardButton />
+        {children}
+      </Main>
 
       <LockBodyScroll when={open || isTaskOpen} />
     </Container>
@@ -233,38 +228,6 @@ const Overlay = styled.div<{ $open: boolean }>`
   z-index: 40;
   ${({ $open }) =>
     $open &&
-    css`
-      opacity: 1;
-      pointer-events: auto;
-    `}
-`;
-
-const TaskOverLay = styled.div<{ $isTaskOpen: boolean }>`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.32);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 160ms ease;
-  z-index: 40;
-  ${({ $isTaskOpen }) =>
-    $isTaskOpen &&
-    css`
-      opacity: 1;
-      pointer-events: auto;
-    `}
-`;
-
-const SprintOverLay = styled.div<{ $isSprintOpen: boolean }>`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.32);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 160ms ease;
-  z-index: 40;
-  ${({ $isSprintOpen }) =>
-    $isSprintOpen &&
     css`
       opacity: 1;
       pointer-events: auto;

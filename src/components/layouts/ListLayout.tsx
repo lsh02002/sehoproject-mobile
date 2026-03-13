@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { useLogin } from "../../context/LoginContext";
+import { Calendar } from "lucide-react";
 
 type ListLayoutProps = {
   title?: string;
@@ -31,7 +32,9 @@ const ListLayout = ({
   componentType = "null",
 }: ListLayoutProps) => {
   const hasCreate = Boolean(to);
+  const navigator = useNavigate();
   const { setIsTaskOpen, setTask, setIsSprintOpen, setSprint } = useLogin();
+  const projectId = Number(localStorage.getItem("projectId"));
 
   const handleOpen = () => {
     if (componentType === "task") {
@@ -59,6 +62,19 @@ const ListLayout = ({
                   <Title>{title}</Title>
                   {typeof count === "number" && (
                     <CountBadge>{count}</CountBadge>
+                  )}
+                  {componentType === "sprint" && (
+                    <Calendar
+                      onClick={(e) => {
+                        navigator(`/sprints/projects/${projectId}/calendar`);
+                      }}
+                      style={{                        
+                        width: "1.15em",
+                        height: "1.15em",
+                        marginLeft: "0.25em",
+                        flexShrink: 0,
+                      }}
+                    />
                   )}
                 </TitleRow>
               )}

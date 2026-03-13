@@ -16,7 +16,7 @@ const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {
   const navigate = useNavigate();
 
   return (
-    <CardContainer onClick={() => navigate(`/milestones/${milestone.id}/edit`)}>
+    <CardContainer>
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{milestone.id}</IdField>

@@ -1,6 +1,5 @@
 import React from "react";
 import { SprintResponseType } from "../../types/type";
-import { useNavigate } from "react-router-dom";
 import {
   ButtonsField,
   CardContainer,
@@ -14,10 +13,9 @@ import { GiSprint } from "react-icons/gi";
 import { useLogin } from "../../context/LoginContext";
 
 const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
-  const navigate = useNavigate();
   const { setSprint, setIsSprintOpen } = useLogin();
 
-  const handleOpenSprint = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleOpenSprint = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
     setSprint(sprint);
@@ -25,7 +23,7 @@ const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
   };
 
   return (
-    <CardContainer onClick={(e) => handleOpenSprint(e)}>
+    <CardContainer>
       <CardWrapper>
         <InfoBoxField>
           <IdField>#{sprint.id}</IdField>
@@ -50,12 +48,7 @@ const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
         </InfoBoxField>
 
         <ButtonsField>
-          <EditButtonField
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/sprints/${sprint.id}/edit`);
-            }}
-          >
+          <EditButtonField onClick={(e) => handleOpenSprint(e)}>
             EDIT
           </EditButtonField>
         </ButtonsField>
