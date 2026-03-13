@@ -14,70 +14,42 @@ import SprintsByState from "../../../components/list/SprintsByState";
 import { useScroll } from "../../../context/ScrollContext";
 
 const TaskByAssigneePage = () => {
-  const [myTasks, setMyTasks] = useState<TaskResponseType[] | null>([]);
-  const [mySprints, setMySprints] = useState<SprintResponseType[] | null>([]);
+  const [myTasks, setMyTasks] = useState<TaskResponseType[]>([]);
+  const [mySprints, setMySprints] = useState<SprintResponseType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
   const boardRef = useRef<HTMLDivElement | null>(null);
   const { scroll, setScroll } = useScroll();
 
-  const scrollTimer = useRef<NodeJS.Timeout | null>(null);
+  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const isDown = useRef(false);
+  const isDragging = useRef(false);
   const startX = useRef(0);
   const startY = useRef(0);
-  const scrollLeft = useRef(0);
-  const scrollTop = useRef(0);
+  const startScrollLeft = useRef(0);
+  const startScrollTop = useRef(0);
 
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = boardRef.current;
     if (!el) return;
 
-    isDown.current = true;
+    isDragging.current = true;
     startX.current = e.pageX;
     startY.current = e.pageY;
-    scrollLeft.current = el.scrollLeft;
-    scrollTop.current = el.scrollTop;
+    startScrollLeft.current = el.scrollLeft;
+    startScrollTop.current = el.scrollTop;
 
     el.style.cursor = "grabbing";
-    el.style.userSelect = "none";
-  };
-
-  const onMouseLeave = () => {
-    const el = boardRef.current;
-    if (!el) return;
-
-    isDown.current = false;
-    el.style.cursor = "grab";
-    el.style.removeProperty("user-select");
-  };
-
-  const onMouseUp = () => {
-    const el = boardRef.current;
-    if (!el) return;
-
-    isDown.current = false;
-    el.style.cursor = "grab";
-    el.style.removeProperty("user-select");
-  };
-
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = boardRef.current;
-    if (!el || !isDown.current) return;
-
-    e.preventDefault();
-
-    const walkX = e.pageX - startX.current;
-    const walkY = e.pageY - startY.current;
-
-    el.scrollLeft = scrollLeft.current - walkX;
-    el.scrollTop = scrollTop.current - walkY;
+    document.body.style.userSelect = "none";
   };
 
   const handleScroll = () => {
     const el = boardRef.current;
     if (!el) return;
 
-    if (scrollTimer.current) clearTimeout(scrollTimer.current);
+    if (scrollTimer.current) {
+      clearTimeout(scrollTimer.current);
+    }
 
     scrollTimer.current = setTimeout(() => {
       setScroll({
@@ -88,55 +60,93 @@ const TaskByAssigneePage = () => {
   };
 
   useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const el = boardRef.current;
+      if (!el || !isDragging.current) return;
+
+      e.preventDefault();
+
+      const walkX = e.pageX - startX.current;
+      const walkY = e.pageY - startY.current;
+
+      el.scrollLeft = startScrollLeft.current - walkX;
+      el.scrollTop = startScrollTop.current - walkY;
+    };
+
+    const handleMouseUp = () => {
+      const el = boardRef.current;
+
+      isDragging.current = false;
+
+      if (el) {
+        el.style.cursor = "grab";
+      }
+
+      document.body.style.removeProperty("user-select");
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    const projectId = Number(localStorage.getItem("projectId"));
+
+    const fetchData = async () => {
+      try {
+        const [tasksRes, sprintsRes] = await Promise.all([
+          getTasksByAssigneeApi(projectId),
+          getSprintsByAssigneeApi(projectId),
+        ]);
+
+        setMyTasks(tasksRes.data ?? []);
+        setMySprints(sprintsRes.data ?? []);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     if (isLoading) return;
 
     const el = boardRef.current;
     if (!el) return;
 
     const timer = setTimeout(() => {
-      el.scrollTo(scroll.x, scroll.y);
+      el.scrollTo({
+        left: scroll.x,
+        top: scroll.y,
+        behavior: "auto",
+      });
     }, 0);
 
     return () => clearTimeout(timer);
   }, [isLoading, scroll.x, scroll.y]);
 
   useEffect(() => {
-    const projectId = localStorage.getItem("projectId");
-
-    getTasksByAssigneeApi(Number(projectId))
-      .then((res) => {
-        console.log(res);
-        setMyTasks(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    return () => {
+      if (scrollTimer.current) {
+        clearTimeout(scrollTimer.current);
+      }
+      document.body.style.removeProperty("user-select");
+    };
   }, []);
 
-  useEffect(() => {
-    const projectId = localStorage.getItem("projectId");
-
-    getSprintsByAssigneeApi(Number(projectId))
-      .then((res) => {
-        console.log(res);
-        setMySprints(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
-
-  const todoTasks = myTasks?.filter((task) => task.state === "TODO");
-  const inProgressTasks = myTasks?.filter(
+  const todoTasks = myTasks.filter((task) => task.state === "TODO");
+  const inProgressTasks = myTasks.filter(
     (task) => task.state === "IN_PROGRESS",
   );
-  const inDoneTasks = myTasks?.filter((task) => task.state === "DONE");
+  const inDoneTasks = myTasks.filter((task) => task.state === "DONE");
 
   return (
     <>
@@ -144,29 +154,26 @@ const TaskByAssigneePage = () => {
         <TaskContainer
           ref={boardRef}
           onScroll={handleScroll}
-          onMouseDown={onMouseDown}
-          onMouseLeave={onMouseLeave}
-          onMouseUp={onMouseUp}
-          onMouseMove={onMouseMove}
+          onMouseDown={handleMouseDown}
         >
           <TasksByState
             title="TODO"
-            tasksByState={todoTasks ?? []}
+            tasksByState={todoTasks}
             icon={<SiGoogletasks />}
           />
           <TasksByState
             title="IN_PROGRESS"
-            tasksByState={inProgressTasks ?? []}
+            tasksByState={inProgressTasks}
             icon={<GrInProgress />}
           />
           <TasksByState
             title="DONE"
-            tasksByState={inDoneTasks ?? []}
+            tasksByState={inDoneTasks}
             icon={<MdOutlineFileDownloadDone />}
           />
           <SprintsByState
             title="스프린트"
-            sprintsByState={mySprints ?? []}
+            sprintsByState={mySprints}
             icon={<GiSprint />}
           />
         </TaskContainer>
