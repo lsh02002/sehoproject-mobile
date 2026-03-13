@@ -354,7 +354,7 @@ const TopBar = styled.header`
 `;
 
 const TopBarInner = styled.div`
-  max-width: 1024px;
+  max-width: 640px;
   margin: 0 auto;
   height: 100%;
   display: flex;
@@ -368,7 +368,7 @@ const TopBarInner = styled.div`
 `;
 
 const Main = styled.main`
-  max-width: 768px;
+  max-width: 640px;
   margin: 0 auto;
   padding-bottom: 100px;
   @media (min-width: 768px) {

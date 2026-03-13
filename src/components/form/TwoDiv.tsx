@@ -7,7 +7,7 @@ export const TwoDiv = styled.div`
   align-items: start;
   gap: 16px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
     gap: 12px;
   }

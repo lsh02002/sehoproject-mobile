@@ -39,7 +39,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // ✅ 응답 인터셉터: 새 accessToken이 오면 자동 저장
@@ -56,10 +56,10 @@ api.interceptors.response.use(
     if (error.response?.data?.detailMessage) {
       showToast(error.response.data.detailMessage);
     }
-    
+
     console.error("⚠️ Axios Error:", error);
     return Promise.reject(error);
-  }
+  },
 );
 
 const UserLoginApi = async (email: string, password: string) => {
@@ -79,19 +79,23 @@ const UserLogoutApi = async () => {
 
 const getUserByUserApi = async () => {
   return api.get(`/user/user`);
-}
+};
 
 const getUserInfosApi = async () => {
   return api.get(`/user`);
 };
 
-const setUserIdsInfoApi = async (workspaceId: number, spaceId: number, projectId: number) => {
+const setUserIdsInfoApi = async (
+  workspaceId: number,
+  spaceId: number,
+  projectId: number,
+) => {
   return api.post(`/user/setting/${workspaceId}/${spaceId}/${projectId}`);
-}
+};
 
 const setUserWorkspaceId = async (workspaceId: number) => {
   return api.post(`/user/workspaces/${workspaceId}`);
-}
+};
 
 const getWorkspacesTreeApi = async (workspaceId: number) => {
   return api.get(`/workspaces/tree/${workspaceId}`);
@@ -107,7 +111,7 @@ const getOneWorkspaceApi = async (id: number) => {
 
 const putOneWorkspaceApi = async (
   id: number,
-  data: { name: string; slug: string }
+  data: { name: string; slug: string },
 ) => {
   return api.post(`/workspaces/${id}`, data);
 };
@@ -122,7 +126,7 @@ const getSpacesByWorkspaceApi = async (workspaceId: number) => {
 
 const getOneSpaceByWorkspaceAndSpaceApi = async (
   workspaceId: number,
-  spaceId: number
+  spaceId: number,
 ) => {
   return api.get(`/workspace/${workspaceId}/spaces/${spaceId}`);
 };
@@ -130,7 +134,7 @@ const getOneSpaceByWorkspaceAndSpaceApi = async (
 const putOneSpaceByWorkspaceAndSpaceApi = async (
   workspaceId: number,
   spaceId: number,
-  data: { name: string; slug: string }
+  data: { name: string; slug: string },
 ) => {
   return api.post(`/workspace/${workspaceId}/spaces/${spaceId}`, data);
 };
@@ -145,14 +149,14 @@ const getInvitationMessageApi = async () => {
 
 const postInvitationAcceptApi = async (
   workspaceId: number,
-  inviteId: number
+  inviteId: number,
 ) => {
   return api.post(`workspaces/${workspaceId}/invites/${inviteId}/accept`);
 };
 
 const postInvitationDeclineApi = async (
   workspaceId: number,
-  inviteId: number
+  inviteId: number,
 ) => {
   return api.post(`workspaces/${workspaceId}/invites/${inviteId}/decline`);
 };
@@ -167,14 +171,14 @@ const getOneProjectApi = async (projectId: number) => {
 
 const putOneProjectApi = async (
   projectId: number,
-  data: ProjectRequestType
+  data: ProjectRequestType,
 ) => {
   return api.post(`/projects/${projectId}/edit`, data);
 };
 
 const getProjectMembersApi = async (projectId: number) => {
   return api.get(`/projects/${projectId}/members`);
-}
+};
 
 const getMilestonesByProjectApi = async (projectId: number) => {
   return api.get(`/milestones/projects/${projectId}`);
@@ -186,7 +190,7 @@ const getOneMilestoneApi = async (milestoneId: number) => {
 
 const putOneMilestoneApi = async (
   milestoneId: number,
-  data: MilestoneRequestType
+  data: MilestoneRequestType,
 ) => {
   return api.post(`/milestones/${milestoneId}`, data);
 };
@@ -235,12 +239,16 @@ const createSpaceApi = async (workspaceId: number, data: SpaceRequestType) => {
   return api.post(`/workspace/${workspaceId}/spaces/create`, data);
 };
 
-const createSpaceMemberApi = async (
+const createSpaceAndProjectMembersApi = async (
   workspaceId: number,
   spaceId: number,
-  data: AddMemberRequestType
-) => {
-  return api.post(`/workspaces/${workspaceId}/spaces/${spaceId}/members`, data);
+  projectIds: number[],
+  reqList: AddMemberRequestType[],
+) => {  
+  return api.post(`/workspaces/${workspaceId}/spaces/${spaceId}/members`, {
+    projectIds,
+    reqList,
+  });
 };
 
 const createProjectApi = async (data: ProjectRequestType) => {
@@ -249,7 +257,7 @@ const createProjectApi = async (data: ProjectRequestType) => {
 
 const createProjectMemberApi = async (
   projectId: number,
-  data: AddMemberRequestType
+  data: AddMemberRequestType,
 ) => {
   return api.post(`/projects/${projectId}/members`, data);
 };
@@ -268,7 +276,7 @@ const createMilestoneApi = async (data: MilestoneRequestType) => {
 
 const getLogMessagesByUserApi = async () => {
   return api.get(`/activitylog/user`);
-}
+};
 
 export {
   UserLoginApi,
@@ -304,11 +312,11 @@ export {
   getTasksByAssigneeApi,
   getSprintsByProjectApi,
   getOneSprintApi,
-  getSprintsByAssigneeApi,  
+  getSprintsByAssigneeApi,
   putOneSprintApi,
   createWorkspaceApi,
   createSpaceApi,
-  createSpaceMemberApi,
+  createSpaceAndProjectMembersApi,
   createProjectApi,
   createProjectMemberApi,
   createTaskApi,

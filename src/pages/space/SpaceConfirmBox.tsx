@@ -5,14 +5,13 @@ import TextInput from "../../components/form/TextInput";
 import SelectInput from "../../components/form/SelectInput";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import {
+import {  
   RequestRoleType,
   RoleProjectType,
   UsersInfoType,
 } from "../../types/type";
-import {
-  createProjectMemberApi,
-  createSpaceMemberApi,
+import {  
+  createSpaceAndProjectMembersApi,
   getProjectsBySpaceApi,
   getWorkspaceMembersApi,
 } from "../../api/sehomanagerapi";
@@ -50,7 +49,9 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
   spaceId,
 }) => {
   // 폼 상태
-  const [invitedUserEmail, setInvitedUserEmail] = useState("");
+  const [invitedUserEmails, setInvitedUserEmails] = useState<string[]>(
+    [],
+  );
   const [acceptedUsers, setAcceptUsers] = useState<UsersInfoType[]>([]);
   const [requestRole, setRequestRole] = useState<RequestRoleType>("VIEWER");
   const [roleProject, setRoleProject] = useState<RoleProjectType>("VIEWER");
@@ -65,8 +66,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
     getWorkspaceMembersApi(Number(workspaceId))
       .then((res) => {
         console.log(res);
-        setAcceptUsers(res.data);
-        setInvitedUserEmail(res.data[0]?.email);
+        setAcceptUsers(res.data);        
       })
       .catch((err) => {
         console.error(err);
@@ -75,16 +75,12 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
 
   useEffect(() => {
     const wsIdNum = Number(spaceId);
-    if (!Number.isFinite(wsIdNum)) {
-      setProjects([]);
-      return;
-    }
+    
     setLoading(true);
     getProjectsBySpaceApi(wsIdNum)
       .then((res) => setProjects(res.data))
       .catch((err) => {
-        console.error(err);
-        setProjects([]);
+        console.error(err);        
       })
       .finally(() => setLoading(false));
   }, [spaceId]);
@@ -96,7 +92,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
         label: p.name,
         value: String(p.id),
       })),
-    [projects]
+    [projects],
   );
 
   type SubmitValues = {
@@ -118,78 +114,32 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
       new Set(
         (projectIds ?? [])
           .map((id) => Number(id))
-          .filter((n) => Number.isFinite(n))
-      )
+          .filter((n) => Number.isFinite(n)),
+      ),
     );
 
-    try {
-      // 1) 워크스페이스 멤버 생성
-      const workspaceRes = await createSpaceMemberApi(
-        Number(workspaceId),
-        Number(spaceId),
-        {
-          email: invitedUserEmail,
-          requestRole,
-          roleProject: roleProject ?? "VIEWER", // may be undefined → omitted server-side
-          note: noteTrimmed,
-        }
-      );
-
-      console.log(workspaceRes);
-
-      // 2) 프로젝트 권한 (선택): 프로젝트가 있고 + roleProject가 명시된 경우만
-      let projectResults: PromiseSettledResult<unknown>[] | undefined =
-        undefined;
-
-      if (projectIdList.length > 0 && roleProject) {
-        const calls = projectIdList.map((projectId) =>
-          createProjectMemberApi(projectId, {
-            email: invitedUserEmail,
-            requestRole,
-            roleProject,
-            note: noteTrimmed,
-          })
-        );
-
-        projectResults = await Promise.allSettled(calls);
-        projectResults.forEach((r) => {
-          if (r.status === "fulfilled") {
-            console.log(r.value);
-          } else {
-            console.error(r.reason);
-          }
-        });
-      }
-
-      // Toast logic
-      if (!projectResults) {
-        // Only workspace invite was attempted
-        toast.success("권한부여에 성공했습니다.");
-        return;
-      }
-
-      const failed = projectResults.filter(
-        (r) => r.status === "rejected"
-      ).length;
-      const total = projectResults.length;
-
-      if (failed === 0) {
-        toast.success("권한부여에 성공했습니다.");
-      } else if (failed < total) {
-        toast.success(
-          `일부 프로젝트에만 권한 부여가 완료되었습니다. (${
-            total - failed
-          }/${total})`
-        );
-      }
-    } catch (err) {
-      // If workspace creation fails, we shouldn’t proceed or claim success
-      console.error(err);
-    }
+    createSpaceAndProjectMembersApi(
+      Number(workspaceId),
+      Number(spaceId),
+      projectIdList,
+      invitedUserEmails.map((email) => ({
+        email,
+        requestRole,
+        roleProject: roleProject ?? "VIEWER",
+        note: noteTrimmed,
+      })),
+    )
+      .then((res) => {
+        console.log(res);
+        toast.success("권한 부여에 성공했습니다!");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const handleClickSave: React.MouseEventHandler<HTMLButtonElement> = async (
-    e
+    e,
   ) => {
     e.preventDefault();
     await onSubmit({
@@ -228,11 +178,11 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
           </TwoCol>
 
           <TwoCol>
-            <SelectInput
+            <SelectArrayInput
               name="invitedUserEmail"
               title="대상 유저(이메일)"
-              value={invitedUserEmail}
-              setValue={setInvitedUserEmail}
+              values={invitedUserEmails}
+              setValues={setInvitedUserEmails}
               options={acceptedUsers?.map((user) => ({
                 label: user.email,
                 value: user.email,

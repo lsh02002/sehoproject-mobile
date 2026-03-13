@@ -361,22 +361,3 @@ export type ActivityLogResponseType = {
   message: string;
   createdAt: string;
 };
-
-export type ImageResponseType = {
-  id: number;
-  diaryId: number;
-  uploaderId: number;
-  fileName: string;
-  fileUrl: string;
-  mimeType: string;
-  sizeBytes: number;
-  deleted: boolean;
-};
-
-export type EmotionResponseType = {
-  id: number;
-  name: string;
-  emoji: string;
-  createdAt: string;
-  updatedAt: string;
-}
