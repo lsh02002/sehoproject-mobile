@@ -4,22 +4,16 @@ import TextInput from "../../components/form/TextInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import SelectInput from "../../components/form/SelectInput";
 import { toast } from "react-toastify";
-import { getUsersNotInWorkpaceApi, postWorkspaceInvite, showToast } from "../../api/sehomanagerapi";
-import { WorkspaceInviteType } from "../../types/type";
+import { getUsersNotInWorkpaceApi, postWorkspaceInvite } from "../../api/sehomanagerapi";
+import { UsersInfoType, WorkspaceInviteType } from "../../types/type";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 // 필요 시: import { toast } from "react-toastify";
-
-type UserLite = {
-  assigneeId: number | string;
-  email: string;
-  name?: string;
-};
 
 const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
   const [invitedUserEmails, setInvitedUserEmails] = useState<string[]>([]);
   const [requestedRole, setRequestedRole] = useState<string>("MEMBER");
   const [message, setMessage] = useState<string>("");
-  const [users, setUsers] = useState<UserLite[]>([]);
+  const [users, setUsers] = useState<UsersInfoType[]>([]);
 
   useEffect(() => {
     getUsersNotInWorkpaceApi(workspaceId)
