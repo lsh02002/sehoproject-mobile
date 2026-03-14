@@ -116,13 +116,17 @@ const putOneWorkspaceApi = async (
   return api.post(`/workspaces/${id}`, data);
 };
 
-const postWorkspaceInvite = async (payload: WorkspaceInviteType) => {
-  return api.post(`/workspaces/invites`, payload);
+const postWorkspaceInvite = async (requestList: WorkspaceInviteType[]) => {
+  return api.post(`/workspaces/invites`, requestList);
 };
 
 const getSpacesByWorkspaceApi = async (workspaceId: number) => {
   return api.get(`/workspace/${workspaceId}/spaces`);
 };
+
+const getUsersNotInWorkpaceApi = async (workspaceId: number) => {
+  return api.get(`/workspaces/${workspaceId}/usersNotInWorkspace`);
+}
 
 const getOneSpaceByWorkspaceAndSpaceApi = async (
   workspaceId: number,
@@ -288,6 +292,7 @@ export {
   getWorkspacesTreeApi,
   getWorkspacesApi,
   getOneWorkspaceApi,
+  getUsersNotInWorkpaceApi,
   putOneWorkspaceApi,
   postWorkspaceInvite,
   getUsersNotInSpaceApi,

@@ -4,8 +4,9 @@ import TextInput from "../../components/form/TextInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import SelectInput from "../../components/form/SelectInput";
 import { toast } from "react-toastify";
-import { getUserInfosApi, postWorkspaceInvite } from "../../api/sehomanagerapi";
+import { getUsersNotInWorkpaceApi, postWorkspaceInvite, showToast } from "../../api/sehomanagerapi";
 import { WorkspaceInviteType } from "../../types/type";
+import SelectArrayInput from "../../components/form/SelectArrayInput";
 // 필요 시: import { toast } from "react-toastify";
 
 type UserLite = {
@@ -15,28 +16,27 @@ type UserLite = {
 };
 
 const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
-  const [invitedUserId, setInvitedUserId] = useState<string>("");
+  const [invitedUserEmails, setInvitedUserEmails] = useState<string[]>([]);
   const [requestedRole, setRequestedRole] = useState<string>("MEMBER");
   const [message, setMessage] = useState<string>("");
   const [users, setUsers] = useState<UserLite[]>([]);
 
   useEffect(() => {
-    getUserInfosApi()
+    getUsersNotInWorkpaceApi(workspaceId)
       .then((res) => {
         console.log(res);
         setUsers(res.data);
-        setInvitedUserId(res.data[0].assigneeId);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [workspaceId]);
 
   const userOptions = useMemo(
     () =>
       users?.map((u) => ({
         label: u.email,
-        value: String(u.assigneeId),
+        value: u.email,
       })) ?? [],
     [users]
   );
@@ -52,20 +52,14 @@ const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
   );
 
   const handleSubmit = async () => {
-    const numId = Number(invitedUserId);
-
-    if (!invitedUserId || Number.isNaN(numId)) {
-      alert("초대할 유저를 선택하세요."); // 필요 시 toast로 교체
-      return;
-    }
-    const payload: WorkspaceInviteType = {
-      invitedUserId: numId,
+    const payloads: WorkspaceInviteType[] = invitedUserEmails.map((email) =>({
+      invitedUserEmail: email,
       message: message?.trim() ? message : null,
       requestedRole: requestedRole || null,
       workspaceId: workspaceId ?? null,
-    };
+  }));
 
-    postWorkspaceInvite(payload)
+    postWorkspaceInvite(payloads)
       .then((res) => {
         console.log(res);
         toast.success?.("초대 완료");
@@ -83,12 +77,12 @@ const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
 
       <Body>
         {/* 이메일 선택 */}
-        <SelectInput
-          name="invitedUserId"
+        <SelectArrayInput
+          name="invitedUserEmail"
           title="이메일"
-          value={invitedUserId}
+          values={invitedUserEmails}
           // 프로젝트의 SelectInput 시그니처가 onChange(event)라면 아래와 같이:
-          setValue={setInvitedUserId}
+          setValues={setInvitedUserEmails}
           options={userOptions}
         />
 

@@ -325,7 +325,7 @@ export type SprintCalendarType = {
 };
 
 export type WorkspaceInviteType = {
-  invitedUserId: number;
+  invitedUserEmail: string;
   message: string | null;
   requestedRole: string | null;
   workspaceId: number;
