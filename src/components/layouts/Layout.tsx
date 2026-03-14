@@ -237,9 +237,7 @@ const Overlay = styled.div<{ $open: boolean }>`
 const Sidebar = styled.aside<{ $open: boolean }>`
   position: fixed;
   top: 0;
-  left: 0;
-  height: 100vh;
-  width: 320px;
+  left: 0;  
   background: white;
   box-shadow: 2px 0 16px rgba(0, 0, 0, 0.08);
   transform: translateX(-100%);
@@ -267,6 +265,7 @@ const Taskbar = styled.aside<{ $open: boolean }>`
   border-radius: 20px 20px 0 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   overflow: hidden;
   ${({ $open }) =>
     $open &&
@@ -290,6 +289,7 @@ const Sprintbar = styled.aside<{ $isSprintOpen: boolean }>`
   border-radius: 20px 20px 0 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   overflow: hidden;
   ${({ $isSprintOpen }) =>
     $isSprintOpen &&
@@ -304,13 +304,15 @@ const SidebarHeader = styled.div`
   justify-content: space-between;
   height: 56px;
   padding: 0 16px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;  
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const AppName = styled.h2`
   margin: 0;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 700; 
 `;
 
 const CloseX = styled.button`
@@ -331,11 +333,14 @@ const CloseX = styled.button`
 `;
 
 const Nav = styled.nav`
-  padding: 8px;
-  overflow-y: auto;
+  width: 100%;
+  padding: 8px;  
   flex: 1;
   min-height: 0;
   margin-bottom: 80px;
+  max-width: 640px;
+  overflow: auto;
+  scrollbar-width: thin;
   ul {
     list-style: none;
     padding: 0;

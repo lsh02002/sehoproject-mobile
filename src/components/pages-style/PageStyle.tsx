@@ -6,7 +6,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
-  box-sizing: border-box;
+  box-sizing: border-box;  
 `;
 
 export const Wrapper = styled.div`
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: column;  
 `;
 
 export const Title = styled.div`

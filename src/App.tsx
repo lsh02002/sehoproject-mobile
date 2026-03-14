@@ -36,6 +36,7 @@ import { ProjectDefaultsSettingsPage } from "./pages/settings/ProjectDefaultsSet
 import { SecuritySettingsPage } from "./pages/settings/SecuritySettingsPage";
 import { InvitationMessageBoxPage } from "./pages/accept-decline/InvitationMessageBoxPage";
 import { UserProjectIdSettingsPage } from "./pages/settings/UserProjectIdSettingsPage";
+import InboxPage from "./pages/inbox/InboxPage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -101,7 +102,7 @@ function App() {
         <Route path="/task-list" element={<TaskByAssigneePage />} />
 
         <Route path="/settings" element={<SettingsLayout />}>
-        <Route path="userProjectId" element={<UserProjectIdSettingsPage />} />
+          <Route path="userProjectId" element={<UserProjectIdSettingsPage />} />
           <Route path="workspaces" element={<WorkspaceListPage />} />
           <Route path="workspace/:id/edit" element={<WorkspaceEditPage />} />
           <Route path="workspaces/create" element={<WorkspaceCreatePage />} />
@@ -117,7 +118,10 @@ function App() {
             path="workspace/:workspaceId/spaces/create"
             element={<SpaceCreatePage />}
           />
-          <Route path="invitation-message" element={<InvitationMessageBoxPage />} />
+          <Route
+            path="invitation-message"
+            element={<InvitationMessageBoxPage />}
+          />
           <Route path="profile" element={<ProfileSettingsPage />} />
           <Route path="preferences" element={<PreferencesSettingsPage />} />
           <Route path="notifications" element={<NotificationsSettingsPage />} />
@@ -127,6 +131,7 @@ function App() {
           />
           <Route path="security" element={<SecuritySettingsPage />} />
         </Route>
+        <Route path="inbox" element={<InboxPage />} />
       </Routes>
 
       <StyledToastContainer
