@@ -94,7 +94,7 @@ const SprintCalendarPage = () => {
         display: "block",
         color: getStableColor(sprint.id),
       })),
-    [sprints]
+    [sprints],
   );
 
   // 이전/현재/다음 달 계산
@@ -128,79 +128,136 @@ const SprintCalendarPage = () => {
   };
 
   return (
-    <div
-      className="sprint-page"
-      style={{ padding: "20px", boxSizing: "border-box" }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <GiSprint />
-        <h3>스프린트 달력</h3>
-      </div>
-      {/* 상단 커스텀 헤더 */}
+    <>
+      <style>{`
+  .bootstrap-calendar .fc {
+    font-family: inherit;
+  }
+
+  .bootstrap-calendar .fc-theme-standard td,
+  .bootstrap-calendar .fc-theme-standard th {
+    border-color: var(--bs-border-color);
+  }
+
+  .bootstrap-calendar .fc-col-header-cell {
+    background-color: var(--bs-light);
+    padding: 0.75rem 0;
+    font-weight: 600;
+  }
+
+  .bootstrap-calendar .fc-daygrid-day {
+    transition: background-color 0.15s ease;
+  }
+
+  .bootstrap-calendar .fc-daygrid-day:hover {
+    background-color: var(--bs-light);
+  }
+
+  .bootstrap-calendar .fc-day-today {
+    background-color: rgba(var(--bs-primary-rgb), 0.08) !important;
+  }
+
+  .bootstrap-calendar .fc-daygrid-day-number {
+    color: var(--bs-body-color);
+    text-decoration: none;
+    padding: 0.5rem;
+    font-weight: 500;
+  }
+
+  .bootstrap-calendar .fc-event {
+    // border-radius: 999px !important;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  .bootstrap-calendar .fc-event-title {
+    color: #fff;
+  }
+`}</style>
       <div
-        style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}
+        className="sprint-page bootstrap-calendar"
+        style={{ padding: "20px", boxSizing: "border-box" }}
       >
-        <h2 style={{ margin: 0 }}>{formatYM(currMonth)}</h2>
+        <div className="container-fluid p-3 sprint-page">
+          {/* 헤더 */}
+          <div className="d-flex align-items-center gap-2 mb-2">
+            <GiSprint />
+            <h3 className="mb-0">스프린트 달력</h3>
+          </div>
+
+          {/* 월 표시 */}
+          <div className="d-flex justify-content-center mb-2">
+            <h2 className="mb-0">{formatYM(currMonth)}</h2>
+          </div>
+
+          {/* 캘린더 영역 */}
+          <div style={{ height: 720 }}>
+            <Swiper
+              modules={[A11y, Mousewheel]}
+              initialSlide={1}
+              onSlideChange={handleSlideChange}
+              onTransitionEnd={handleTransitionEnd}
+              mousewheel={{ forceToAxis: true }}
+              simulateTouch
+              allowTouchMove
+              grabCursor
+              slidesPerView={1}
+              className="h-100"
+            >
+              {/* 이전 달 */}
+              <SwiperSlide>
+                <FullCalendar
+                  key={`prev-${ymKey(prevMonth)}`}
+                  height={"700px"}
+                  initialView="dayGridMonth"
+                  initialDate={prevMonth}
+                  plugins={[dayGridPlugin, interactionPlugin]}
+                  locale={koLocale}
+                  headerToolbar={false}
+                  events={events}
+                  viewClassNames="bootstrap-calendar"
+                  dayCellClassNames="border bg-white"
+                />
+              </SwiperSlide>
+
+              {/* 현재 달 */}
+              <SwiperSlide>
+                <FullCalendar
+                  key={`curr-${ymKey(currMonth)}`}
+                  height={"700px"}
+                  initialView="dayGridMonth"
+                  initialDate={currMonth}
+                  plugins={[dayGridPlugin, interactionPlugin]}
+                  locale={koLocale}
+                  headerToolbar={false}
+                  events={events}
+                  viewClassNames="bootstrap-calendar"
+                  dayCellClassNames="border bg-white"
+                />
+              </SwiperSlide>
+
+              {/* 다음 달 */}
+              <SwiperSlide>
+                <FullCalendar
+                  key={`next-${ymKey(nextMonth)}`}
+                  height={"700px"}
+                  initialView="dayGridMonth"
+                  initialDate={nextMonth}
+                  plugins={[dayGridPlugin, interactionPlugin]}
+                  locale={koLocale}
+                  headerToolbar={false}
+                  events={events}
+                  viewClassNames="bootstrap-calendar"
+                  dayCellClassNames="border bg-white"
+                />
+              </SwiperSlide>
+            </Swiper>
+          </div>
+        </div>
       </div>
-
-      <div style={{ height: 720 }}>
-        <Swiper
-          modules={[A11y, Mousewheel]}
-          initialSlide={1} // 0: 이전, 1: 현재, 2: 다음
-          onSlideChange={handleSlideChange}
-          onTransitionEnd={handleTransitionEnd}
-          mousewheel={{ forceToAxis: true }}
-          simulateTouch
-          allowTouchMove
-          grabCursor
-          slidesPerView={1}
-          spaceBetween={0}
-          style={{ height: "100%" }}
-        >
-          {/* 이전 달 */}
-          <SwiperSlide>
-            <FullCalendar
-              key={`prev-${ymKey(prevMonth)}`} // 🔑 리마운트 트리거
-              height={"700px"}
-              initialView="dayGridMonth"
-              initialDate={prevMonth}
-              plugins={[dayGridPlugin, interactionPlugin]}
-              locale={koLocale}
-              headerToolbar={false}
-              events={events}
-            />
-          </SwiperSlide>
-
-          {/* 현재 달 */}
-          <SwiperSlide>
-            <FullCalendar
-              key={`curr-${ymKey(currMonth)}`} // 🔑 리마운트 트리거
-              height={"700px"}
-              initialView="dayGridMonth"
-              initialDate={currMonth}
-              plugins={[dayGridPlugin, interactionPlugin]}
-              locale={koLocale}
-              headerToolbar={false}
-              events={events}
-            />
-          </SwiperSlide>
-
-          {/* 다음 달 */}
-          <SwiperSlide>
-            <FullCalendar
-              key={`next-${ymKey(nextMonth)}`} // 🔑 리마운트 트리거
-              height={"700px"}
-              initialView="dayGridMonth"
-              initialDate={nextMonth}
-              plugins={[dayGridPlugin, interactionPlugin]}
-              locale={koLocale}
-              headerToolbar={false}
-              events={events}
-            />
-          </SwiperSlide>
-        </Swiper>
-      </div>
-    </div>
+    </>
   );
 };
 
