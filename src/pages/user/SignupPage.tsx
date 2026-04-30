@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserSignupApi } from "../../api/sehomanagerapi";
 import { UserSignupType } from "../../types/type";
 import TextInput from "../../components/form/TextInput";
-import PasswordInput from "../../components/form/PasswordInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { FaRegistered } from "react-icons/fa6";
+import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -63,14 +63,14 @@ const SignupPage = () => {
           setData={setNickname}
         />
 
-        <PasswordInput
+        <PasswordVisibleInput
           name="password"
           title="비밀번호"
           data={password}
           setData={setPassword}
         />
 
-        <PasswordInput
+        <PasswordVisibleInput
           name="passwordConfirm"
           title="비밀번호 확인"
           data={passwordConfirm}

@@ -3,9 +3,9 @@ import { useLogin } from "../../context/LoginContext";
 import { Link, useNavigate } from "react-router-dom";
 import { UserLoginApi } from "../../api/sehomanagerapi";
 import TextInput from "../../components/form/TextInput";
-import PasswordInput from "../../components/form/PasswordInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { SlLogin } from "react-icons/sl";
+import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ const LoginPage = () => {
           data={email}
           setData={setEmail}
         />
-        <PasswordInput
+        <PasswordVisibleInput
           name="password"
           title="비밀 번호"
           data={password}
