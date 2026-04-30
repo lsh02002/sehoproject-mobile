@@ -1,12 +1,5 @@
 import { useState } from "react";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { TwoDiv } from "../../components/form/TwoDiv";
-import {
-  FooterBar,
-  Section,
-  SectionHeader,
-  SettingsContainer,
-} from "./SettingsLayout";
 import PasswordInput from "../../components/form/PasswordInput";
 
 export function SecuritySettingsPage() {
@@ -15,27 +8,34 @@ export function SecuritySettingsPage() {
   const onSave = () => alert("보안 설정이 저장되었습니다.");
 
   return (
-    <SettingsContainer>
-      <Section>
-        <SectionHeader>보안</SectionHeader>
-        <TwoDiv>
-          <PasswordInput
-            name="newPassword"
-            title="새 비밀번호"
-            data={newPassword}
-            setData={setNewPassword}
-          />
-          <PasswordInput
-            name="confirmPassword"
-            title="새 비밀번호 확인"
-            data={confirmPassword}
-            setData={setConfirmPassword}
-          />
-        </TwoDiv>
-        <FooterBar>
+    <div className="p-3">
+      <section className="bg-white shadow-sm p-3 mb-3">
+        <h4 className="fw-bold mb-3 text-dark">보안</h4>
+
+        <div className="row g-3">
+          <div className="col-12 col-md-6">
+            <PasswordInput
+              name="newPassword"
+              title="새 비밀번호"
+              data={newPassword}
+              setData={setNewPassword}
+            />
+          </div>
+
+          <div className="col-12 col-md-6">
+            <PasswordInput
+              name="confirmPassword"
+              title="새 비밀번호 확인"
+              data={confirmPassword}
+              setData={setConfirmPassword}
+            />
+          </div>
+        </div>
+
+        <div className="position-sticky bottom-0 bg-white pt-3 mt-3 border-top">
           <ConfirmButton title="저장하기" onClick={onSave} />
-        </FooterBar>
-      </Section>
-    </SettingsContainer>
+        </div>
+      </section>
+    </div>
   );
 }

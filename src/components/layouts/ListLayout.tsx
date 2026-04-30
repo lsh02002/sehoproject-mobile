@@ -1,18 +1,17 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styled, { css } from "styled-components";
 import { useLogin } from "../../context/LoginContext";
 import { Calendar } from "lucide-react";
 
 type ListLayoutProps = {
   title?: string;
-  subtitle?: string; // 제목 아래 회색 설명
-  to?: string; // 생성 버튼 이동 경로
-  createLabel?: string; // 생성 버튼 레이블 (기본: "{title} 생성")
-  rightActions?: React.ReactNode; // 우측에 배치할 임의의 액션들
-  count?: number; // 아이템 개수 뱃지
-  isEmpty?: boolean; // 빈 상태 여부
-  emptyMessage?: string; // 빈 상태 메시지
+  subtitle?: string;
+  to?: string;
+  createLabel?: string;
+  rightActions?: React.ReactNode;
+  count?: number;
+  isEmpty?: boolean;
+  emptyMessage?: string;
   children: React.ReactNode;
   icon?: React.ReactNode;
   componentType?: "null" | "task" | "sprint";
@@ -51,25 +50,53 @@ const ListLayout = ({
   };
 
   return (
-    <Container>
-      <Wrapper>
+    <div
+      className="w-100 d-flex justify-content-center"
+      style={{
+        minWidth: 320,
+        boxSizing: "border-box",
+        padding: "24px 20px",
+      }}
+    >
+      <div
+        className="w-100 d-flex flex-column"
+        style={{
+          maxWidth: 1040,
+          gap: 16,
+        }}
+      >
         {(title || rightActions || hasCreate) && (
-          <Header>
-            <TitleBlock>
+          <header className="w-100 d-flex align-items-center justify-content-between">
+            <div className="d-flex flex-column" style={{ gap: 6 }}>
               {title && (
-                <TitleRow>
+                <div className="d-flex align-items-center" style={{ gap: 10 }}>
                   {icon}
-                  <Title>{title}</Title>
+                  <h3 className="m-0 fs-5" style={{ lineHeight: 1.2 }}>
+                    {title}
+                  </h3>
+
                   {typeof count === "number" && (
-                    <CountBadge>{count}</CountBadge>
+                    <span
+                      className="d-inline-flex align-items-center fw-semibold"
+                      style={{
+                        padding: "2px 8px",
+                        borderRadius: 9999,
+                        background: "#eef2ff",
+                        color: "#4f46e5",
+                        fontSize: "0.8rem",
+                      }}
+                    >
+                      {count}
+                    </span>
                   )}
+
                   {componentType === "sprint" && (
                     <Calendar
                       onClick={(e) => {
                         e.stopPropagation();
                         navigator(`/sprints/projects/${projectId}/calendar`);
                       }}
-                      style={{                        
+                      style={{
                         width: "1.15em",
                         height: "1.15em",
                         marginLeft: "0.25em",
@@ -78,153 +105,76 @@ const ListLayout = ({
                       }}
                     />
                   )}
-                </TitleRow>
+                </div>
               )}
-              {subtitle && <Subtitle>{subtitle}</Subtitle>}
-            </TitleBlock>
-          </Header>
+
+              {subtitle && (
+                <div className="text-secondary" style={{ fontSize: "0.9rem" }}>
+                  {subtitle}
+                </div>
+              )}
+            </div>
+          </header>
         )}
 
-        <Content>
-          {isEmpty ? <EmptyState>{emptyMessage}</EmptyState> : children}
-          <Actions>
+        <div className="w-100 d-flex flex-column" style={{ gap: 12 }}>
+          {isEmpty ? (
+            <div
+              className="w-100 text-center text-secondary"
+              style={{
+                padding: 24,
+                border: "1px dashed #d1d5db",
+                borderRadius: 12,
+                background: "#fafafa",
+              }}
+            >
+              {emptyMessage}
+            </div>
+          ) : (
+            children
+          )}
+
+          <div className="d-flex align-items-center w-100" style={{ gap: 10 }}>
             {rightActions}
+
             {to && hasCreate ? (
-              <CreateLink to={to!}>
+              <Link
+                to={to}
+                className="btn w-100 d-inline-flex align-items-center justify-content-center fw-semibold text-decoration-none"
+                style={{
+                  height: 32,
+                  padding: "0 12px",
+                  borderRadius: 8,
+                  fontSize: "0.9rem",
+                  border: "1px solid #4680ff",
+                  color: "#4680ff",
+                  background: "white",
+                }}
+              >
                 {createLabel ?? `${title ?? "항목"} 생성`}
-              </CreateLink>
+              </Link>
             ) : (
-              // 링크가 없으면 비활성 버튼으로 노출 (UX 안전)
-              <CreateButton onClick={handleOpen}>
+              <button
+                className="btn w-100 d-inline-flex align-items-center justify-content-center fw-semibold"
+                onClick={handleOpen}
+                style={{
+                  height: 32,
+                  padding: "0 12px",
+                  borderRadius: 8,
+                  fontSize: "0.9rem",
+                  border: "1px solid #4680ff",
+                  color: "#4680ff",
+                  background: "white",
+                }}
+              >
                 {createLabel ?? `${title ?? "항목"} 생성`}
-              </CreateButton>
+              </button>
             )}
-          </Actions>
-        </Content>
-      </Wrapper>
-    </Container>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default ListLayout;
-
-/* ====================== styled ====================== */
-
-const Container = styled.div`
-  width: 100%;
-  min-width: 320px;
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
-  padding: 24px 20px;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  max-width: 1040px; /* 중앙 정렬 + 가독성 */
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const Header = styled.header`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const TitleBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`;
-
-const TitleRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const Title = styled.h3`
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.2;
-`;
-
-const Subtitle = styled.div`
-  color: #6b7280; /* gray-500 */
-  font-size: 0.9rem;
-`;
-
-const CountBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  background: #eef2ff; /* indigo-50 */
-  color: #4f46e5; /* indigo-600 */
-  font-size: 0.8rem;
-  font-weight: 600;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
-`;
-
-const buttonBase = css`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid #4680ff;
-  color: #4680ff;
-  background: white;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
-
-  &:hover {
-    background: #eef4ff;
-  }
-
-  &:active {
-    background: #e1ecff;
-  }
-`;
-
-const CreateLink = styled(Link)`
-  ${buttonBase}
-  width: 100%;
-`;
-
-const CreateButton = styled.button`
-  ${buttonBase}
-  width: 100%;
-`;
-
-const Content = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const EmptyState = styled.div`
-  width: 100%;
-  padding: 24px;
-  border: 1px dashed #d1d5db; /* gray-300 */
-  border-radius: 12px;
-  text-align: center;
-  color: #6b7280; /* gray-500 */
-  background: #fafafa;
-`;

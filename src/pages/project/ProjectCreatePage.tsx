@@ -7,12 +7,6 @@ import TextInput from "../../components/form/TextInput";
 import DateInput from "../../components/form/DateInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
 import { SiPolymerproject } from "react-icons/si";
 
 const ProjectCreatePage = () => {
@@ -45,14 +39,15 @@ const ProjectCreatePage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <PageIconAndNameWrapper
-            icon={<SiPolymerproject />}
-            name="프로젝트 생성"
-          />
-        </Title>
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <SiPolymerproject />
+            <h3 className="m-0 fw-medium">프로젝트 생성</h3>
+          </div>
+        </div>
+
         <TwoDiv>
           <TextInput
             name="spaceId"
@@ -62,24 +57,28 @@ const ProjectCreatePage = () => {
             setData={setSpaceId}
           />
         </TwoDiv>
+
         <TextInput
           name="name"
           title="프로젝트 이름"
           data={name}
           setData={setName}
         />
+
         <TextInput
           name="projectKey"
           title="프로젝트 키"
           data={projectKey}
           setData={setProjectKey}
         />
+
         <TextInput
           name="description"
           title="상세설명"
           data={description}
           setData={setDescription}
         />
+
         <TwoDiv>
           <DateInput
             title="시작일"
@@ -92,19 +91,21 @@ const ProjectCreatePage = () => {
             setSelected={setDueDate}
           />
         </TwoDiv>
+
         {/* <CompleteArrayInput
-          name="tags"
-          title="태그들"
-          values={tags}
-          setValues={setTags}
-          fetchOptions={fetchOptions}
-          createOption={createOption}
-          deleteOption={deleteOption}
-          hydrateSelected={hydrateSelected}
-        /> */}
+        name="tags"
+        title="태그들"
+        values={tags}
+        setValues={setTags}
+        fetchOptions={fetchOptions}
+        createOption={createOption}
+        deleteOption={deleteOption}
+        hydrateSelected={hydrateSelected}
+      /> */}
+
         <ConfirmButton title="생성" onClick={OnCreateSubmit} />
-      </Wrapper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

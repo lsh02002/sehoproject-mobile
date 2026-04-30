@@ -9,7 +9,6 @@ import { GrInProgress } from "react-icons/gr";
 import { SiGoogletasks } from "react-icons/si";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
 import { GiSprint } from "react-icons/gi";
-import styled from "styled-components";
 import SprintsByState from "../../../components/list/SprintsByState";
 import { useScroll } from "../../../context/ScrollContext";
 
@@ -151,43 +150,43 @@ const TaskByAssigneePage = () => {
   return (
     <>
       {!isLoading && (
-        <TaskContainer
+        <div
           ref={boardRef}
           onScroll={handleScroll}
           onMouseDown={handleMouseDown}
+          className="d-flex w-100 overflow-auto"
+          style={{
+            height: "100vh",
+            cursor: "grab",
+          }}
         >
           <TasksByState
             title="TODO"
             tasksByState={todoTasks}
             icon={<SiGoogletasks />}
           />
+
           <TasksByState
             title="IN_PROGRESS"
             tasksByState={inProgressTasks}
             icon={<GrInProgress />}
           />
+
           <TasksByState
             title="DONE"
             tasksByState={inDoneTasks}
             icon={<MdOutlineFileDownloadDone />}
           />
+
           <SprintsByState
             title="스프린트"
             sprintsByState={mySprints}
             icon={<GiSprint />}
           />
-        </TaskContainer>
+        </div>
       )}
     </>
   );
 };
 
 export default TaskByAssigneePage;
-
-const TaskContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  overflow: auto;
-  cursor: grab;
-`;

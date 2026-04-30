@@ -1,12 +1,5 @@
 import { useState } from "react";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { TwoDiv } from "../../components/form/TwoDiv";
-import {
-  FooterBar,
-  Section,
-  SectionHeader,
-  SettingsContainer,
-} from "./SettingsLayout";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 
 export function PreferencesSettingsPage() {
@@ -38,45 +31,61 @@ export function PreferencesSettingsPage() {
   const onSave = () => alert("환경 설정이 저장되었습니다.");
 
   return (
-    <SettingsContainer>
-      <Section>
-        <SectionHeader>환경 설정</SectionHeader>
-        <TwoDiv>
-          <SelectInput
-            name="language"
-            title="언어"
-            value={language}
-            setValue={setLanguage}
-            options={languageOptions}
-          />
-          <SelectInput
-            name="timezone"
-            title="시간대"
-            value={timezone}
-            setValue={setTimezone}
-            options={timezoneOptions}
-          />
-        </TwoDiv>
-        <TwoDiv>
-          <SelectInput
-            name="dateFormat"
-            title="날짜 형식"
-            value={dateFormat}
-            setValue={setDateFormat}
-            options={dateFormatOptions}
-          />
-          <SelectInput
-            name="weekStart"
-            title="주 시작 요일"
-            value={weekStart}
-            setValue={setWeekStart}
-            options={weekStartOptions}
-          />
-        </TwoDiv>
-        <FooterBar>
+    <div className="p-3">
+      <section className="bg-white shadow-sm p-3 mb-3">
+        <h4 className="fw-bold mb-3 text-dark">환경 설정</h4>
+
+        {/* 첫 줄 */}
+        <div className="row g-3 mb-2">
+          <div className="col-12 col-md-6">
+            <SelectInput
+              name="language"
+              title="언어"
+              value={language}
+              setValue={setLanguage}
+              options={languageOptions}
+            />
+          </div>
+
+          <div className="col-12 col-md-6">
+            <SelectInput
+              name="timezone"
+              title="시간대"
+              value={timezone}
+              setValue={setTimezone}
+              options={timezoneOptions}
+            />
+          </div>
+        </div>
+
+        {/* 두 번째 줄 */}
+        <div className="row g-3">
+          <div className="col-12 col-md-6">
+            <SelectInput
+              name="dateFormat"
+              title="날짜 형식"
+              value={dateFormat}
+              setValue={setDateFormat}
+              options={dateFormatOptions}
+            />
+          </div>
+
+          <div className="col-12 col-md-6">
+            <SelectInput
+              name="weekStart"
+              title="주 시작 요일"
+              value={weekStart}
+              setValue={setWeekStart}
+              options={weekStartOptions}
+            />
+          </div>
+        </div>
+
+        {/* 하단 버튼 */}
+        <div className="position-sticky bottom-0 bg-white pt-3 mt-3 border-top">
           <ConfirmButton title="저장하기" onClick={onSave} />
-        </FooterBar>
-      </Section>
-    </SettingsContainer>
+        </div>
+      </section>
+    </div>
   );
 }

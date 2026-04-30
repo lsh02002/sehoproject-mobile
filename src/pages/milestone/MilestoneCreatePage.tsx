@@ -12,12 +12,6 @@ import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { useParams } from "react-router-dom";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
 import { LuMilestone } from "react-icons/lu";
 
 const MilestoneCreatePage = () => {
@@ -56,7 +50,7 @@ const MilestoneCreatePage = () => {
       const newTaskOptions: TaskResponseType[] = names.map((name) => ({
         id: taskOptions?.find((option) => option.name === name)?.id,
         projectKey: "",
-        projectId: Number(projectId), // 실제로는 서버 id 또는 uuid로 대체
+        projectId: Number(projectId),
         name,
         description: "",
       }));
@@ -90,11 +84,15 @@ const MilestoneCreatePage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <PageIconAndNameWrapper icon={<LuMilestone />} name="마일스톤 생성" />
-        </Title>
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <LuMilestone />
+            <h3 className="m-0 fw-medium">마일스톤 생성</h3>
+          </div>
+        </div>
+
         <TextInput
           name="projectId"
           title="프로젝트 아이디"
@@ -141,8 +139,8 @@ const MilestoneCreatePage = () => {
           }
         />
         <ConfirmButton title="생성" onClick={OnCreateSubmit} />
-      </Wrapper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

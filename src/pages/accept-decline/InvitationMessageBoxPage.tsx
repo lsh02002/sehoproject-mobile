@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import {
   getInvitationMessageApi,
   postInvitationAcceptApi,
@@ -21,287 +20,156 @@ export const InvitationMessageBoxPage: React.FC = () => {
   const [items, setItems] = useState<Invite[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 목록 로드
   useEffect(() => {
     getInvitationMessageApi()
       .then((res) => {
         console.log(res);
         setItems(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((err) => console.error(err));
   }, [isLoading]);
 
   const accept = async (record: Invite) => {
     postInvitationAcceptApi(record.workspaceId, record.id)
       .then((res) => {
         console.log(res);
-        setIsLoading(!isLoading);
+        setIsLoading((prev) => !prev);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((err) => console.error(err));
   };
 
   const decline = async (record: Invite) => {
     postInvitationDeclineApi(record.workspaceId, record.id)
       .then((res) => {
         console.log(res);
-        setIsLoading(!isLoading);
+        setIsLoading((prev) => !prev);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((err) => console.error(err));
   };
 
   const renderStatus = (status?: Invite["status"]) => {
-    if (!status || status === "PENDING")
-      return <Badge $tone="blue">PENDING</Badge>;
-    if (status === "ACCEPTED") return <Badge $tone="green">ACCEPTED</Badge>;
-    return <Badge $tone="gray">DECLINED</Badge>;
+    if (!status || status === "PENDING") {
+      return <span className="badge rounded-pill text-bg-primary">PENDING</span>;
+    }
+
+    if (status === "ACCEPTED") {
+      return <span className="badge rounded-pill text-bg-success">ACCEPTED</span>;
+    }
+
+    return <span className="badge rounded-pill text-bg-secondary">DECLINED</span>;
   };
 
   return (
-    <Container>
-      <HeaderRow>
-        <Title>받은 초대</Title>
-      </HeaderRow>
+    <div className="container-fluid p-3">
+      <div className="d-flex align-items-center gap-2 mb-3">
+        <h3 className="m-0 fw-bold">받은 초대</h3>
+      </div>
 
-      <ListWrap>
+      <div className="d-grid gap-3">
         {items.length === 0 ? (
-          <Empty>
-            <h4>받은 초대가 없습니다.</h4>
-            <p>워크스페이스에서 보낸 초대가 여기에 표시됩니다.</p>
-          </Empty>
+          <div className="border border-1 border-dashed rounded-3 bg-white p-3">
+            <h4 className="mb-2 fw-bold fs-6">받은 초대가 없습니다.</h4>
+            <p className="m-0 text-secondary">
+              워크스페이스에서 보낸 초대가 여기에 표시됩니다.
+            </p>
+          </div>
         ) : (
           items.map((r) => (
-            <Card key={r.id}>
-              <CardTop>
-                <Name>{r.workspaceName ?? "-"}</Name>
-                {renderStatus(r.status)}
-              </CardTop>
+            <article
+              key={r.id}
+              className="card border-0 shadow-sm rounded-4"
+            >
+              <div className="card-body">
+                <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
+                  <h4 className="m-0 fw-bold fs-6 text-dark">
+                    {r.workspaceName ?? "-"}
+                  </h4>
+                  {renderStatus(r.status)}
+                </div>
 
-              <Grid>
-                <Row>
-                  <Label>초대 ID</Label>
-                  <Value>#{r.id}</Value>
-                </Row>
-                <Row>
-                  <Label>워크스페이스</Label>
-                  <Value>{r.workspaceId}</Value>
-                </Row>
-                <Row>
-                  <Label>보낸 사람</Label>
-                  <Value>{r.inviterEmail ?? "-"}</Value>
-                </Row>
-                <Row>
-                  <Label>요청 역할</Label>
-                  <Value>{r.requestedRole ?? "-"}</Value>
-                </Row>
-                <RowFull>
-                  <Label>메시지</Label>
-                  <Value $multiline>{r.message ?? "-"}</Value>
-                </RowFull>
-                <Row>
-                  <Label>받은 시각</Label>
-                  <Value>
-                    {r.createdAt ? new Date(r.createdAt).toLocaleString() : "-"}
-                  </Value>
-                </Row>
-              </Grid>
+                <div className="row g-2">
+                  <InfoRow label="초대 ID" value={`#${r.id}`} />
+                  <InfoRow label="워크스페이스" value={String(r.workspaceId)} />
+                  <InfoRow label="보낸 사람" value={r.inviterEmail ?? "-"} />
+                  <InfoRow label="요청 역할" value={r.requestedRole ?? "-"} />
 
-              <Actions>
-                {r.status === "PENDING" ? (
-                  <>
-                    <PrimaryBtn
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        accept(r);
-                      }}
-                    >
-                      수락
-                    </PrimaryBtn>
-                    <SecondaryBtn
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        decline(r);
-                      }}
-                    >
-                      거절
-                    </SecondaryBtn>
-                  </>
-                ) : (
-                  <Muted>이미 {r.status} 처리되었습니다.</Muted>
-                )}
-              </Actions>
-            </Card>
+                  <div className="col-12">
+                    <div className="row">
+                      <div className="col-4 col-md-2 fw-bold text-dark">
+                        메시지
+                      </div>
+                      <div
+                        className="col-8 col-md-10 text-secondary"
+                        style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+                      >
+                        {r.message ?? "-"}
+                      </div>
+                    </div>
+                  </div>
+
+                  <InfoRow
+                    label="받은 시각"
+                    value={
+                      r.createdAt
+                        ? new Date(r.createdAt).toLocaleString()
+                        : "-"
+                    }
+                  />
+                </div>
+
+                <div className="d-flex justify-content-end gap-2 mt-3">
+                  {r.status === "PENDING" ? (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm fw-bold"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          accept(r);
+                        }}
+                      >
+                        수락
+                      </button>
+
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary btn-sm fw-semibold"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          decline(r);
+                        }}
+                      >
+                        거절
+                      </button>
+                    </>
+                  ) : (
+                    <span className="text-secondary small">
+                      이미 {r.status} 처리되었습니다.
+                    </span>
+                  )}
+                </div>
+              </div>
+            </article>
           ))
         )}
-      </ListWrap>
-    </Container>
+      </div>
+    </div>
   );
 };
 
-/* =============== styled (기존 서비스 톤) =============== */
-
-const Container = styled.div`
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const HeaderRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-`;
-
-const Title = styled.h3`
-  margin: 0;
-  font-weight: 700;
-`;
-
-const ListWrap = styled.div`
-  display: grid;
-  gap: 12px;
-`;
-
-const Card = styled.article`
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  padding: 16px;
-  box-sizing: border-box;
-`;
-
-const CardTop = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 12px;
-  margin-bottom: 12px;
-`;
-
-const Name = styled.h4`
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 800;
-  color: #111827;
-`;
-
-const Badge = styled.span<{ $tone: "blue" | "green" | "gray" }>`
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 700;
-  ${({ $tone }) =>
-    $tone === "blue"
-      ? `background:#dbeafe; color:#1e3a8a; border:1px solid #bfdbfe;`
-      : $tone === "green"
-      ? `background:#dcfce7; color:#065f46; border:1px solid #bbf7d0;`
-      : `background:#f3f4f6; color:#374151; border:1px solid #e5e7eb;`}
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 14px;
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Row = styled.div`
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 10px;
-  align-items: baseline;
-`;
-
-const RowFull = styled(Row)`
-  grid-column: 1 / -1;
-`;
-
-const Label = styled.div`
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #111827;
-`;
-
-const Value = styled.div<{ $multiline?: boolean }>`
-  font-size: 0.95rem;
-  color: #374151;
-  white-space: ${({ $multiline }) => ($multiline ? "pre-wrap" : "normal")};
-  word-break: break-word;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 14px;
-`;
-
-const PrimaryBtn = styled.button`
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  background: #3b82f6;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
-  transition: background-color 0.15s ease, box-shadow 0.15s ease;
-
-  &:hover {
-    background: #2563eb;
-    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
-  }
-`;
-
-const SecondaryBtn = styled.button`
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-  color: #1f2937;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-
-  &:hover {
-    background: #f3f4f6;
-    border-color: #cbd5e1;
-  }
-`;
-
-const Muted = styled.span`
-  color: #6b7280;
-  font-size: 0.9rem;
-`;
-
-const Empty = styled.div`
-  padding: 16px;
-  border: 1px dashed #e5e7eb;
-  border-radius: 12px;
-  background: #fff;
-
-  h4 {
-    margin: 0 0 6px 0;
-    font-weight: 700;
-  }
-  p {
-    margin: 0;
-    color: #6b7280;
-  }
-`;
+const InfoRow = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) => {
+  return (
+    <div className="col-12 col-md-6">
+      <div className="row">
+        <div className="col-4 fw-bold text-dark">{label}</div>
+        <div className="col-8 text-secondary text-break">{value}</div>
+      </div>
+    </div>
+  );
+};

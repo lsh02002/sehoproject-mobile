@@ -1,14 +1,13 @@
-import styled from "styled-components";
+import React from "react";
 
-export const TwoDiv = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: 16px;
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-`;
+export const TwoDiv = ({
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className="d-flex w-100 align-items-center justify-content-between gap-3"
+    {...props}
+  >
+    {children}
+  </div>
+);

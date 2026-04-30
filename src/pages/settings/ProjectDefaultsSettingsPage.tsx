@@ -1,7 +1,5 @@
 import { useState } from "react";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { TwoDiv } from "../../components/form/TwoDiv";
-import { FooterBar, Section, SectionHeader, SettingsContainer } from "./SettingsLayout";
 import TextInput from "../../components/form/TextInput";
 
 export function ProjectDefaultsSettingsPage() {
@@ -10,17 +8,34 @@ export function ProjectDefaultsSettingsPage() {
   const onSave = () => alert("프로젝트 기본값이 저장되었습니다.");
 
   return (
-    <SettingsContainer>
-    <Section>
-      <SectionHeader>프로젝트 기본값</SectionHeader>
-      <TwoDiv>
-        <TextInput name="defaultProjectKey" title="기본 프로젝트 키" data={defaultProjectKey} setData={setDefaultProjectKey} />
-        <TextInput name="boardName" title="보드 이름" data={boardName} setData={setBoardName} />
-      </TwoDiv>
-      <FooterBar>
-        <ConfirmButton title="저장하기" onClick={onSave} />
-      </FooterBar>
-    </Section>
-    </SettingsContainer>
+    <div className="p-3">
+      <section className="bg-white shadow-sm p-3 mb-3">
+        <h4 className="fw-bold mb-3 text-dark">프로젝트 기본값</h4>
+
+        <div className="row g-3">
+          <div className="col-12 col-md-6">
+            <TextInput
+              name="defaultProjectKey"
+              title="기본 프로젝트 키"
+              data={defaultProjectKey}
+              setData={setDefaultProjectKey}
+            />
+          </div>
+
+          <div className="col-12 col-md-6">
+            <TextInput
+              name="boardName"
+              title="보드 이름"
+              data={boardName}
+              setData={setBoardName}
+            />
+          </div>
+        </div>
+
+        <div className="position-sticky bottom-0 bg-white pt-3 mt-3 border-top">
+          <ConfirmButton title="저장하기" onClick={onSave} />
+        </div>
+      </section>
+    </div>
   );
 }

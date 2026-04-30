@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useLogin } from "../../context/LoginContext";
 import { Link, useNavigate } from "react-router-dom";
 import { UserLoginApi } from "../../api/sehomanagerapi";
@@ -33,19 +32,24 @@ const LoginPage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <h3>
+    <div className="d-flex justify-content-center align-items-center w-100 vh-100">
+      <div className="w-100" style={{ maxWidth: "400px", padding: "20px" }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h3 className="fw-normal mb-0">
             <SlLogin /> 로그인
           </h3>
           <Link
-            style={{ color: "#4680ff", textDecoration: "none" }}
+            style={{
+              color: "#4680ff",
+              textDecoration: "none",
+              fontSize: "0.7rem",
+            }}
             to="/register"
           >
             계정이 없으세요?
           </Link>
-        </Title>
+        </div>
+
         <TextInput
           name="email"
           title="이메일 주소"
@@ -58,43 +62,13 @@ const LoginPage = () => {
           data={password}
           setData={setPassword}
         />
-        <ConfirmButton title="로그인" onClick={OnLoginSubmit} />
-      </Wrapper>
-    </Container>
+
+        <div className="mt-3">
+          <ConfirmButton title="로그인" onClick={OnLoginSubmit} />
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default LoginPage;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h3 {
-    font-weight: 500;
-  }
-
-  a {
-    font-size: 0.7rem;
-  }
-`;

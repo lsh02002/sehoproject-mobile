@@ -16,8 +16,10 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "noUncheckedSideEffectImports": false,
     "isolatedModules": true,
     "noEmit": true,
+    "ignoreDeprecations": "6.0",
     "jsx": "react-jsx",    
   },
   "include": [

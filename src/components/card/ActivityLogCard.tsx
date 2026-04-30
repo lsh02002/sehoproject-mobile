@@ -1,23 +1,24 @@
 import React from "react";
 import { ActivityLogResponseType } from "../../types/type";
-import {
-  CardContainer,
-  CardWrapper,
-  ContentField,
-  InfoBoxField,
-  SlugField,
-} from "./field/Field";
 
 const ActivityLogCard = ({ log }: { log: ActivityLogResponseType }) => {
   return (
-    <CardContainer>
-      <CardWrapper>
-        <InfoBoxField>
-          <ContentField>{log?.message}</ContentField>
-          <SlugField style={{width: "100%"}}>{log?.createdAt}</SlugField>
-        </InfoBoxField>
-      </CardWrapper>
-    </CardContainer>
+    <div className="card mb-3 shadow-sm" style={{ borderRadius: "16px" }}>
+      <div className="card-body d-flex justify-content-between align-items-center">
+        <div className="d-flex flex-column w-100">
+          <div className="mb-1" style={{ fontSize: "0.9rem" }}>
+            {log?.message}
+          </div>
+
+          <div
+            className="text-muted small w-100"
+            style={{ fontStyle: "italic" }}
+          >
+            {log?.createdAt}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

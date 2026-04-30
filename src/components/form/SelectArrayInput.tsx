@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import styled from "styled-components";
 
 type Option = { label: string; value: string; disabled?: boolean };
 
@@ -33,34 +32,53 @@ const SelectArrayInput = ({
     left: number;
     top: number;
     width: number;
+    placedAbove: boolean;
     maxH: number;
   } | null>(null);
 
   const mapByValue = useMemo(
-    () => new Map(options.map((o) => [o.value, o] as const)),
+    () => new Map(options.map((o) => [o.value, o])),
     [options]
   );
 
   const toggleValue = (v: string) => {
+    if (mapByValue.get(v)?.disabled) return;
     setValues(values.includes(v) ? values.filter((x) => x !== v) : [...values, v]);
   };
 
   const computeMenuPosition = useCallback(() => {
-  const el = boxRef.current;
-  if (!el) return;
+    if (!boxRef.current) return;
+    const rect = boxRef.current.getBoundingClientRect();
+    const viewportH = window.innerHeight;
+    const spaceBelow = viewportH - rect.bottom;
+    const spaceAbove = rect.top;
 
-  const r = el.getBoundingClientRect();
-  const viewportH = window.innerHeight;
-  const spaceBelow = viewportH - r.bottom - 12;
-  const desiredH = Math.min(maxMenuHeight, Math.max(spaceBelow, 160));
+    const desiredH = Math.min(maxMenuHeight, Math.max(spaceBelow - 8, 160));
+    const shouldFlip = desiredH < 160 && spaceAbove > spaceBelow;
+    const heightIfAbove = Math.min(maxMenuHeight, Math.max(spaceAbove - 8, 160));
+    const finalMaxH = shouldFlip ? heightIfAbove : Math.max(desiredH, 160);
 
-  setMenuPos({
-    left: r.left,
-    top: r.bottom + 8,
-    width: r.width,
-    maxH: desiredH,
-  });
-}, [maxMenuHeight]);
+    setMenuPos({
+      left: Math.round(rect.left),
+      top: Math.round(shouldFlip ? rect.top - 8 : rect.bottom + 8),
+      width: Math.round(rect.width),
+      placedAbove: shouldFlip,
+      maxH: finalMaxH,
+    });
+  }, [maxMenuHeight]);
+
+  useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      if (!wrapRef.current) return;
+      const tgt = e.target as Node;
+      if (!wrapRef.current.contains(tgt)) {
+        setOpen(false);
+        setFocusedIndex(-1);
+      }
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -78,7 +96,7 @@ const SelectArrayInput = ({
   const handleBoxKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      setOpen((prev) => !prev);
+      setOpen((o) => !o);
       if (!open) {
         setFocusedIndex(0);
         requestAnimationFrame(computeMenuPosition);
@@ -101,11 +119,7 @@ const SelectArrayInput = ({
     }
   };
 
-  const handleItemKeyDown = (
-    e: React.KeyboardEvent,
-    idx: number,
-    v: string
-  ) => {
+  const handleItemKeyDown = (e: React.KeyboardEvent, idx: number, v: string) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       toggleValue(v);
@@ -126,19 +140,21 @@ const SelectArrayInput = ({
   };
 
   const isPlaceholder = values.length === 0;
-  const selectedChips = values
-    .map((v) => mapByValue.get(v)?.label || v)
-    .filter(Boolean);
+  const selectedChips = values.map((v) => mapByValue.get(v)?.label || v).filter(Boolean);
 
   return (
-    <Container ref={wrapRef}>
-      <label htmlFor={name}>{title}</label>
+    <div ref={wrapRef} className="w-100 mb-3 position-relative">
+      <label htmlFor={name} className="form-label fw-semibold">
+        {title}
+      </label>
 
-      <SelectBox
+      <button
         id={name}
         ref={boxRef}
         type="button"
-        $isPlaceholder={isPlaceholder}
+        className={`form-control text-start d-flex align-items-center justify-content-between gap-2 ${
+          isPlaceholder ? "text-secondary" : ""
+        }`}
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => {
@@ -151,212 +167,86 @@ const SelectArrayInput = ({
         onKeyDown={handleBoxKeyDown}
       >
         {isPlaceholder ? (
-          <span className="placeholder">
-            {placeholder || `${title}을(를) 선택하세요`}
-          </span>
+          <span>{placeholder || `${title}을(를) 선택하세요`}</span>
         ) : (
-          <ChipRow>
+          <div className="d-flex gap-2 flex-wrap">
             {selectedChips.map((label, i) => (
-              <Chip key={`${label}-${i}`}>{label}</Chip>
+              <span key={`${label}-${i}`} className="badge text-bg-light border text-dark">
+                {label}
+              </span>
             ))}
-          </ChipRow>
+          </div>
         )}
-        <Caret aria-hidden>▾</Caret>
-      </SelectBox>
+        <span aria-hidden>▾</span>
+      </button>
 
       {open &&
         menuPos &&
         ReactDOM.createPortal(
-          <PortalBackdrop
+          <div
+            className="position-fixed top-0 start-0 w-100 h-100"
+            style={{ zIndex: 1050 }}
             onMouseDown={() => {
               setOpen(false);
               setFocusedIndex(-1);
             }}
           >
-            <PortalMenu
+            <ul
               role="listbox"
               aria-multiselectable="true"
-              $left={menuPos.left}
-              $top={menuPos.top}
-              $width={menuPos.width}
-              $maxH={menuPos.maxH}
+              className="dropdown-menu d-block p-2 shadow"
+              style={{
+                position: "fixed",
+                left: `${menuPos.left}px`,
+                top: `${menuPos.top}px`,
+                width: `${menuPos.width}px`,
+                maxHeight: `${menuPos.maxH}px`,
+                overflow: "auto",
+                zIndex: 1055,
+                margin: 0,
+                listStyle: "none",
+              }}
               onMouseDown={(e) => e.stopPropagation()}
             >
-              {options.length === 0 && <EmptyItem>해당 {title}이 없습니다.</EmptyItem>}
+              {options.length === 0 && (
+                <li className="dropdown-item-text">해당 {title}이 없습니다.</li>
+              )}
 
               {options.map((opt, idx) => {
                 const checked = values.includes(opt.value);
                 const disabled = !!opt.disabled;
                 return (
-                  <MenuItem
+                  <li
                     key={opt.value}
                     role="option"
                     aria-selected={checked}
                     tabIndex={0}
-                    $focused={idx === focusedIndex}
-                    $disabled={disabled}
-                    onClick={() => !disabled && toggleValue(opt.value)}
+                    className={`dropdown-item d-flex align-items-center gap-2 ${
+                      idx === focusedIndex ? "active" : ""
+                    } ${disabled ? "disabled" : ""}`}
+                    onClick={() => toggleValue(opt.value)}
                     onKeyDown={(e) => handleItemKeyDown(e, idx, opt.value)}
                     onMouseEnter={() => setFocusedIndex(idx)}
+                    style={{ cursor: disabled ? "not-allowed" : "pointer" }}
                   >
                     <input
                       type="checkbox"
                       tabIndex={-1}
+                      className="form-check-input mt-0"
                       checked={checked}
                       readOnly
                       disabled={disabled}
                     />
                     <span>{opt.label}</span>
-                  </MenuItem>
+                  </li>
                 );
               })}
-            </PortalMenu>
-          </PortalBackdrop>,
+            </ul>
+          </div>,
           document.body
         )}
-    </Container>
+    </div>
   );
 };
 
 export default SelectArrayInput;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 12px 0;
-  position: relative;
-
-  label {
-    width: 100%;
-    display: block;
-    margin-bottom: 8px;
-    color: #0f172a;
-    font-weight: 600;
-    font-size: 0.92rem;
-  }
-
-  @media (max-width: 640px) {
-    label {
-      font-size: 0.88rem;
-    }
-  }
-`;
-
-const SelectBox = styled.button<{ $isPlaceholder: boolean }>`
-  width: 100%;
-  min-height: 46px;
-  padding: 10px 42px 10px 14px;
-  box-sizing: border-box;
-  border: 1px solid #dbe2ea;
-  border-radius: 14px;
-  font-size: 0.95rem;
-  outline: none;
-  background: #ffffff;
-  color: #0f172a;
-  text-align: left;
-  position: relative;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease,
-    background-color 0.2s ease;
-
-  &:hover {
-    border-color: #94a3b8;
-    cursor: pointer;
-  }
-
-  &:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
-  }
-
-  .placeholder {
-    color: #94a3b8;
-  }
-`;
-
-const Caret = styled.span`
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-52%);
-  color: #64748b;
-  pointer-events: none;
-`;
-
-const ChipRow = styled.div`
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-`;
-
-const Chip = styled.span`
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: #eef2ff;
-  border: 1px solid #c7d2fe;
-  color: #3730a3;
-  font-size: 0.87rem;
-  font-weight: 600;
-`;
-
-const PortalBackdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-`;
-
-const PortalMenu = styled.ul<{
-  $left: number;
-  $top: number;
-  $width: number;
-  $maxH: number;
-}>`
-  position: fixed;
-  left: ${({ $left }) => `${$left}px`};
-  top: ${({ $top }) => `${$top}px`};
-  width: ${({ $width }) => `${$width}px`};
-  margin: 0;
-  padding: 8px;
-  box-sizing: border-box;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  background: white;
-  max-height: ${({ $maxH }) => `${$maxH}px`};
-  overflow: auto;
-  list-style: none;
-  z-index: 9999;
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.06);
-`;
-
-const EmptyItem = styled.li`
-  padding: 12px 14px;
-  color: #64748b;
-  font-size: 0.9rem;
-`;
-
-const MenuItem = styled.li<{
-  $focused?: boolean;
-  $disabled?: boolean;
-}>`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  font-size: 0.94rem;
-  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
-  color: ${({ $disabled }) => ($disabled ? "#94a3b8" : "#0f172a")};
-  background: ${({ $focused }) => ($focused ? "#f8fafc" : "transparent")};
-  width: 100%;
-
-  &:hover {
-    background: ${({ $disabled }) => ($disabled ? "transparent" : "#f8fafc")};
-  }
-
-  input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: #4f46e5;
-    pointer-events: none;
-  }
-`;

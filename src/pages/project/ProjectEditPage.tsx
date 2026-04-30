@@ -8,12 +8,6 @@ import DateInput from "../../components/form/DateInput";
 import { CompleteArrayInput } from "../../components/form/CompleteArrayInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
 import { SiPolymerproject } from "react-icons/si";
 
 const ProjectEditPage = () => {
@@ -113,78 +107,86 @@ const ProjectEditPage = () => {
       });
   };
 
-  return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <PageIconAndNameWrapper
-            icon={<SiPolymerproject />}
-            name="프로젝트 수정"
-          />
-        </Title>
-        <TwoDiv>
-          <TextInput
-            name="id"
-            title="프로젝트 아이디"
-            disabled
-            data={id ?? "0"}
-            setData={setId}
-          />
-          <TextInput
-            name="spaceName"
-            title="스페이스 이름"
-            disabled
-            data={spaceName}
-            setData={setSpaceName}
-          />
-        </TwoDiv>
+return (
+  <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+    <div className="w-100 d-flex flex-column align-items-center">
+      <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+        <div className="d-flex align-items-center gap-2">
+          <SiPolymerproject />
+          <h3 className="m-0 fw-medium">프로젝트 수정</h3>
+        </div>
+      </div>
+
+      <TwoDiv>
         <TextInput
-          name="projectKey"
-          title="프로젝트 키"
+          name="id"
+          title="프로젝트 아이디"
           disabled
-          data={projectKey}
-          setData={setProjectKey}
+          data={id ?? "0"}
+          setData={setId}
         />
-        <TextInput name="name" title="이름" data={name} setData={setName} />
         <TextInput
-          name="description"
-          title="상세설명"
-          data={description}
-          setData={setDescription}
-        />
-        <TwoDiv>
-          <DateInput
-            title="시작일"
-            selected={startDate}
-            setSelected={setStartDate}
-          />
-          <DateInput
-            title="마감일"
-            selected={dueDate}
-            setSelected={setDueDate}
-          />
-        </TwoDiv>
-        <TextInput
-          name="creatorName"
-          title="생성자 이름"
+          name="spaceName"
+          title="스페이스 이름"
           disabled
-          data={creatorName}
-          setData={setCreatorName}
+          data={spaceName}
+          setData={setSpaceName}
         />
-        <CompleteArrayInput
-          name="tags"
-          title="태그들"
-          values={tags}
-          setValues={setTags}
-          fetchOptions={fetchOptions}
-          createOption={createOption}
-          deleteOption={deleteOption}
-          hydrateSelected={hydrateSelected}
+      </TwoDiv>
+
+      <TextInput
+        name="projectKey"
+        title="프로젝트 키"
+        disabled
+        data={projectKey}
+        setData={setProjectKey}
+      />
+
+      <TextInput name="name" title="이름" data={name} setData={setName} />
+
+      <TextInput
+        name="description"
+        title="상세설명"
+        data={description}
+        setData={setDescription}
+      />
+
+      <TwoDiv>
+        <DateInput
+          title="시작일"
+          selected={startDate}
+          setSelected={setStartDate}
         />
-        <ConfirmButton title="수정" onClick={OnEditSubmit} />
-      </Wrapper>
-    </Container>
-  );
+        <DateInput
+          title="마감일"
+          selected={dueDate}
+          setSelected={setDueDate}
+        />
+      </TwoDiv>
+
+      <TextInput
+        name="creatorName"
+        title="생성자 이름"
+        disabled
+        data={creatorName}
+        setData={setCreatorName}
+      />
+
+      <CompleteArrayInput
+        name="tags"
+        title="태그들"
+        values={tags}
+        setValues={setTags}
+        fetchOptions={fetchOptions}
+        createOption={createOption}
+        deleteOption={deleteOption}
+        hydrateSelected={hydrateSelected}
+      />
+
+      <ConfirmButton title="수정" onClick={OnEditSubmit} />
+    </div>
+  </div>
+);
 };
 
 export default ProjectEditPage;

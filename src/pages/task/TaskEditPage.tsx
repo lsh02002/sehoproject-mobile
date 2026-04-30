@@ -18,12 +18,6 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
 import { MdAddTask } from "react-icons/md";
 
 const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
@@ -176,11 +170,19 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <PageIconAndNameWrapper icon={<MdAddTask />} name="태스크 수정" />
-        </Title>
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <span className="d-flex align-items-center">
+              <MdAddTask />
+            </span>
+            <h3 className="mb-0 fw-semibold" style={{ fontSize: "1rem" }}>
+              태스크 수정
+            </h3>
+          </div>
+        </div>
+
         <TwoDiv>
           <TextInput
             name="id"
@@ -197,6 +199,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
             setData={setProjectId}
           />
         </TwoDiv>
+
         <TextInput
           name="projectKey"
           title="프로젝트 키"
@@ -204,13 +207,16 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
           data={projectKey}
           setData={setProjectKey}
         />
+
         <TextInput name="name" title="이름" data={name} setData={setName} />
+
         <TextInput
           name="description"
           title="상세설명"
           data={description}
           setData={setDescription}
         />
+
         <TwoDiv>
           <SelectInput
             name="state"
@@ -227,6 +233,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
             options={priorityOptions}
           />
         </TwoDiv>
+
         <SelectInput
           name="type"
           title="태스크 타입"
@@ -234,6 +241,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
           setValue={setType}
           options={typeOptions}
         />
+
         <SelectArrayInput
           name="assignees"
           title="작업할당자"
@@ -244,6 +252,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
             value: assignee.email,
           }))}
         />
+
         <TwoDiv>
           <TextInput
             name="sprintId"
@@ -260,6 +269,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
             setData={setMilestoneId}
           />
         </TwoDiv>
+
         <SelectArrayInput
           name="tags"
           title="태그"
@@ -272,9 +282,10 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
             })) ?? []
           }
         />
+
         <ConfirmButton title="수정" onClick={OnEditSubmit} />
-      </Wrapper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

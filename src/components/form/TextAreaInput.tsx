@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 
 const TextAreaInput = ({
   disabled,
@@ -17,80 +16,22 @@ const TextAreaInput = ({
   rows?: number;
 }) => {
   return (
-    <Container>
-      <label htmlFor={name}>{title}</label>
+    <div className="w-100 mb-3">
+      <label htmlFor={name} className="form-label fw-semibold">
+        {title}
+      </label>
       <textarea
         name={name}
+        id={name}
         value={data}
         rows={rows}
         disabled={disabled}
         onChange={(e) => setData(e.target.value)}
         placeholder={`${title}을(를) 입력하세요`}
+        className="form-control"
       />
-    </Container>
+    </div>
   );
 };
 
 export default TextAreaInput;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 12px 0;
-
-  label {
-    width: 100%;
-    display: block;
-    margin-bottom: 8px;
-    color: #0f172a;
-    font-weight: 600;
-    font-size: 0.92rem;
-  }
-
-  textarea {
-    width: 100%;
-    min-height: 120px;
-    padding: 12px 14px;
-    border: 1px solid #dbe2ea;
-    border-radius: 14px;
-    background: #ffffff;
-    box-sizing: border-box;
-    color: #0f172a;
-    line-height: 1.6;
-    resize: vertical;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease,
-      background-color 0.2s ease;
-
-    &:hover {
-      border-color: #94a3b8;
-    }
-
-    &:focus {
-      outline: none;
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
-    }
-
-    &::placeholder {
-      color: #94a3b8;
-    }
-
-    &:disabled {
-      background: #f8fafc;
-      color: #94a3b8;
-      cursor: not-allowed;
-    }
-  }
-
-  @media (max-width: 640px) {
-    label {
-      font-size: 0.88rem;
-    }
-
-    textarea {
-      font-size: 16px;
-      min-height: 112px;
-    }
-  }
-`;

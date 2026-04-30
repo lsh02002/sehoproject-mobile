@@ -8,14 +8,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SpaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  TabH3,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
-import { Section } from "../settings/SettingsLayout";
 import SpaceMemberPage from "./SpaceConfirmBox";
 import { FaSpaceAwesome } from "react-icons/fa6";
 
@@ -26,7 +18,7 @@ const SpaceEditPage = () => {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [workspaceIdState, setWorkspaceIdState] = useState<string>(
-    workspaceId?.toString() ?? ""
+    workspaceId?.toString() ?? "",
   );
   const [currentTab, setCurrentTab] = useState<TabKey>("info");
 
@@ -51,7 +43,7 @@ const SpaceEditPage = () => {
     putOneSpaceByWorkspaceAndSpaceApi(
       Number(workspaceIdState),
       Number(spaceId),
-      data
+      data,
     )
       .then((res) => {
         console.log(res);
@@ -63,39 +55,55 @@ const SpaceEditPage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title role="tablist" aria-label="스페이스 설정">
-          <TabH3
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div
+          className="w-100 d-flex justify-content-between align-items-center border-bottom mb-3"
+          role="tablist"
+          aria-label="스페이스 설정"
+        >
+          <h3
             role="tab"
             aria-selected={currentTab === "info"}
-            $active={currentTab === "info"}
             tabIndex={0}
             onClick={() => setCurrentTab("info")}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") setCurrentTab("info");
             }}
+            className={`m-0 px-1 py-2 fw-bold fs-6 position-relative ${
+              currentTab === "info"
+                ? "text-dark border-bottom border-3 border-primary"
+                : "text-secondary"
+            }`}
+            style={{ cursor: "pointer", userSelect: "none" }}
           >
-            <PageIconAndNameWrapper
-              icon={<FaSpaceAwesome />}
-              name="스페이스 정보"
-            />
-          </TabH3>
-          <TabH3
+            <div className="d-flex align-items-center gap-2">
+              <FaSpaceAwesome />
+              <span>스페이스 정보</span>
+            </div>
+          </h3>
+
+          <h3
             role="tab"
             aria-selected={currentTab === "members"}
-            $active={currentTab === "members"}
             tabIndex={0}
             onClick={() => setCurrentTab("members")}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") setCurrentTab("members");
             }}
+            className={`m-0 px-1 py-2 fw-bold fs-6 ${
+              currentTab === "members"
+                ? "text-dark border-bottom border-3 border-primary"
+                : "text-secondary"
+            }`}
+            style={{ cursor: "pointer", userSelect: "none" }}
           >
             스페이스 회원
-          </TabH3>
-        </Title>
+          </h3>
+        </div>
+
         {currentTab === "info" ? (
-          <Section aria-labelledby="tab-info">
+          <section className="w-100" aria-labelledby="tab-info">
             <TextInput
               name="name"
               title="스페이스 이름"
@@ -116,17 +124,17 @@ const SpaceEditPage = () => {
               setData={setWorkspaceIdState}
             />
             <ConfirmButton title="수정" onClick={OnEditSubmit} />
-          </Section>
+          </section>
         ) : (
-          <Section aria-labelledby="tab-members">
+          <section className="w-100" aria-labelledby="tab-members">
             <SpaceMemberPage
               workspaceId={Number(workspaceId)}
               spaceId={Number(spaceId)}
             />
-          </Section>
+          </section>
         )}
-      </Wrapper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

@@ -13,12 +13,6 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
 import { GiSprint } from "react-icons/gi";
 
 const SprintEditPage = ({
@@ -113,11 +107,15 @@ const SprintEditPage = ({
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <PageIconAndNameWrapper icon={<GiSprint />} name="스프린트 수정" />
-        </Title>
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <GiSprint />
+            <h3 className="m-0 fw-medium">스프린트 수정</h3>
+          </div>
+        </div>
+
         <TwoDiv>
           <TextInput
             name="id"
@@ -134,7 +132,9 @@ const SprintEditPage = ({
             setData={setProjectId}
           />
         </TwoDiv>
+
         <TextInput name="name" title="이름" data={name} setData={setName} />
+
         <SelectInput
           name="state"
           title="작업 상태"
@@ -142,6 +142,7 @@ const SprintEditPage = ({
           setValue={setState}
           options={sprintStateOptions}
         />
+
         <TwoDiv>
           <DateInput
             title="시작일"
@@ -154,6 +155,7 @@ const SprintEditPage = ({
             setSelected={setEndDate}
           />
         </TwoDiv>
+
         <SelectArrayInput
           name="taskIds"
           title="태스크"
@@ -166,9 +168,10 @@ const SprintEditPage = ({
             })) ?? []
           }
         />
+
         <ConfirmButton title="수정" onClick={OnEditSubmit} />
-      </Wrapper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

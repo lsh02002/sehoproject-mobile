@@ -12,7 +12,6 @@ import {
   SpaceResponseType,
   WorkspaceResponseType,
 } from "../../types/type";
-import { Container, Wrapper } from "../../components/pages-style/PageStyle";
 import SelectInput from "../../components/form/SelectInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { toast } from "react-toastify";
@@ -140,43 +139,53 @@ export const UserProjectIdSettingsPage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <SelectInput
-          name="workspaces"
-          title="워크스페이스"
-          value={selectWorkspaceId}
-          setValue={setSelectWorkspaceId}
-          options={workspaces.map((workspace) => ({
-            label: workspace.name,
-            value: String(workspace.id),
-          }))}
-          placeholder="워크스페이스를 설정하세요"
-        />
-        <SelectInput
-          name="spaces"
-          title="스페이스"
-          value={selectSpaceId}
-          setValue={setSelectSpaceId}
-          options={spaces.map((space) => ({
-            label: space.name,
-            value: String(space.id),
-          }))}
-          placeholder="스페이스를 설정하세요"
-        />
-        <SelectInput
-          name="projects"
-          title="프로젝트"
-          value={selectProjectId}
-          setValue={setSelectProjectId}
-          options={projects.map((project) => ({
-            label: project.name,
-            value: String(project.id),
-          }))}
-          placeholder="프로젝트를 설정하세요"
-        />
-        <ConfirmButton title="설정값 저장" onClick={handleSetUserProjectId} />
-      </Wrapper>
-    </Container>
+    <div className="p-3">
+      <div className="bg-white shadow-sm p-3">
+        <div className="d-flex flex-column gap-3">
+          <SelectInput
+            name="workspaces"
+            title="워크스페이스"
+            value={selectWorkspaceId}
+            setValue={setSelectWorkspaceId}
+            options={workspaces.map((workspace) => ({
+              label: workspace.name,
+              value: String(workspace.id),
+            }))}
+            placeholder="워크스페이스를 설정하세요"
+          />
+
+          <SelectInput
+            name="spaces"
+            title="스페이스"
+            value={selectSpaceId}
+            setValue={setSelectSpaceId}
+            options={spaces.map((space) => ({
+              label: space.name,
+              value: String(space.id),
+            }))}
+            placeholder="스페이스를 설정하세요"
+          />
+
+          <SelectInput
+            name="projects"
+            title="프로젝트"
+            value={selectProjectId}
+            setValue={setSelectProjectId}
+            options={projects.map((project) => ({
+              label: project.name,
+              value: String(project.id),
+            }))}
+            placeholder="프로젝트를 설정하세요"
+          />
+
+          <div className="pt-2">
+            <ConfirmButton
+              title="설정값 저장"
+              onClick={handleSetUserProjectId}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

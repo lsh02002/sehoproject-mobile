@@ -1,6 +1,5 @@
 import { Outlet, Navigate, useLocation, NavLink } from "react-router-dom";
 import { useState } from "react";
-import styled from "styled-components";
 
 export default function SettingsLayout() {
   const location = useLocation();
@@ -10,171 +9,115 @@ export default function SettingsLayout() {
   const workspaceId = localStorage.getItem("workspaceId");
 
   const handleNavClick = () => {
-    setShowSidebar(false); // 메뉴 클릭 시 사이드바 숨김
+    setShowSidebar(false);
   };
 
   const toggleSidebar = () => {
     setShowSidebar((prev) => !prev);
   };
 
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `nav-link rounded-3 px-3 py-2 text-dark border ${
+      isActive
+        ? "bg-primary-subtle border-primary-subtle"
+        : "border-transparent"
+    }`;
+
   return (
-    <Root>
-      <HeaderBar>
-        <ToggleButton
+    <div className="w-100 d-grid gap-3">
+      <div className="w-100 d-flex justify-content-end align-items-center p-3">
+        <button
           type="button"
+          className="btn btn-light btn-sm border"
           onClick={toggleSidebar}
           aria-expanded={showSidebar}
         >
           {showSidebar ? "◀ 설정메뉴" : "▶ 설정메뉴"}
-        </ToggleButton>
-      </HeaderBar>
+        </button>
+      </div>
+
       {showSidebar && (
-        <Sidebar>
-          <SidebarTitle>설정메뉴</SidebarTitle>
-          <Nav>
-            <NavItem to={`/settings/userProjectId`} onClick={handleNavClick}>
+        <aside
+          className="bg-white shadow-sm p-3 position-sticky align-self-start"
+          style={{ top: 16, zIndex: 10 }}
+        >
+          <div className="fw-bold mb-2">설정메뉴</div>
+
+          <nav className="nav flex-column gap-1">
+            <NavLink
+              to="/settings/userProjectId"
+              onClick={handleNavClick}
+              className={navLinkClass}
+            >
               대표 프로젝트 설정
-            </NavItem>
-            <NavItem to={`/settings/workspaces`} onClick={handleNavClick}>
+            </NavLink>
+
+            <NavLink
+              to="/settings/workspaces"
+              onClick={handleNavClick}
+              className={navLinkClass}
+            >
               워크스페이스
-            </NavItem>
-            <NavItem
+            </NavLink>
+
+            <NavLink
               to={`/settings/workspace/${workspaceId}/spaces`}
               onClick={handleNavClick}
+              className={navLinkClass}
             >
               스페이스
-            </NavItem>
-            <NavItem to="/settings/profile" onClick={handleNavClick}>
+            </NavLink>
+
+            <NavLink
+              to="/settings/profile"
+              onClick={handleNavClick}
+              className={navLinkClass}
+            >
               프로필
-            </NavItem>
-            <NavItem to="/settings/preferences" onClick={handleNavClick}>
+            </NavLink>
+
+            <NavLink
+              to="/settings/preferences"
+              onClick={handleNavClick}
+              className={navLinkClass}
+            >
               환경 설정
-            </NavItem>
-            <NavItem to="/settings/notifications" onClick={handleNavClick}>
+            </NavLink>
+
+            <NavLink
+              to="/settings/notifications"
+              onClick={handleNavClick}
+              className={navLinkClass}
+            >
               알림
-            </NavItem>
-            <NavItem to="/settings/project-defaults" onClick={handleNavClick}>
+            </NavLink>
+
+            <NavLink
+              to="/settings/project-defaults"
+              onClick={handleNavClick}
+              className={navLinkClass}
+            >
               프로젝트 기본값
-            </NavItem>
-            <NavItem to="/settings/security" onClick={handleNavClick}>
+            </NavLink>
+
+            <NavLink
+              to="/settings/security"
+              onClick={handleNavClick}
+              className={navLinkClass}
+            >
               보안
-            </NavItem>
-          </Nav>
-        </Sidebar>
+            </NavLink>
+          </nav>
+        </aside>
       )}
 
-      <Content>
+      <main className="w-100">
         {isBaseSettingsPath ? (
           <Navigate to="/settings/profile" replace />
         ) : (
           <Outlet />
         )}
-      </Content>
-    </Root>
+      </main>
+    </div>
   );
 }
-
-/*********************************
- * styled-components
- *********************************/
-export const Root = styled.div`
-  width: 100%;
-  display: grid;
-  gap: 20px;
-`;
-
-export const Sidebar = styled.aside`
-  position: sticky;
-  top: 16px;
-  align-self: start;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  padding: 16px;
-  box-sizing: border-box;
-  z-index: 10;
-`;
-
-export const SidebarTitle = styled.div`
-  font-weight: 700;
-  font-size: 1rem;
-  margin-bottom: 8px;
-`;
-
-export const Nav = styled.nav`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`;
-
-export const NavItem = styled(NavLink)`
-  text-decoration: none;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  color: #111827;
-  box-sizing: border-box;
-
-  &.active {
-    background: #dbeafe;
-    border-color: #bfdbfe;
-  }
-  &:hover {
-    background: #eff6ff;
-  }
-`;
-
-export const Content = styled.main`
-  width: 100%;
-`;
-
-export const HeaderBar = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-export const ToggleButton = styled.button`
-  background: #e5e7eb;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background: #f3f4f6;
-  }
-`;
-
-export const Section = styled.section`
-  width: 100%;
-  margin: 16px 0;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-`;
-
-export const SectionHeader = styled.h4`
-  margin: 0 0 12px 0;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #111827;
-`;
-
-export const FooterBar = styled.div`
-  position: sticky;
-`;
-
-export const SettingsContainer = styled.div`
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-/* 필요하다면 FooterBar에 bottom, 배경 그라데이션 등 추가:
-  bottom: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.86) 0%, #fff 22%);
-  padding: 10px 0 4px;
-*/

@@ -1,6 +1,5 @@
 // TreeNode.tsx
 import React, { memo } from "react";
-import styled, { css } from "styled-components";
 import {
   BackendRowType,
   MilestoneNodeType,
@@ -26,7 +25,7 @@ const byPosThenId =
 /* ========= TreeRow[] -> workspaceTreeResponseType[] ========= */
 export function rowsToWorkspaceTreeResponse(
   rows: BackendRowType[],
-  workspaceNameMap?: Record<number, string>
+  workspaceNameMap?: Record<number, string>,
 ): WorkspaceTreeResponseType[] {
   type MilestoneAgg = {
     id: number;
@@ -53,7 +52,7 @@ export function rowsToWorkspaceTreeResponse(
     id: number;
     name: string;
     position: number;
-    canEnter: boolean; // OR
+    canEnter: boolean;
     milestones: Map<number, MilestoneAgg>;
     sprints: Map<number, SprintAgg>;
     tasks: Map<number, TaskAgg>;
@@ -63,7 +62,7 @@ export function rowsToWorkspaceTreeResponse(
     id: number;
     name: string;
     position: number;
-    canEnter: boolean; // OR
+    canEnter: boolean;
     projects: Map<number, ProjectAgg>;
   };
 
@@ -71,15 +70,15 @@ export function rowsToWorkspaceTreeResponse(
     id: number;
     name: string;
     position: number;
-    canEnter: boolean; // OR
+    canEnter: boolean;
     spaces: Map<number, SpaceAgg>;
   };
 
   const workspaces = new Map<number, WSAgg>();
 
   for (const r of rows) {
-    // Workspace
     let ws = workspaces.get(r.workspaceId);
+
     if (!ws) {
       ws = {
         id: r.workspaceId,
@@ -93,8 +92,8 @@ export function rowsToWorkspaceTreeResponse(
       ws.canEnter = ws.canEnter || !!r.canEnterWorkspace;
     }
 
-    // Space
     let sp = ws.spaces.get(r.spaceId);
+
     if (!sp) {
       sp = {
         id: r.spaceId,
@@ -108,13 +107,13 @@ export function rowsToWorkspaceTreeResponse(
       sp.canEnter = sp.canEnter || !!r.canEnterSpace;
     }
 
-    // Project (nullable)
     if (r.projectId != null) {
       const pid = r.projectId;
       const pname = r.projectName ?? `Project ${pid}`;
       const ppos = r.projectPosition ?? Number.MAX_SAFE_INTEGER;
 
       let p = sp.projects.get(pid);
+
       if (!p) {
         p = {
           id: pid,
@@ -132,13 +131,13 @@ export function rowsToWorkspaceTreeResponse(
         if (p.position == null) p.position = ppos;
       }
 
-      // Milestone (nullable)
       if (r.milestoneId != null) {
         const mid = r.milestoneId;
         const mname = r.milestoneName ?? `Milestone ${mid}`;
         const mpos = r.milestonePosition ?? Number.MAX_SAFE_INTEGER;
 
         const m = p.milestones.get(mid);
+
         if (!m) {
           p.milestones.set(mid, {
             id: mid,
@@ -153,13 +152,13 @@ export function rowsToWorkspaceTreeResponse(
         }
       }
 
-      // Sprint (nullable)
       if (r.sprintId != null) {
         const mid = r.sprintId;
         const mname = r.sprintName ?? `Sprint ${mid}`;
         const mpos = r.sprintPosition ?? Number.MAX_SAFE_INTEGER;
 
         const m = p.sprints.get(mid);
+
         if (!m) {
           p.sprints.set(mid, {
             id: mid,
@@ -174,13 +173,13 @@ export function rowsToWorkspaceTreeResponse(
         }
       }
 
-      // Task (nullable)
       if (r.taskId != null) {
         const tid = r.taskId;
         const tname = r.taskName ?? `Task ${tid}`;
         const tpos = r.taskPosition ?? Number.MAX_SAFE_INTEGER;
 
         const t = p.tasks.get(tid);
+
         if (!t) {
           p.tasks.set(tid, {
             id: tid,
@@ -197,7 +196,6 @@ export function rowsToWorkspaceTreeResponse(
     }
   }
 
-  // Map -> Array + 정렬 + 타입 변환
   return Array.from(workspaces.values())
     .sort(byPosThenId<WSAgg>())
     .map<WorkspaceTreeResponseType>((ws) => ({
@@ -240,18 +238,15 @@ export function rowsToWorkspaceTreeResponse(
     }));
 }
 
-/* ========= Data adapter (요청하신 식 그대로) ========= */
-// ==== 5) 요청하신 어댑터: 응답 → 렌더 트리 (disabled 반영) ====
 export function convertToTreeNode(
-  data: WorkspaceTreeResponseType
+  data: WorkspaceTreeResponseType,
 ): TreeNodeType {
   const spaces = Array.isArray(data.spaces) ? data.spaces : [];
 
   return {
     id: data.workspaceId,
     name: data.name,
-    type: data.type, // "WORKSPACE"
-    // 필요시: disabled: data.canEnter === false,
+    type: data.type,
     children: spaces.map((space) => {
       const projects = Array.isArray(space.projectNodes)
         ? space.projectNodes
@@ -260,7 +255,7 @@ export function convertToTreeNode(
       return {
         id: space.id,
         name: space.name,
-        type: space.type, // "SPACE"
+        type: space.type,
         disabled: space.canEnter === false,
         children: projects.map((project) => {
           const milestones = Array.isArray(project.milestoneNodes)
@@ -288,7 +283,7 @@ export function convertToTreeNode(
           return {
             id: project.id,
             name: project.name,
-            type: project.type, // "PROJECT"
+            type: project.type,
             disabled: project.canEnter === false,
             children,
           };
@@ -300,9 +295,10 @@ export function convertToTreeNode(
 
 export function convertToRootTreeNode(
   dataList: WorkspaceTreeResponseType[] | null | undefined,
-  rootName = "Workspaces"
+  rootName = "Workspaces",
 ): TreeNodeType {
   const list = Array.isArray(dataList) ? dataList : [];
+
   return {
     id: "root",
     name: rootName,
@@ -311,7 +307,6 @@ export function convertToRootTreeNode(
   };
 }
 
-/* ========= Props ========= */
 type Props = {
   open: boolean;
   setOpen: (v: any) => void;
@@ -319,11 +314,9 @@ type Props = {
   depth?: number;
   selectedId?: string | number;
   onSelect?: (node: TreeNodeType) => void;
-  /** 트리 기본 폰트(px). 예: 12, 14, 16 ... */
   fontSize?: number;
 };
 
-/* ========= TreeNode 컴포넌트 ========= */
 export const TreeNode: React.FC<Props> = memo(function TreeNode({
   open,
   setOpen,
@@ -331,20 +324,18 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   depth = 0,
   selectedId,
   onSelect,
-  fontSize, // 👈 추가
+  fontSize,
 }) {
   const redirect = useNavigate();
 
   const hasChildren = Boolean(node.children?.length);
   const isSelected = selectedId === node.id;
-  const isDisabled = node.disabled === true; // 🔒 권한 없으면 비활성
+  const isDisabled = node.disabled === true;
 
   const handleToggle = () => {
-    // 펼치기/접기는 허용
     if (hasChildren) setOpen((v: any) => !v);
     onSelect?.(node);
 
-    // 🚫 비활성 노드는 이동 금지
     if (isDisabled) return;
 
     if (node.id === "root") {
@@ -352,7 +343,6 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
       return;
     }
 
-    // ✅ 각 타입별 라우트는 node.id만 사용
     switch (node.type) {
       case "WORKSPACE":
         setOpen(false);
@@ -382,21 +372,49 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   };
 
   return (
-    <Item style={{ ["--tree-font" as any]: (fontSize ?? 14) + "px" }}>
-      <Row
+    <li
+      style={{
+        listStyle: "none",
+        position: "relative",
+      }}
+    >
+      <button
         type="button"
         onClick={handleToggle}
-        $depth={depth}
-        $open={open}
-        $hasChildren={hasChildren}
         aria-expanded={hasChildren ? open : undefined}
         aria-label={node.name}
-        $selected={isSelected}
-        $disabled={isDisabled}
         aria-disabled={isDisabled || undefined}
         title={isDisabled ? `${node.name} (접근 권한 없음)` : node.name}
+        className="w-100 d-flex align-items-center border-0 text-start"
+        style={{
+          gap: 10,
+          padding: "8px 10px",
+          paddingLeft: 10 + depth * 9,
+          borderRadius: 10,
+          cursor: "pointer",
+          fontSize: `clamp(12px, ${fontSize ?? 14}px, 20px)`,
+          lineHeight: 1.2,
+          background: isSelected ? "rgba(99,102,241,0.14)" : "transparent",
+          color: "inherit",
+          opacity: hasChildren ? 1 : 0.96,
+          transition:
+            "background 160ms ease, box-shadow 160ms ease, transform 120ms ease",
+        }}
       >
-        <Chevron $visible={hasChildren} $open={open} aria-hidden>
+        <span
+          aria-hidden
+          style={{
+            width: "1.2em",
+            height: "1.2em",
+            display: "inline-grid",
+            placeItems: "center",
+            color: "#64748b",
+            opacity: hasChildren ? 1 : 0,
+            transform: `rotate(${open ? 90 : 0}deg)`,
+            transition: "transform 180ms ease, opacity 120ms ease",
+            flexShrink: 0,
+          }}
+        >
           <svg viewBox="0 0 24 24" width="1em" height="1em">
             <path
               d="M9 6l6 6-6 6"
@@ -407,14 +425,27 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
               strokeLinejoin="round"
             />
           </svg>
-        </Chevron>
+        </span>
+
         {hasChildren ? (
-          <FolderIcon $open={open} aria-hidden />
+          <span
+            aria-hidden
+            style={{
+              width: "1.1em",
+              height: "1.1em",
+              display: "inline-block",
+              color: open ? "#4680ff" : "#9ca3af",
+              flexShrink: 0,
+            }}
+          >
+            📁
+          </span>
         ) : node.type === "MILESTONE" ? (
           <span
             style={{
               color: node.disabled ? "#aaa" : "inherit",
               fontSize: "0.95em",
+              flexShrink: 0,
             }}
           >
             M
@@ -424,6 +455,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
             style={{
               color: node.disabled ? "#aaa" : "inherit",
               fontSize: "0.95em",
+              flexShrink: 0,
             }}
           >
             S
@@ -433,15 +465,40 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
             style={{
               color: node.disabled ? "#aaa" : "inherit",
               fontSize: "0.95em",
+              flexShrink: 0,
             }}
           >
             T
           </span>
         ) : (
-          <FileIcon aria-hidden />
+          <span
+            aria-hidden
+            style={{
+              width: "1.1em",
+              height: "1.1em",
+              display: "inline-block",
+              color: "#9ca3af",
+              flexShrink: 0,
+            }}
+          >
+            📄
+          </span>
         )}
-        <Name style={{ display: "flex" }} $disabled={isDisabled}>
+
+        <span
+          style={{
+            display: "flex",
+            color: isDisabled ? "#94a3b8" : "inherit",
+            fontSize: "0.93em",
+            lineHeight: 1.2,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            flex: 1,
+          }}
+        >
           {node.name}
+
           {node.type === "PROJECT" && (
             <Calendar
               onClick={(e) => {
@@ -459,7 +516,8 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
               }}
             />
           )}
-        </Name>
+        </span>
+
         {isDisabled && (
           <LockIcon
             style={{
@@ -472,14 +530,28 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
             <title>"접근 권한이 없습니다"</title>
           </LockIcon>
         )}
-      </Row>
+      </button>
 
-      <Children $open={open}>
-        <Content $depth={depth}>
+      <div
+        style={{
+          overflow: "hidden",
+          maxHeight: open ? 1000 : 0,
+          transition: "max-height 220ms ease",
+        }}
+      >
+        <ul
+          style={{
+            overflow: "hidden",
+            paddingLeft: 0,
+            margin: "2px 0 0 0",
+            borderLeft: "1px dashed rgba(148, 163, 184, 0.35)",
+            marginLeft: depth ? 6 : 0,
+          }}
+        >
           {node.children?.map((child, idx) => (
             <TreeNode
               key={`${depth + 1}-${child.type ?? "NODE"}-${String(
-                child.id ?? idx
+                child.id ?? idx,
               )}-${idx}`}
               open={open}
               setOpen={setOpen}
@@ -490,264 +562,8 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
               fontSize={fontSize}
             />
           ))}
-        </Content>
-      </Children>
-    </Item>
+        </ul>
+      </div>
+    </li>
   );
 });
-
-/* ===================== styled-components ===================== */
-
-const vars = {
-  radius: 10,
-  padX: 10,
-  padY: 8,
-  indent: 9, // depth당 들여쓰기
-};
-
-const Item = styled.li`
-  list-style: none;
-  position: relative;
-`;
-
-/** 한 줄 (버튼) */
-const Row = styled.button<{
-  $depth: number;
-  $open: boolean;
-  $hasChildren: boolean;
-  $selected?: boolean;
-  $disabled?: boolean;
-}>`
-  --pad-x: ${vars.padX}px;
-  --pad-y: ${vars.padY}px;
-
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: var(--pad-y) var(--pad-x);
-  padding-left: calc(var(--pad-x) + ${({ $depth }) => $depth * vars.indent}px);
-
-  border: 0;
-  border-radius: ${vars.radius}px;
-  cursor: pointer;
-  text-align: left;
-
-  /* 폰트 사이즈: 전체 트리 스케일 */
-  font-size: clamp(12px, var(--tree-font, 14px), 20px);
-  line-height: 1.2;
-
-  background: ${({ $selected }) =>
-    $selected
-      ? `linear-gradient(0deg, rgba(99,102,241,0.14), rgba(99,102,241,0.14))`
-      : "transparent"};
-  color: ${({ $selected }) => ($selected ? "inherit" : "inherit")};
-
-  position: relative;
-  transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease;
-
-  /* 좌측 세로 가이드 (트리 느낌) */
-  &::before {
-    content: "";
-    position: absolute;
-    left: calc(${vars.padX}px + ${({ $depth }) => ($depth ? 6 : 0)}px);
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: ${({ $hasChildren }) => ($hasChildren ? "60%" : "36%")};
-    background: ${({ $selected }) =>
-      $selected
-        ? "rgba(99,102,241,0.35)"
-        : "rgba(148,163,184,0.35)"}; /* slate-300 */
-    border-radius: 1px;
-    opacity: ${({ $depth }) => ($depth ? 1 : 0)}; /* 루트는 라인 숨김 */
-    transition: background 160ms ease, height 160ms ease, opacity 160ms ease;
-  }
-
-  &:hover {
-    background: ${({ $selected }) =>
-      $selected
-        ? "linear-gradient(0deg, rgba(99,102,241,0.2), rgba(99,102,241,0.2))"
-        : "linear-gradient(0deg, rgba(15,23,42,0.06), rgba(15,23,42,0.06))"};
-  }
-
-  &:active {
-    transform: translateY(0.5px);
-  }
-
-  &:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.38),
-      0 6px 14px rgba(2, 6, 23, 0.08);
-  }
-
-  /* 자식이 없는 경우 */
-  ${({ $hasChildren }) =>
-    !$hasChildren &&
-    css`
-      opacity: 0.96;
-    `}
-
-  /* 다크모드 대응 */
-  @media (prefers-color-scheme: dark) {
-    background: ${({ $selected }) =>
-      $selected ? "rgba(99,102,241,0.12)" : "transparent"};
-    &:hover {
-      background: ${({ $selected }) =>
-        $selected
-          ? "rgba(99,102,241,0.18)"
-          : "rgba(241,245,249,0.06)"}; /* slate-50 on dark */
-    }
-    &::before {
-      background: ${({ $selected }) =>
-        $selected ? "rgba(129,140,248,0.45)" : "rgba(148,163,184,0.28)"};
-    }
-  }
-
-  /* 고대비 모드 접근성 */
-  @media (forced-colors: active) {
-    box-shadow: none;
-    &:focus-visible {
-      outline: 2px solid CanvasText;
-      outline-offset: 2px;
-    }
-  }
-`;
-
-const Name = styled.span<{ $disabled?: boolean }>`
-  color: ${({ $disabled }) => ($disabled ? "#94a3b8" : "inherit")};
-  font-size: 0.93em; /* 기본 폰트 대비 살짝 축소 */
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-  mask-image: linear-gradient(90deg, #000 85%, transparent 100%);
-`;
-
-/** 펼침 화살표 */
-const Chevron = styled.span<{ $open: boolean; $visible: boolean }>`
-  width: 1.2em;
-  height: 1.2em;
-  display: inline-grid;
-  place-items: center;
-  color: #64748b; /* slate-500 */
-  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-  transform: rotate(${({ $open }) => ($open ? 90 : 0)}deg);
-  transition: transform 180ms ease, opacity 120ms ease, color 160ms ease;
-
-  ${Row}:hover & {
-    color: #4f46e5; /* indigo-600 */
-  }
-
-  @media (prefers-color-scheme: dark) {
-    color: #94a3b8; /* slate-400 */
-  }
-`;
-
-/** 폴더 / 파일 아이콘 */
-const FolderIcon = styled.i<{ $open: boolean }>`
-  width: 1.1em;
-  height: 1.1em;
-  display: inline-block;
-  color: ${({ $open }) => ($open ? "#4680ff" : "#9ca3af")}; /* 접힘/펼침 색상 */
-  transition: color 160ms ease, transform 160ms ease;
-  transform: ${({ $open }) => ($open ? "translateY(-1px)" : "none")};
-
-  &::before {
-    content: "";
-    display: block;
-    width: 1.1em;
-    height: 0.85em;
-    border: 0.14em solid currentColor;
-    border-top-left-radius: 0.21em;
-    border-top-right-radius: 0.21em;
-    border-bottom: 0.14em solid transparent;
-    position: relative;
-    box-shadow: inset 0 -0.45em 0 0 currentColor;
-    background: ${({ $open }) =>
-      $open ? "rgba(245, 158, 11, 0.08)" : "transparent"};
-  }
-  &::after {
-    content: "";
-    position: relative;
-    display: block;
-    width: 0.55em;
-    height: 0.3em;
-    margin-left: 0.15em;
-    margin-top: -0.9em;
-    background: currentColor;
-    border-top-left-radius: 0.14em;
-    border-top-right-radius: 0.14em;
-  }
-`;
-
-const FileIcon = styled.i`
-  width: 1.1em;
-  height: 1.1em;
-  display: inline-block;
-  color: #9ca3af; /* gray-400 */
-  transition: color 160ms ease;
-  ${Row}:hover & {
-    color: #6b7280; /* gray-500 */
-  }
-  &::before {
-    content: "";
-    display: block;
-    width: 0.9em;
-    height: 1em;
-    border: 0.14em solid currentColor;
-    border-radius: 0.14em;
-    position: relative;
-    background: rgba(148, 163, 184, 0.06);
-  }
-  &::after {
-    content: "";
-    position: relative;
-    display: block;
-    width: 0.45em;
-    height: 0.15em;
-    margin-top: -0.9em;
-    margin-left: 0.22em;
-    background: currentColor;
-    border-radius: 0.1em;
-    box-shadow: 0 0.3em 0 0 currentColor, 0 0.6em 0 0 currentColor;
-  }
-`;
-
-/** 펼침/접힘 컨테이너 */
-const Children = styled.div<{ $open: boolean }>`
-  display: grid;
-  grid-template-rows: ${({ $open }) => ($open ? "1fr" : "0fr")};
-  transition: grid-template-rows 220ms ease;
-  will-change: grid-template-rows;
-  overflow: hidden;
-
-  > * {
-    opacity: ${({ $open }) => ($open ? 1 : 0)};
-    transform: translateY(${({ $open }) => ($open ? "0px" : "-3px")});
-    transition: opacity 180ms ease, transform 200ms ease;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    > * {
-      transition: none;
-    }
-  }
-`;
-
-const Content = styled.ul<{ $depth: number }>`
-  overflow: hidden;
-  padding-left: 0;
-  margin: 2px 0 0 0;
-  border-left: 1px dashed rgba(148, 163, 184, 0.35);
-
-  /* depth에 따라 좌측 여백 살짝 조절(라인 겹침 최소화) */
-  margin-left: ${({ $depth }) => ($depth ? 6 : 0)}px;
-
-  @media (prefers-color-scheme: dark) {
-    border-left-color: rgba(148, 163, 184, 0.28);
-  }
-`;

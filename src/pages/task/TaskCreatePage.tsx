@@ -18,12 +18,6 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import DateInput from "../../components/form/DateInput";
 import { toast } from "react-toastify";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
 import { MdAddTask } from "react-icons/md";
 import { useLogin } from "../../context/LoginContext";
 
@@ -154,11 +148,19 @@ const TaskCreatePage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <PageIconAndNameWrapper icon={<MdAddTask />} name="태스크 생성" />
-        </Title>
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <span className="d-flex align-items-center">
+              <MdAddTask />
+            </span>
+            <h3 className="mb-0 fw-semibold" style={{ fontSize: "1rem" }}>
+              태스크 생성
+            </h3>
+          </div>
+        </div>
+
         <TextInput
           name="projectId"
           title="프로젝트 아이디"
@@ -166,13 +168,16 @@ const TaskCreatePage = () => {
           data={projectId ?? "null"}
           setData={setProjectId}
         />
+
         <TextInput name="name" title="이름" data={name} setData={setName} />
+
         <TextInput
           name="description"
           title="상세설명"
           data={description}
           setData={setDescription}
         />
+
         <TwoDiv>
           <SelectInput
             name="state"
@@ -189,6 +194,7 @@ const TaskCreatePage = () => {
             options={priorityOptions}
           />
         </TwoDiv>
+
         <SelectInput
           name="type"
           title="태스크 타입"
@@ -196,6 +202,7 @@ const TaskCreatePage = () => {
           setValue={setType}
           options={typeOptions}
         />
+
         <SelectArrayInput
           name="assignees"
           title="작업할당자"
@@ -206,12 +213,14 @@ const TaskCreatePage = () => {
             value: assignee.email,
           }))}
         />
+
         <TextInput
           name="storyPoints"
           title="스토리 포인트"
           data={storyPoints ?? "null"}
           setData={setStoryPoints}
         />
+
         <SelectArrayInput
           name="tags"
           title="태그"
@@ -224,10 +233,12 @@ const TaskCreatePage = () => {
             })) ?? []
           }
         />
+
         <DateInput title="마감일" selected={dueDate} setSelected={setDueDate} />
+
         <ConfirmButton title="생성" onClick={OnCreateSubmit} />
-      </Wrapper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

@@ -1,13 +1,5 @@
-// DateInput.tsx
-import { Dispatch, SetStateAction } from "react";
-import DatePicker from "react-datepicker";
-import styled, { createGlobalStyle } from "styled-components";
-
-import "react-datepicker/dist/react-datepicker.css";
-
-import { registerLocale } from "react-datepicker";
-import { ko } from "date-fns/locale/ko";
-registerLocale("ko", ko);
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import Calendar from "react-calendar";
 
 interface DateInputProps {
   disabled?: boolean;
@@ -16,144 +8,265 @@ interface DateInputProps {
   setSelected: Dispatch<SetStateAction<Date | undefined>>;
 }
 
-const DateInput = ({ disabled, title, selected, setSelected }: DateInputProps) => {
-  return (
-    <Container>
-      <DatepickerGlobalFix />
+const formatDate = (date?: Date) => {
+  if (!date) return "";
+  return date.toISOString().slice(0, 10);
+};
 
-      <label>{title}</label>
-      <DatePicker
-        disabled={disabled}
-        className="datePicker"
-        dateFormat="yyyy-MM-dd"
-        selected={selected ?? null}
-        onChange={(date: Date | null) => setSelected(date ?? undefined)}
-        placeholderText="날짜를 선택하세요"
-        locale="ko"
-        fixedHeight
-        shouldCloseOnSelect
-        withPortal
-        portalId="app-datepicker-portal"
-        popperProps={{
-          placement: "bottom-start",
-          strategy: "fixed",
-        }}
-      />
-    </Container>
+const parseDate = (value: string): Date | undefined => {
+  if (!value) return undefined;
+  const parsed = new Date(value);
+  return isNaN(parsed.getTime()) ? undefined : parsed;
+};
+
+const DateInput = ({ disabled, title, selected, setSelected }: DateInputProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState(formatDate(selected));
+
+  useEffect(() => {
+    setInputValue(formatDate(selected));
+  }, [selected]);
+
+  return (
+    <div className="date-input-wrap w-100 mb-3 position-relative">
+      <style>{dateInputStyles}</style>
+
+      <label className="form-label fw-semibold date-input-label">{title}</label>
+
+      <div className="d-flex gap-2">
+        <input
+          type="text"
+          className="form-control date-input-field"
+          placeholder="yyyy-MM-dd"
+          value={inputValue}
+          disabled={disabled}
+          onChange={(e) => {
+            const value = e.target.value;
+            setInputValue(value);
+
+            const parsed = parseDate(value);
+            if (parsed) {
+              setSelected(parsed);
+            }
+          }}
+        />
+
+        <button
+          type="button"
+          className="btn date-input-button"
+          onClick={() => setIsOpen(true)}
+          disabled={disabled}
+        >
+          📅
+        </button>
+      </div>
+
+      {isOpen && (
+        <>
+          <div className="calendar-backdrop" onClick={() => setIsOpen(false)} />
+          <div className="calendar-modal">
+            <Calendar
+              onChange={(value) => {
+                if (value instanceof Date) {
+                  setSelected(value);
+                  setInputValue(formatDate(value));
+                  setIsOpen(false);
+                }
+              }}
+              value={selected}
+              locale="ko-KR"
+              className="pretty-calendar"
+              prev2Label={null}
+              next2Label={null}
+              formatDay={(_, date) => String(date.getDate())}
+            />
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 
 export default DateInput;
 
-const Container = styled.div`
+const dateInputStyles = `
+.date-input-label {
+  margin-bottom: 8px;
+  color: #111827;
+  font-size: 14px;
+}
+
+.date-input-field {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.date-input-field:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.date-input-button {
+  min-width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.date-input-button:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #c7d2fe;
+}
+
+.calendar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 9998;
+  animation: fadeIn 0.18s ease;
+}
+
+.calendar-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 380px);
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, 0.18),
+    0 8px 24px rgba(15, 23, 42, 0.1);
+  animation: popIn 0.2s ease;
+}
+
+/* react-calendar 커스텀 */
+.pretty-calendar {
   width: 100%;
+  border: none !important;
+  background: transparent !important;
+  font-family: inherit;
+}
+
+.pretty-calendar .react-calendar__navigation {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin: 12px 0;
-  height: 100%;
+  align-items: center;
+  margin-bottom: 12px;
+  height: 44px;
+}
 
-  label {
-    width: 100%;
-    display: block;
-    margin-bottom: 8px;
-    color: #0f172a;
-    font-weight: 600;
-    font-size: 0.92rem;
+.pretty-calendar .react-calendar__navigation button {
+  min-width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.pretty-calendar .react-calendar__navigation button:hover {
+  background: #f3f4f6;
+}
+
+.pretty-calendar .react-calendar__navigation button:disabled {
+  background: transparent;
+  color: #9ca3af;
+}
+
+.pretty-calendar .react-calendar__navigation__label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.pretty-calendar .react-calendar__month-view__weekdays {
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.pretty-calendar .react-calendar__month-view__weekdays__weekday {
+  padding: 8px 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.pretty-calendar .react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+.pretty-calendar .react-calendar__tile {
+  position: relative;
+  height: 44px;
+  border: none;
+  background: transparent;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  transition: all 0.18s ease;
+}
+
+.pretty-calendar .react-calendar__tile:hover {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.pretty-calendar .react-calendar__tile:disabled {
+  background: transparent;
+  color: #d1d5db;
+}
+
+.pretty-calendar .react-calendar__month-view__days__day--neighboringMonth {
+  color: #cbd5e1;
+}
+
+.pretty-calendar .react-calendar__tile--now {
+  background: #ede9fe !important;
+  color: #6d28d9 !important;
+  font-weight: 700;
+}
+
+.pretty-calendar .react-calendar__tile--active {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  color: white !important;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.28);
+}
+
+.pretty-calendar .react-calendar__tile--hasActive {
+  background: transparent;
+}
+
+.pretty-calendar .react-calendar__month-view__days {
+  gap: 4px 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.96);
   }
-
-  .datePicker {
-    width: 100%;
-    min-height: 46px;
-    padding: 11px 14px;
-    box-sizing: border-box;
-    border: 1px solid #dbe2ea;
-    border-radius: 14px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: #0f172a;
-    background: #ffffff;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease,
-      background-color 0.2s ease;
-
-    &:hover {
-      border-color: #94a3b8;
-      background: #fcfdff;
-    }
-
-    &:focus {
-      outline: none;
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
-    }
-
-    &::placeholder {
-      color: #94a3b8;
-    }
-
-    &:disabled {
-      background: #f8fafc;
-      color: #94a3b8;
-      cursor: not-allowed;
-    }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
-`;
-
-const DatepickerGlobalFix = createGlobalStyle`
-  .react-datepicker-popper { z-index: 9999; }
-
-  .react-datepicker {
-    font-size: 14px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.06);
-    border-radius: 16px;
-    background: #fff;
-    overflow: hidden;
-  }
-
-  .react-datepicker__header {
-    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-    border-bottom: 1px solid #edf2f7;
-    padding-top: 12px;
-  }
-
-  .react-datepicker__current-month,
-  .react-datepicker-time__header,
-  .react-datepicker-year-header {
-    color: #0f172a;
-    font-weight: 700;
-  }
-
-  .react-datepicker__day-name {
-    color: #64748b;
-    font-weight: 600;
-  }
-
-  .react-datepicker__day,
-  .react-datepicker__time-name {
-    border-radius: 10px;
-    color: #1e293b;
-  }
-
-  .react-datepicker__day:hover,
-  .react-datepicker__month-text:hover,
-  .react-datepicker__quarter-text:hover,
-  .react-datepicker__year-text:hover {
-    background: #eef2ff;
-  }
-
-  .react-datepicker__day--today {
-    font-weight: 700;
-    color: #4338ca;
-  }
-
-  .react-datepicker__day--selected,
-  .react-datepicker__day--keyboard-selected {
-    background: #4f46e5;
-    color: #fff;
-  }
-
-  .react-datepicker__navigation-icon::before {
-    border-color: #64748b;
-  }
+}
 `;

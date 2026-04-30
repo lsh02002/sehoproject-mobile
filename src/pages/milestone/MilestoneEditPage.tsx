@@ -13,12 +13,6 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
 import { LuMilestone } from "react-icons/lu";
 
 const MilestoneEditPage = () => {
@@ -84,7 +78,7 @@ const MilestoneEditPage = () => {
 
       setTaskIds(newTaskOptions);
     },
-    [projectId, taskOptions]
+    [projectId, taskOptions],
   );
 
   const OnEditSubmit = () => {
@@ -111,11 +105,15 @@ const MilestoneEditPage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <PageIconAndNameWrapper icon={<LuMilestone />} name="마일스톤 수정" />
-        </Title>
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <LuMilestone />
+            <h3 className="m-0 fw-medium">마일스톤 수정</h3>
+          </div>
+        </div>
+
         <TwoDiv>
           <TextInput
             name="id"
@@ -132,7 +130,9 @@ const MilestoneEditPage = () => {
             setData={setProjectId}
           />
         </TwoDiv>
+
         <TextInput name="name" title="이름" data={name} setData={setName} />
+
         <SelectInput
           name="state"
           title="작업 상태"
@@ -140,6 +140,7 @@ const MilestoneEditPage = () => {
           setValue={setStatus}
           options={milestoneStatusOptions}
         />
+
         <TwoDiv>
           <DateInput
             title="시작일"
@@ -152,6 +153,7 @@ const MilestoneEditPage = () => {
             setSelected={setDueDate}
           />
         </TwoDiv>
+
         <SelectArrayInput
           name="taskIds"
           title="태스크"
@@ -164,9 +166,10 @@ const MilestoneEditPage = () => {
             })) ?? []
           }
         />
+
         <ConfirmButton title="수정" onClick={OnEditSubmit} />
-      </Wrapper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import styled from "styled-components";
 
 type Option = { id: string; name: string };
 
@@ -15,8 +14,6 @@ export type CompleteArrayInputPropsType = {
   placeholder?: string;
   debounceMs?: number;
   maxMenuHeight?: number;
-  noOptionsText?: string;
-  loadingText?: string;
   onError?: (err: unknown) => void;
 };
 
@@ -32,8 +29,6 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   placeholder = "추가...",
   debounceMs = 250,
   maxMenuHeight = 240,
-  noOptionsText = "검색 결과가 없어요",
-  loadingText = "불러오는 중…",
   onError,
 }) => {
   const [input, setInput] = useState("");
@@ -41,7 +36,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   const [loading, setLoading] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const [selectedMap, setSelectedMap] = useState<Map<string, Option>>(
-    () => new Map()
+    () => new Map(),
   );
   const debounceRef = useRef<number | null>(null);
 
@@ -88,35 +83,35 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   const toggleId = useCallback(
     (id: string) => {
       setValues((prev) =>
-        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
       );
     },
-    [setValues]
+    [setValues],
   );
 
   const addId = useCallback(
     (id: string) => {
       setValues((prev) => (prev.includes(id) ? prev : [...prev, id]));
     },
-    [setValues]
+    [setValues],
   );
 
   const removeId = useCallback(
     (id: string) => {
       setValues((prev) => prev.filter((x) => x !== id));
     },
-    [setValues]
+    [setValues],
   );
 
   const handleCreate = useCallback(async () => {
     if (!createOption) return;
-    const name = input.trim();
-    if (!name) return;
+    const nextName = input.trim();
+    if (!nextName) return;
     try {
       setLoading(true);
-      const created = await createOption(name);
+      const created = await createOption(nextName);
       setOptions((prev) =>
-        prev.some((o) => o.id === created.id) ? prev : [created, ...prev]
+        prev.some((o) => o.id === created.id) ? prev : [created, ...prev],
       );
       addId(created.id);
       setSelectedMap((prev) => {
@@ -133,14 +128,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   }, [createOption, input, addId, onError]);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!options.length) {
-      if (e.key === "Enter" && createOption && input.trim()) {
-        e.preventDefault();
-        void handleCreate();
-      }
-      return;
-    }
-
+    if (!options.length) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setFocusedIndex((i) => (i + 1) % options.length);
@@ -158,218 +146,55 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   };
 
   return (
-    <Container>
-      {title && <Label>{title}</Label>}
+    <div className="w-100 mb-3 position-relative">
+      {title && <label className="form-label fw-semibold">{title}</label>}
 
       {values.length > 0 && (
-        <SelectedList>
+        <div className="d-flex flex-wrap gap-2 mb-2">
           {values.map((id) => {
             const label = selectedMap.get(id)?.name ?? id;
             return (
-              <SelectedItem key={id}>
+              <span
+                key={id}
+                className="badge text-bg-secondary d-inline-flex align-items-center gap-1 px-3 py-2"
+              >
                 {label}
-                <RemoveButton type="button" onClick={() => removeId(id)}>
-                  ✕
-                </RemoveButton>
-              </SelectedItem>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white ms-1"
+                  aria-label="삭제"
+                  onClick={() => removeId(id)}
+                  style={{ fontSize: "0.55rem" }}
+                />
+              </span>
             );
           })}
-        </SelectedList>
+        </div>
       )}
 
-      <InputWrap>
-        <Input
-          name={name}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={onKeyDown}
-          placeholder={placeholder}
-        />
-      </InputWrap>
+      <input
+        name={name}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={onKeyDown}
+        placeholder={placeholder}
+        className="form-control"
+      />
 
-      <Menu $maxHeight={maxMenuHeight}>
-        {loading && <InfoText>{loadingText}</InfoText>}
-        {!loading && options.length === 0 && !input.trim() && (
-          <InfoText>{noOptionsText}</InfoText>
-        )}
-        {!loading && options.length > 0 && (
-          <OptionList>
-            {options.map((opt, idx) => {
-              const active = idx === focusedIndex;
-              const selected = values.includes(opt.id);
-              return (
-                <OptionRow
-                  key={opt.id}
-                  type="button"
-                  $active={active}
-                  $selected={selected}
-                  onClick={() => toggleId(opt.id)}
-                >
-                  <OptionCheck>{selected ? "✓" : ""}</OptionCheck>
-                  <span>{opt.name}</span>
-                </OptionRow>
-              );
-            })}
-          </OptionList>
-        )}
+      <div
+        className="mt-2"
+        style={{ maxHeight: `${maxMenuHeight}px`, overflowY: "auto" }}
+      >
         {!loading && createOption && input.trim() && (
-          <CreateBtn type="button" onClick={() => handleCreate()}>
+          <button
+            type="button"
+            className="btn btn-outline-primary btn-sm"
+            onClick={() => handleCreate()}
+          >
             “{input.trim()}” 추가
-          </CreateBtn>
+          </button>
         )}
-      </Menu>
-    </Container>
+      </div>
+    </div>
   );
 };
-
-const Container = styled.div`
-  width: 100%;
-  font-family: system-ui, sans-serif;
-  position: relative;
-  margin: 12px 0;
-`;
-
-const Label = styled.label`
-  width: 100%;
-  display: block;
-  margin-bottom: 8px;
-  color: #0f172a;
-  font-weight: 600;
-  font-size: 0.92rem;
-`;
-
-const SelectedList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 10px;
-`;
-
-const SelectedItem = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #eef2ff;
-  color: #3730a3;
-  border: 1px solid #c7d2fe;
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.88rem;
-  font-weight: 600;
-`;
-
-const RemoveButton = styled.button`
-  border: none;
-  background: transparent;
-  color: #6366f1;
-  cursor: pointer;
-  font-size: 0.88rem;
-  padding: 0;
-
-  &:hover {
-    color: #312e81;
-  }
-`;
-
-const InputWrap = styled.div`
-  border: 1px solid #dbe2ea;
-  border-radius: 14px;
-  background: #ffffff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-  &:focus-within {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
-  }
-`;
-
-const Input = styled.input`
-  width: 100%;
-  min-height: 46px;
-  padding: 12px 14px;
-  border: none;
-  outline: none;
-  font-size: 0.95rem;
-  box-sizing: border-box;
-  color: #0f172a;
-  background-color: transparent;
-
-  &::placeholder {
-    color: #94a3b8;
-  }
-`;
-
-const Menu = styled.div<{ $maxHeight: number }>`
-  margin-top: 10px;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  background: #ffffff;
-  overflow-y: auto;
-  max-height: ${(p) => p.$maxHeight}px;
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
-`;
-
-const InfoText = styled.div`
-  padding: 12px 14px;
-  font-size: 0.9rem;
-  color: #64748b;
-`;
-
-const OptionList = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  gap: 6px;
-`;
-
-const OptionRow = styled.button<{ $active: boolean; $selected: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid ${({ $selected }) => ($selected ? "#c7d2fe" : "transparent")};
-  border-radius: 12px;
-  background: ${({ $active, $selected }) =>
-    $selected ? "#eef2ff" : $active ? "#f8fafc" : "transparent"};
-  color: #0f172a;
-  font-size: 0.94rem;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.18s ease, border-color 0.18s ease;
-
-  &:hover {
-    background: ${({ $selected }) => ($selected ? "#eef2ff" : "#f8fafc")};
-  }
-`;
-
-const OptionCheck = styled.span`
-  width: 18px;
-  height: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  background: #4f46e5;
-  color: #ffffff;
-  font-size: 0.76rem;
-  font-weight: 700;
-  flex-shrink: 0;
-`;
-
-const CreateBtn = styled.button`
-  width: calc(100% - 16px);
-  margin: 0 8px 8px;
-  padding: 11px 12px;
-  background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 0.92rem;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    filter: brightness(0.98);
-  }
-`;

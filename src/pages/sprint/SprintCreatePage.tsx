@@ -12,12 +12,6 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
-import {
-  Container,
-  PageIconAndNameWrapper,
-  Title,
-  Wrapper,
-} from "../../components/pages-style/PageStyle";
 import { GiSprint } from "react-icons/gi";
 import { useLogin } from "../../context/LoginContext";
 
@@ -98,11 +92,15 @@ const SprintCreatePage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <PageIconAndNameWrapper icon={<GiSprint />} name="스프린트 생성" />
-        </Title>
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <GiSprint />
+            <h3 className="m-0 fw-medium">스프린트 생성</h3>
+          </div>
+        </div>
+
         <TwoDiv>
           <TextInput
             name="projectId"
@@ -112,7 +110,9 @@ const SprintCreatePage = () => {
             setData={setProjectId}
           />
         </TwoDiv>
+
         <TextInput name="name" title="이름" data={name} setData={setName} />
+
         <TwoDiv>
           <DateInput
             title="시작일"
@@ -125,6 +125,7 @@ const SprintCreatePage = () => {
             setSelected={setEndDate}
           />
         </TwoDiv>
+
         <SelectInput
           name="state"
           title="작업 상태"
@@ -132,6 +133,7 @@ const SprintCreatePage = () => {
           setValue={setState}
           options={sprintStateOptions}
         />
+
         <SelectArrayInput
           name="taskIds"
           title="태스크"
@@ -144,9 +146,10 @@ const SprintCreatePage = () => {
             })) ?? []
           }
         />
+
         <ConfirmButton title="생성" onClick={OnCreateSubmit} />
-      </Wrapper>
-    </Container>
+      </div>
+    </div>
   );
 };
 

@@ -1,16 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-// 기존 공용 폼 컴포넌트 (경로는 프로젝트에 맞게)
 import TextInput from "../../components/form/TextInput";
 import SelectInput from "../../components/form/SelectInput";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import {  
+import {
   RequestRoleType,
   RoleProjectType,
   UsersInfoType,
 } from "../../types/type";
-import {  
+import {
   createSpaceAndProjectMembersApi,
   getProjectsBySpaceApi,
   getUsersNotInSpaceApi,
@@ -49,9 +47,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
   spaceId,
 }) => {
   // 폼 상태
-  const [invitedUserEmails, setInvitedUserEmails] = useState<string[]>(
-    [],
-  );
+  const [invitedUserEmails, setInvitedUserEmails] = useState<string[]>([]);
   const [acceptedUsers, setAcceptUsers] = useState<UsersInfoType[]>([]);
   const [requestRole, setRequestRole] = useState<RequestRoleType>("VIEWER");
   const [roleProject, setRoleProject] = useState<RoleProjectType>("VIEWER");
@@ -66,7 +62,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
     getUsersNotInSpaceApi(Number(workspaceId), Number(spaceId))
       .then((res) => {
         console.log(res);
-        setAcceptUsers(res.data);        
+        setAcceptUsers(res.data);
       })
       .catch((err) => {
         console.error(err);
@@ -75,12 +71,12 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
 
   useEffect(() => {
     const wsIdNum = Number(spaceId);
-    
+
     setLoading(true);
     getProjectsBySpaceApi(wsIdNum)
       .then((res) => setProjects(res.data))
       .catch((err) => {
-        console.error(err);        
+        console.error(err);
       })
       .finally(() => setLoading(false));
   }, [spaceId]);
@@ -149,15 +145,17 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <PageTitle>
-          <h3>스페이스 권한 설정</h3>
-        </PageTitle>
+    <div className="container-fluid p-3 d-flex justify-content-center">
+      <div className="w-100" style={{ maxWidth: 920 }}>
+        {/* Title */}
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h3 className="fw-bold m-0">스페이스 권한 설정</h3>
+        </div>
 
-        <Section>
-          <TwoCol>
-            <ReadOnly>
+        {/* Section 1 */}
+        <div className="border rounded-4 bg-white p-3 mb-3 shadow-sm">
+          <div className="row g-3">
+            <div className="col-md-6">
               <TextInput
                 name="workspaceId"
                 title="워크스페이스"
@@ -165,8 +163,9 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
                 setData={() => {}}
                 disabled
               />
-            </ReadOnly>
-            <ReadOnly>
+            </div>
+
+            <div className="col-md-6">
               <TextInput
                 name="spaceId"
                 title="스페이스"
@@ -174,29 +173,27 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
                 setData={() => {}}
                 disabled
               />
-            </ReadOnly>
-          </TwoCol>
+            </div>
 
-          <TwoCol>
-            <SelectArrayInput
-              name="invitedUserEmail"
-              title="대상 유저(이메일)"
-              values={invitedUserEmails}
-              setValues={setInvitedUserEmails}
-              options={acceptedUsers?.map((user) => ({
-                label: user.email,
-                value: user.email,
-              }))}
-            />
+            <div className="col-md-6">
+              <SelectArrayInput
+                name="invitedUserEmail"
+                title="대상 유저(이메일)"
+                values={invitedUserEmails}
+                setValues={setInvitedUserEmails}
+                options={acceptedUsers?.map((user) => ({
+                  label: user.email,
+                  value: user.email,
+                }))}
+              />
+            </div>
 
-            {/* 스페이스 역할 (필수) */}
-            <Field>
+            <div className="col-md-6">
               <SelectInput
                 name="requestRole"
                 title="스페이스 역할"
                 value={requestRole}
                 setValue={(v: string) => {
-                  // OK: 컴포넌트가 요구하는 시그니처
                   if (isRequestRoleType(v)) setRequestRole(v);
                 }}
                 options={SPACE_ROLE_CHOICES.map((role) => ({
@@ -204,14 +201,16 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
                   value: role.name,
                 }))}
               />
-            </Field>
-          </TwoCol>
-        </Section>
+            </div>
+          </div>
+        </div>
 
-        <Section>
-          <SectionHeader>프로젝트 권한 (선택)</SectionHeader>
-          <TwoCol>
-            <Field>
+        {/* Section 2 */}
+        <div className="border rounded-4 bg-white p-3 mb-3 shadow-sm">
+          <h4 className="fw-bold mb-3">프로젝트 권한 (선택)</h4>
+
+          <div className="row g-3">
+            <div className="col-md-6">
               <SelectInput
                 name="roleProject"
                 title="프로젝트 역할"
@@ -224,128 +223,45 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
                   value: role.name,
                 }))}
               />
-            </Field>
+            </div>
 
-            <Field>
+            <div className="col-md-6">
               <SelectArrayInput
                 name="projectIds"
                 title="프로젝트 선택"
                 values={projectIds}
                 setValues={setProjectIds}
                 options={projectOptions}
-                // 프로젝트가 많다면 검색/가상 스크롤 등을 SelectArrayInput 내부에서 지원하는지 확인
               />
-              {loading && <div>프로젝트 목록을 불러오는 중…</div>}
-            </Field>
-          </TwoCol>
-        </Section>
+              {loading && (
+                <div className="text-secondary small mt-1">
+                  프로젝트 목록을 불러오는 중…
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
-        <Section>
-          <SectionHeader>메모 (선택)</SectionHeader>
-          <Field>
-            <TextArea
-              placeholder="메모를 입력하세요 (선택)"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-            />
-          </Field>
-        </Section>
+        {/* Section 3 */}
+        <div className="border rounded-4 bg-white p-3 mb-3 shadow-sm">
+          <h4 className="fw-bold mb-3">메모 (선택)</h4>
 
-        <FooterBar>
+          <textarea
+            className="form-control"
+            placeholder="메모를 입력하세요 (선택)"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            style={{ minHeight: 100 }}
+          />
+        </div>
+
+        {/* Footer */}
+        <div className="d-flex justify-content-end">
           <ConfirmButton title="저장하기" onClick={handleClickSave} />
-        </FooterBar>
-      </Wrapper>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default SpaceConfirmBox;
-
-/* =================== styled =================== */
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
-  padding: 20px;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  max-width: 920px;
-`;
-
-const PageTitle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-
-  h3 {
-    font-weight: 700;
-    margin: 0;
-  }
-`;
-
-const Section = styled.section`
-  width: 100%;
-  padding: 18px 16px;
-  margin: 16px 0;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  box-sizing: border-box;
-`;
-
-const SectionHeader = styled.h4`
-  margin: 0 0 12px 0;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #111827;
-`;
-
-const TwoCol = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-`;
-
-const Field = styled.div`
-  display: grid;
-  gap: 6px;
-`;
-
-const ReadOnly = styled(Field)``;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  min-height: 96px;
-  resize: vertical;
-  padding: 12px 14px;
-  box-sizing: border-box;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: #fff;
-  color: #111827;
-  line-height: 1.45;
-  &::placeholder {
-    color: #9ca3af;
-  }
-  &:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-  }
-`;
-
-const FooterBar = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 8px;
-`;

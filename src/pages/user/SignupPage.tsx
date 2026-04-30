@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { UserSignupApi } from "../../api/sehomanagerapi";
 import { UserSignupType } from "../../types/type";
@@ -32,75 +31,58 @@ const SignupPage = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>
-          <h3>
+    <div className="d-flex justify-content-center align-items-center w-100 vh-100">
+      <div className="w-100" style={{ maxWidth: "400px", padding: "20px" }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h3 className="fw-normal mb-0">
             <FaRegistered /> 회원가입
           </h3>
           <Link
-            style={{ color: "#4680ff", textDecoration: "none" }}
+            style={{
+              color: "#4680ff",
+              textDecoration: "none",
+              fontSize: "0.8rem",
+            }}
             to="/login"
           >
             이미 계정이 있으세요?
           </Link>
-        </Title>
+        </div>
+
         <TextInput
           name="email"
           title="이메일 주소"
           data={email}
           setData={setEmail}
         />
-        <TextInput name="nickname" title="닉네임" data={nickname} setData={setNickname} />
+
+        <TextInput
+          name="nickname"
+          title="닉네임"
+          data={nickname}
+          setData={setNickname}
+        />
+
         <PasswordInput
           name="password"
           title="비밀번호"
           data={password}
           setData={setPassword}
         />
+
         <PasswordInput
           name="passwordConfirm"
           title="비밀번호 확인"
           data={passwordConfirm}
           setData={setPasswordConfirm}
         />
-        <ConfirmButton title="회원 가입" onClick={OnSignupSubmit} />
-      </Wrapper>
-    </Container>
+
+        <div className="mt-3">
+          <ConfirmButton title="회원 가입" onClick={OnSignupSubmit} />
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default SignupPage;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h3 {
-    font-weight: 500;
-  }
-
-  a {
-    font-size: 0.8rem;
-  }
-`;

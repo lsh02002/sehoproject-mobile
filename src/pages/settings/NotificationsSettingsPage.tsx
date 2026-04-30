@@ -1,8 +1,6 @@
 import { useState } from "react";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
-import { TwoDiv } from "../../components/form/TwoDiv";
-import { FooterBar, Section, SectionHeader, SettingsContainer } from "./SettingsLayout";
 
 export function NotificationsSettingsPage() {
   const [notificationChannels, setNotificationChannels] = useState<string[]>([
@@ -26,10 +24,12 @@ export function NotificationsSettingsPage() {
   const onSave = () => alert("알림 설정이 저장되었습니다.");
 
   return (
-    <SettingsContainer>
-      <Section>
-        <SectionHeader>알림</SectionHeader>
-        <TwoDiv>
+  <div className="p-3">
+    <section className="bg-white shadow-sm p-3 mb-3">
+      <h4 className="fw-bold mb-3 text-dark">알림</h4>
+
+      <div className="row g-3">
+        <div className="col-12 col-md-6">
           <SelectArrayInput
             name="notifications"
             title="알림 채널"
@@ -37,6 +37,9 @@ export function NotificationsSettingsPage() {
             setValues={setNotificationChannels}
             options={notificationOptions}
           />
+        </div>
+
+        <div className="col-12 col-md-6">
           <SelectArrayInput
             name="defaultLabels"
             title="기본 라벨"
@@ -44,11 +47,13 @@ export function NotificationsSettingsPage() {
             setValues={setDefaultLabels}
             options={defaultLabelOptions}
           />
-        </TwoDiv>
-        <FooterBar>
-          <ConfirmButton title="저장하기" onClick={onSave} />
-        </FooterBar>
-      </Section>
-    </SettingsContainer>
-  );
+        </div>
+      </div>
+
+      <div className="position-sticky bottom-0 bg-white pt-3 mt-3 border-top">
+        <ConfirmButton title="저장하기" onClick={onSave} />
+      </div>
+    </section>
+  </div>
+);
 }
