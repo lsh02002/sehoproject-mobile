@@ -61,12 +61,9 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
   useEffect(() => {
     getUsersNotInSpaceApi(Number(workspaceId), Number(spaceId))
       .then((res) => {
-        console.log(res);
         setAcceptUsers(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, [spaceId, workspaceId]);
 
   useEffect(() => {
@@ -75,9 +72,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
     setLoading(true);
     getProjectsBySpaceApi(wsIdNum)
       .then((res) => setProjects(res.data))
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, [spaceId]);
 
@@ -126,12 +121,9 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
       })),
     )
       .then((res) => {
-        console.log(res);
         toast.success("권한 부여에 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   const handleClickSave: React.MouseEventHandler<HTMLButtonElement> = async (

@@ -30,18 +30,14 @@ export const UserProjectIdSettingsPage = () => {
   useEffect(() => {
     getUserByUserApi()
       .then((res) => {
-        console.log(res);
         setUserInfo(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
     getWorkspacesApi()
       .then((res) => {
-        console.log(res);
         const workspaceList = res.data ?? [];
         setWorkspaces(workspaceList);
 
@@ -56,9 +52,7 @@ export const UserProjectIdSettingsPage = () => {
           setSelectWorkspaceId(String(userInfo?.workspaceId));
         }
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, [userInfo?.workspaceId]);
 
   useEffect(() => {
@@ -70,7 +64,6 @@ export const UserProjectIdSettingsPage = () => {
 
     getSpacesByWorkspaceApi(Number(selectWorkspaceId))
       .then((res) => {
-        console.log(res);
         const spaceList = res.data ?? [];
         setSpaces(spaceList);
 
@@ -84,9 +77,7 @@ export const UserProjectIdSettingsPage = () => {
           setSelectSpaceId(String(userInfo?.spaceId));
         }
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, [selectWorkspaceId, userInfo?.spaceId]);
 
   useEffect(() => {
@@ -98,7 +89,6 @@ export const UserProjectIdSettingsPage = () => {
 
     getProjectsBySpaceApi(Number(selectSpaceId))
       .then((res) => {
-        console.log(res);
         const projectList = res.data ?? [];
         setProjects(projectList);
 
@@ -113,9 +103,7 @@ export const UserProjectIdSettingsPage = () => {
           setSelectProjectId(String(userInfo?.projectId));
         }
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, [selectSpaceId, userInfo?.projectId]);
 
   const handleSetUserProjectId = () => {
@@ -125,7 +113,6 @@ export const UserProjectIdSettingsPage = () => {
       Number(selectProjectId),
     )
       .then((res) => {
-        console.log(res);
 
         localStorage.setItem("workspaceId", selectWorkspaceId);
         localStorage.setItem("spaceId", selectSpaceId);
@@ -133,9 +120,7 @@ export const UserProjectIdSettingsPage = () => {
 
         toast.success("설정 변경에 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

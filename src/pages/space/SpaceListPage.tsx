@@ -14,12 +14,9 @@ const SpaceListPage = () => {
   useEffect(() => {
     getSpacesByWorkspaceApi(Number(workspaceId))
       .then((res) => {
-        console.log(res);
         setSpaces(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch(() => {})
       .finally(() => {
         setIsLoading(false);
       });

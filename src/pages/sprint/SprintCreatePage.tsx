@@ -43,12 +43,9 @@ const SprintCreatePage = () => {
     if (projectId) {
       getTasksByProjectApi(Number(projectId))
         .then((res) => {
-          console.log(res);
           setTaskOptions(res.data);
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(() => {});
     }
   }, [projectId]);
 
@@ -79,16 +76,11 @@ const SprintCreatePage = () => {
         .filter((id): id is number => id !== undefined),
     };
 
-    console.log(data);
-
     createSprintApi(data)
       .then((res) => {
-        console.log(res);
         toast.success("생성을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

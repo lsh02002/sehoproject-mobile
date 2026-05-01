@@ -79,7 +79,7 @@ const SprintCalendarPage = () => {
   useEffect(() => {
     getSprintsByProjectApi(parseInt(projectId ?? "0", 10))
       .then((res) => setSprints(res.data))
-      .catch((err) => console.error(err));
+      .catch(() => {});
   }, [projectId]);
 
   // 이벤트 변환

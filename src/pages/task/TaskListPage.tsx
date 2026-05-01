@@ -14,12 +14,9 @@ const TaskListPage = () => {
   useEffect(() => {
     getTasksByProjectApi(Number(projectId))
       .then((res) => {
-        console.log(res);
         setTasks(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch(() => {})
       .finally(() => {
         setIsLoading(false);
       });

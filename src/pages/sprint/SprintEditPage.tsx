@@ -40,7 +40,6 @@ const SprintEditPage = ({
     if (windowOpenSprintId || sprintId) {
       getOneSprintApi(Number(windowOpenSprintId ?? sprintId))
         .then((res) => {
-          console.log(res);
 
           setId(res.data.id);
           setProjectId(res.data.projectId);
@@ -50,9 +49,7 @@ const SprintEditPage = ({
           setEndDate(res.data.endDate);
           setTaskIds(res.data.taskIds);
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(() => {});
     }
   }, [sprintId, windowOpenSprintId]);
 
@@ -60,12 +57,9 @@ const SprintEditPage = ({
     if (projectId) {
       getTasksByProjectApi(Number(projectId))
         .then((res) => {
-          console.log(res);
           setTaskOptions(res.data);
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(() => {});
     }
   }, [projectId]);
 
@@ -98,12 +92,9 @@ const SprintEditPage = ({
 
     putOneSprintApi(Number(id), data)
       .then((res) => {
-        console.log(res);
         toast.success("수정을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

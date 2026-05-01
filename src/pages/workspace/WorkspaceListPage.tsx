@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ActivityLogResponseType, WorkspaceResponseType } from "../../types/type";
-import { getLogMessagesByUserApi, getWorkspacesApi } from "../../api/sehomanagerapi";
+import {
+  ActivityLogResponseType,
+  WorkspaceResponseType,
+} from "../../types/type";
+import {
+  getLogMessagesByUserApi,
+  getWorkspacesApi,
+} from "../../api/sehomanagerapi";
 import WorkspaceCard from "../../components/card/WorkspaceCard";
 import ListLayout from "../../components/layouts/ListLayout";
 import { MdWorkspaces } from "react-icons/md";
@@ -8,7 +14,7 @@ import ActivityLogCard from "../../components/card/ActivityLogCard";
 
 const WorkspaceListPage = () => {
   const [workspaces, setWorkspaces] = useState<WorkspaceResponseType[] | null>(
-    []
+    [],
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -17,12 +23,9 @@ const WorkspaceListPage = () => {
   useEffect(() => {
     getWorkspacesApi()
       .then((res) => {
-        console.log(res);
         setWorkspaces(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch(() => {})
       .finally(() => {
         setIsLoading(false);
       });
@@ -31,12 +34,9 @@ const WorkspaceListPage = () => {
   useEffect(() => {
     getLogMessagesByUserApi()
       .then((res) => {
-        console.log(res);
         setLogMessages(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, []);
 
   return (

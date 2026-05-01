@@ -22,41 +22,44 @@ export const InvitationMessageBoxPage: React.FC = () => {
 
   useEffect(() => {
     getInvitationMessageApi()
-      .then((res) => {
-        console.log(res);
+      .then((res) => {        
         setItems(res.data);
       })
-      .catch((err) => console.error(err));
+      .catch(() => {});
   }, [isLoading]);
 
   const accept = async (record: Invite) => {
     postInvitationAcceptApi(record.workspaceId, record.id)
-      .then((res) => {
-        console.log(res);
+      .then((res) => {        
         setIsLoading((prev) => !prev);
       })
-      .catch((err) => console.error(err));
+      .catch(() => {});
   };
 
   const decline = async (record: Invite) => {
     postInvitationDeclineApi(record.workspaceId, record.id)
-      .then((res) => {
-        console.log(res);
+      .then((res) => {        
         setIsLoading((prev) => !prev);
       })
-      .catch((err) => console.error(err));
+      .catch(() => {});
   };
 
   const renderStatus = (status?: Invite["status"]) => {
     if (!status || status === "PENDING") {
-      return <span className="badge rounded-pill text-bg-primary">PENDING</span>;
+      return (
+        <span className="badge rounded-pill text-bg-primary">PENDING</span>
+      );
     }
 
     if (status === "ACCEPTED") {
-      return <span className="badge rounded-pill text-bg-success">ACCEPTED</span>;
+      return (
+        <span className="badge rounded-pill text-bg-success">ACCEPTED</span>
+      );
     }
 
-    return <span className="badge rounded-pill text-bg-secondary">DECLINED</span>;
+    return (
+      <span className="badge rounded-pill text-bg-secondary">DECLINED</span>
+    );
   };
 
   return (
@@ -75,10 +78,7 @@ export const InvitationMessageBoxPage: React.FC = () => {
           </div>
         ) : (
           items.map((r) => (
-            <article
-              key={r.id}
-              className="card border-0 shadow-sm rounded-4"
-            >
+            <article key={r.id} className="card border-0 shadow-sm rounded-4">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
                   <h4 className="m-0 fw-bold fs-6 text-dark">
@@ -100,7 +100,10 @@ export const InvitationMessageBoxPage: React.FC = () => {
                       </div>
                       <div
                         className="col-8 col-md-10 text-secondary"
-                        style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          wordBreak: "break-word",
+                        }}
                       >
                         {r.message ?? "-"}
                       </div>
@@ -110,9 +113,7 @@ export const InvitationMessageBoxPage: React.FC = () => {
                   <InfoRow
                     label="받은 시각"
                     value={
-                      r.createdAt
-                        ? new Date(r.createdAt).toLocaleString()
-                        : "-"
+                      r.createdAt ? new Date(r.createdAt).toLocaleString() : "-"
                     }
                   />
                 </div>

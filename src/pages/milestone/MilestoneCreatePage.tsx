@@ -35,13 +35,10 @@ const MilestoneCreatePage = () => {
   useEffect(() => {
     if (projectId) {
       getTasksByProjectApi(Number(projectId))
-        .then((res) => {
-          console.log(res);
+        .then((res) => {          
           setTaskOptions(res.data);
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(() => {});
     }
   }, [projectId]);
 
@@ -74,13 +71,10 @@ const MilestoneCreatePage = () => {
     };
 
     createMilestoneApi(data)
-      .then((res) => {
-        console.log(res);
+      .then((res) => {        
         toast.success("생성을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

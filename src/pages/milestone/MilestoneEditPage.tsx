@@ -37,8 +37,6 @@ const MilestoneEditPage = () => {
   useEffect(() => {
     getOneMilestoneApi(Number(milestoneId))
       .then((res) => {
-        console.log(res);
-
         setId(res.data.id);
         setProjectId(res.data.projectId);
         setName(res.data.name);
@@ -48,21 +46,16 @@ const MilestoneEditPage = () => {
         setDueDate(res.data.dueDate);
         setTaskIds(res.data.taskIds);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, [milestoneId]);
 
   useEffect(() => {
     if (projectId) {
       getTasksByProjectApi(Number(projectId))
         .then((res) => {
-          console.log(res);
           setTaskOptions(res.data);
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(() => {});
     }
   }, [projectId]);
 
@@ -96,12 +89,9 @@ const MilestoneEditPage = () => {
 
     putOneMilestoneApi(Number(id), data)
       .then((res) => {
-        console.log(res);
         toast.success("수정을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

@@ -65,12 +65,9 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
     if (projectId) {
       getProjectMembersApi(Number(projectId))
         .then((res) => {
-          console.log(res.data);
           setAssigneeOptions(res.data);
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(() => {});
     }
   }, [projectId]);
 
@@ -78,8 +75,6 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
     if (windowOpenTaskId || taskId) {
       getOneTaskApi(Number(windowOpenTaskId ?? taskId))
         .then((res) => {
-          console.log(res);
-
           setId(res.data.id);
           setProjectKey(res.data.projectKey);
           setProjectId(res.data.projectId);
@@ -98,16 +93,11 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
 
           getTagsByProjectApi(Number(res.data.projectId))
             .then((res) => {
-              console.log(res);
               setTagOptions(res.data);
             })
-            .catch((err) => {
-              console.error(err);
-            });
+            .catch(() => {});
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(() => {});
     }
   }, [projectId, taskId, windowOpenTaskId]);
 
@@ -157,16 +147,11 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
       dueDate: dueDate,
     };
 
-    console.log(data);
-
     putOneTaskApi(Number(windowOpenTaskId ?? taskId), data)
       .then((res) => {
-        console.log(res);
         toast.success("수정을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

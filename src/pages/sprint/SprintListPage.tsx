@@ -14,12 +14,9 @@ const SprintListPage = () => {
   useEffect(() => {
     getSprintsByProjectApi(Number(projectId))
       .then((res) => {
-        console.log(res);
         setSprints(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch(() => {})
       .finally(() => {
         setIsLoading(false);
       });

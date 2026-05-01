@@ -27,25 +27,25 @@ export default function Layout({
   navItems = [],
   children,
 }: Props) {
-  const [open, setOpen] = React.useState(false);
+  const { isSideOpen, setIsSideOpen } = useLogin();
   const { isMemuRefresh, setIsMenuRefresh, isTaskOpen, setIsTaskOpen, task } =
     useLogin();
 
   const { isSprintOpen, setIsSprintOpen, sprint } = useLogin();
 
   useEffect(() => {
-    if (open) setIsMenuRefresh(!isMemuRefresh);
+    if (isSideOpen) setIsMenuRefresh(!isMemuRefresh);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [isSideOpen]);
 
   const firstLinkRef = React.useRef<HTMLAnchorElement | null>(null);
 
   React.useEffect(() => {
-    if (open && firstLinkRef.current) firstLinkRef.current.focus();
-  }, [open]);
+    if (isSideOpen && firstLinkRef.current) firstLinkRef.current.focus();
+  }, [isSideOpen]);
 
   const handleSetOpenFalse = () => {
-    setOpen(false);
+    setIsSideOpen(false);
     setIsTaskOpen(false);
     setIsSprintOpen(false);
   };
@@ -71,9 +71,9 @@ export default function Layout({
           borderRadius: 16,
         }}
         aria-label="메뉴 열기"
-        aria-expanded={open}
+        aria-expanded={isSideOpen}
         aria-controls="side-nav"
-        onClick={() => setOpen(true)}
+        onClick={() => setIsSideOpen(true)}
       >
         <Menu style={{ width: 20, height: 20 }} />
       </button>
@@ -82,25 +82,26 @@ export default function Layout({
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
         onClick={handleSetOpenFalse}
-        aria-hidden={!(open || isTaskOpen || isSprintOpen)}
+        aria-hidden={!isSideOpen}
         style={{
           top: 55,
           background: "rgba(0, 0, 0, 0.32)",
-          opacity: open || isTaskOpen || isSprintOpen ? 1 : 0,
-          pointerEvents: open || isTaskOpen || isSprintOpen ? "auto" : "none",
+          opacity: isSideOpen? 1 : 0,
+          pointerEvents:
+            isSideOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
           zIndex: 10,
         }}
       />
 
       <SlidePanel
-        isOpen={open}
+        isOpen={isSideOpen}
         onClose={handleSetOpenFalse}
         title={appName}
         direction="left"
         zIndex={50}
       >
-        <SidebarMenu open={open} setOpen={setOpen} />
+        <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
       </SlidePanel>
 
       <SlidePanel
@@ -158,7 +159,7 @@ export default function Layout({
         {children}
       </main>
 
-      <LockBodyScroll when={open || isTaskOpen} />
+      <LockBodyScroll when={isSideOpen || isTaskOpen} />
     </div>
   );
 }

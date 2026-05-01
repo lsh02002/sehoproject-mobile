@@ -26,7 +26,7 @@ const WorkspaceEditPage = () => {
         setName(data.name);
         setSlug(data.slug);
       })
-      .catch((err) => console.error(err));
+      .catch(() => {});
   }, [id]);
 
   const OnEditSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,7 +36,7 @@ const WorkspaceEditPage = () => {
       .then(() => {
         toast.success("수정을 성공했습니다!");
       })
-      .catch((err) => console.error(err));
+      .catch(() => {});
   };
 
   return (

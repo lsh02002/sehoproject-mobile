@@ -14,12 +14,9 @@ const ProjectListPage = () => {
   useEffect(() => {
     getProjectsBySpaceApi(Number(spaceId))
       .then((res) => {
-        console.log(res);
         setProjects(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch(() => {})
       .finally(() => {
         setIsLoading(false);
       });

@@ -5,6 +5,7 @@ import { ReactComponent as HomeIcon } from "../../assets/home.svg";
 import { ReactComponent as InboxIcon } from "../../assets/inbox.svg";
 import { ReactComponent as TaskListIcon } from "../../assets/task-list.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/dashboard.svg";
+import { useLogin } from "../../context/LoginContext";
 
 const iconStyle: React.CSSProperties = {
   width: "2rem",
@@ -34,6 +35,19 @@ const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
   `${navLinkBaseClass} ${isActive ? "text-primary fw-semibold" : "text-secondary"}`;
 
 const BottomNav = () => {
+  const { isTaskOpen, isSprintOpen, setIsTaskOpen, setIsSprintOpen } =
+    useLogin();
+
+  const handelSetOpenFalse = () => {
+    if (isTaskOpen) {
+      setIsTaskOpen(false);
+    }
+
+    if (isSprintOpen) {
+      setIsSprintOpen(false);
+    }
+  };
+
   return (
     <nav
       className="fixed-bottom border-top bg-white"
@@ -41,7 +55,12 @@ const BottomNav = () => {
     >
       <div className="d-flex justify-content-evenly align-items-center h-100 text-center">
         {navItems.map(({ to, icon, label }) => (
-          <NavLink key={to} to={to} className={getNavLinkClass}>
+          <NavLink
+            key={to}
+            to={to}
+            className={getNavLinkClass}
+            onClick={handelSetOpenFalse}
+          >
             {icon}
             <small>{label}</small>
           </NavLink>

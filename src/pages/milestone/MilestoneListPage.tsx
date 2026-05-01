@@ -16,12 +16,9 @@ const MilestoneListPage = () => {
   useEffect(() => {
     getMilestonesByProjectApi(Number(projectId))
       .then((res) => {
-        console.log(res);
         setMilestones(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch(() => {})
       .finally(() => {
         setIsLoading(false);
       });

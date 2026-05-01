@@ -68,24 +68,18 @@ const TaskCreatePage = () => {
   useEffect(() => {
     getUserInfosApi()
       .then((res) => {
-        console.log(res.data);
         setAssigneeOptions(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
     if (projectId) {
       getTagsByProjectApi(Number(projectId))
         .then((res) => {
-          console.log(res);
           setTagOptions(res.data);
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(() => {});
     }
   }, [projectId]);
 
@@ -135,16 +129,11 @@ const TaskCreatePage = () => {
       dueDate: dueDate,
     };
 
-    console.log(data);
-
     createTaskApi(data)
-      .then((res) => {
-        console.log(res);
+      .then((res) => {        
         toast.success("생성을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

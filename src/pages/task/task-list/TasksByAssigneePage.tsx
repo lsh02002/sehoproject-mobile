@@ -105,8 +105,7 @@ const TaskByAssigneePage = () => {
 
         setMyTasks(tasksRes.data ?? []);
         setMySprints(sprintsRes.data ?? []);
-      } catch (err) {
-        console.error(err);
+      } catch {
       } finally {
         setIsLoading(false);
       }

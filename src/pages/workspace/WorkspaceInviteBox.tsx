@@ -19,12 +19,9 @@ const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
   useEffect(() => {
     getUsersNotInWorkpaceApi(workspaceId)
       .then((res) => {
-        console.log(res);
         setUsers(res.data);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, [workspaceId]);
 
   const userOptions = useMemo(
@@ -56,12 +53,9 @@ const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
 
     postWorkspaceInvite(payloads)
       .then((res) => {
-        console.log(res);
         toast.success?.("초대 완료");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

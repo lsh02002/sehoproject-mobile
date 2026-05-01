@@ -25,13 +25,10 @@ const SpaceEditPage = () => {
   useEffect(() => {
     getOneSpaceByWorkspaceAndSpaceApi(Number(workspaceId), Number(spaceId))
       .then((res) => {
-        console.log(res.data);
         setName(res.data.name);
         setSlug(res.data.slug);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, [workspaceId, spaceId]);
 
   const OnEditSubmit = () => {
@@ -46,12 +43,9 @@ const SpaceEditPage = () => {
       data,
     )
       .then((res) => {
-        console.log(res);
         toast.success("생성을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (

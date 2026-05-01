@@ -66,10 +66,7 @@ export default function SidebarMenu({
           const list = rowsToWorkspaceTreeResponse(rows);
           if (!aborted) setRoot(convertToRootTreeNode(list));
         })
-        .catch((err) => {
-          console.error(`GET tree failed: ${err.status}`);
-          console.error(err);
-
+        .catch(() => {
           if (!aborted) {
             setRoot({
               id: "workspace",

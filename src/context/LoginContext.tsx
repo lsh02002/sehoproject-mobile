@@ -13,6 +13,8 @@ type LoginContextValue = {
   setIsLogin: Dispatch<SetStateAction<boolean>>;
   isMemuRefresh: boolean;
   setIsMenuRefresh: Dispatch<SetStateAction<boolean>>;
+  isSideOpen: boolean;
+  setIsSideOpen: Dispatch<SetStateAction<boolean>>;
   isTaskOpen: boolean;
   setIsTaskOpen: Dispatch<SetStateAction<boolean>>;
   task: TaskResponseType | undefined;
@@ -30,6 +32,7 @@ export const LoginContext = createContext<LoginContextValue | undefined>(
 export const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [isMemuRefresh, setIsMenuRefresh] = useState(false);
+  const [isSideOpen, setIsSideOpen] = useState(false);
   const [isTaskOpen, setIsTaskOpen] = useState(false);
   const [task, setTask] = useState<TaskResponseType>();
   const [isSprintOpen, setIsSprintOpen] = useState(false);
@@ -40,6 +43,8 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
     setIsLogin,
     isMemuRefresh,
     setIsMenuRefresh,
+    isSideOpen,
+    setIsSideOpen,
     isTaskOpen,
     setIsTaskOpen,
     task,

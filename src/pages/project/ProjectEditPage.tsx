@@ -28,7 +28,6 @@ const ProjectEditPage = () => {
   useEffect(() => {
     getOneProjectApi(Number(projectId))
       .then((res) => {
-        console.log(res);
 
         setId(res.data.id);
         setSpaceId(res.data.spaceId);
@@ -44,9 +43,7 @@ const ProjectEditPage = () => {
           res.data.tagResponses?.map((tag: TagResponseType) => tag?.name)
         );
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   }, [projectId]);
 
   // Option 타입: 컴포넌트가 기대 (id/name = string)
@@ -99,12 +96,9 @@ const ProjectEditPage = () => {
 
     putOneProjectApi(Number(projectId), data)
       .then((res) => {
-        console.log(res);
         toast.success("수정을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
 return (

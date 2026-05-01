@@ -13,6 +13,7 @@ import {
 } from "../types/type";
 import { BASE_URL } from "./BASE_URL";
 import { toast } from "react-toastify";
+import { DEBUG } from "./DEBUG";
 
 type ToastType = "success" | "error" | "info" | "warning";
 
@@ -49,6 +50,11 @@ api.interceptors.response.use(
     if (newAccessToken) {
       localStorage.setItem("accessToken", newAccessToken);
     }
+
+    if (DEBUG) {
+      console.log(response?.config?.url, response);
+    }
+
     return response;
   },
   (error) => {
@@ -57,7 +63,10 @@ api.interceptors.response.use(
       showToast(error.response.data.detailMessage);
     }
 
-    console.error("⚠️ Axios Error:", error);
+    if (DEBUG) {
+      console.error("⚠️ Axios Error:", error);
+    }
+
     return Promise.reject(error);
   },
 );
@@ -126,7 +135,7 @@ const getSpacesByWorkspaceApi = async (workspaceId: number) => {
 
 const getUsersNotInWorkpaceApi = async (workspaceId: number) => {
   return api.get(`/workspaces/${workspaceId}/usersNotInWorkspace`);
-}
+};
 
 const getOneSpaceByWorkspaceAndSpaceApi = async (
   workspaceId: number,
@@ -144,7 +153,9 @@ const putOneSpaceByWorkspaceAndSpaceApi = async (
 };
 
 const getUsersNotInSpaceApi = async (workspaceId: number, spaceId: number) => {
-  return api.get(`/workspaces/${workspaceId}/spaces/${spaceId}/usersNotInSpace`);
+  return api.get(
+    `/workspaces/${workspaceId}/spaces/${spaceId}/usersNotInSpace`,
+  );
 };
 
 const getInvitationMessageApi = async () => {
@@ -248,7 +259,7 @@ const createSpaceAndProjectMembersApi = async (
   spaceId: number,
   projectIds: number[],
   reqList: AddMemberRequestType[],
-) => {  
+) => {
   return api.post(`/workspaces/${workspaceId}/spaces/${spaceId}/members`, {
     projectIds,
     reqList,

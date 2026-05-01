@@ -20,7 +20,6 @@ const WorkspaceCreatePage = () => {
 
     createWorkspaceApi(data)
       .then((res) => {
-        console.log(res);
 
         const workspaceId = res?.data?.id;
         const storedWorkspaceId = localStorage.getItem("workspaceId");
@@ -34,9 +33,7 @@ const WorkspaceCreatePage = () => {
 
         toast.success("생성을 성공했습니다!");
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(() => {});
   };
 
   return (
