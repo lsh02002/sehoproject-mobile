@@ -126,64 +126,64 @@ export default function Layout({
           zIndex: 10,
         }}
       />
-      {isSideOpen &&
-        createPortal(
-          <SlidePanel
-            isOpen={isSideOpen}
-            onClose={closeTopModal}
-            title={appName}
-            direction="left"
-            zIndex={500}
-          >
-            <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
-          </SlidePanel>,
-          document.body,
-        )}
-      {isTaskOpen &&
-        createPortal(
-          <SlidePanel
-            isOpen={isTaskOpen}
-            onClose={closeTopModal}
-            title="태스크 창"
-          >
-            {task ? (
-              <TaskEditPage windowOpenTaskId={task?.id} />
-            ) : (
-              <TaskCreatePage />
-            )}
-          </SlidePanel>,
-          document.body,
-        )}{" "}
-      {isSprintOpen &&
-        createPortal(
-          <SlidePanel
-            isOpen={isSprintOpen}
-            onClose={closeTopModal}
-            title="스프린트 창"
-          >
-            {sprint ? (
-              <SprintEditPage windowOpenSprintId={sprint?.id} />
-            ) : (
-              <SprintCreatePage />
-            )}
-          </SlidePanel>,
-          document.body,
-        )}
-      {isMilestoneOpen &&
-        createPortal(
-          <SlidePanel
-            isOpen={isMilestoneOpen}
-            onClose={closeTopModal}
-            title="마일스톤 창"
-          >
-            {milestone ? (
-              <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />
-            ) : (
-              <MilestoneCreatePage />
-            )}
-          </SlidePanel>,
-          document.body,
-        )}
+      {createPortal(
+        <SlidePanel
+          isOpen={isSideOpen}
+          onClose={closeTopModal}
+          title={appName}
+          direction="left"
+          zIndex={500}
+        >
+          <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
+        </SlidePanel>,
+        document.body,
+      )}
+
+      {createPortal(
+        <SlidePanel
+          isOpen={isTaskOpen}
+          onClose={closeTopModal}
+          title="태스크 창"
+        >
+          {task ? (
+            <TaskEditPage windowOpenTaskId={task?.id} />
+          ) : (
+            <TaskCreatePage />
+          )}
+        </SlidePanel>,
+        document.body,
+      )}
+
+      {createPortal(
+        <SlidePanel
+          isOpen={isSprintOpen}
+          onClose={closeTopModal}
+          title="스프린트 창"
+        >
+          {sprint ? (
+            <SprintEditPage windowOpenSprintId={sprint?.id} />
+          ) : (
+            <SprintCreatePage />
+          )}
+        </SlidePanel>,
+        document.body,
+      )}
+
+      {createPortal(
+        <SlidePanel
+          isOpen={isMilestoneOpen}
+          onClose={closeTopModal}
+          title="마일스톤 창"
+        >
+          {milestone ? (
+            <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />
+          ) : (
+            <MilestoneCreatePage />
+          )}
+        </SlidePanel>,
+        document.body,
+      )}
+
       <header
         className="sticky-top border-bottom"
         style={{
