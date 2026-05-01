@@ -11,6 +11,8 @@ import SlidePanel from "./SlidePanel";
 import { layout } from "../../theme/Theme";
 import MilestoneEditPage from "../../pages/milestone/MilestoneEditPage";
 import MilestoneCreatePage from "../../pages/milestone/MilestoneCreatePage";
+import ScrollToTopButton from "../form/ScrollToTopButton";
+import { createPortal } from "react-dom";
 
 export type NavItem = {
   label: string;
@@ -93,7 +95,6 @@ export default function Layout({
       >
         본문으로 건너뛰기
       </a>
-
       <button
         className="btn bg-white shadow-sm position-fixed d-inline-flex align-items-center justify-content-center p-0"
         style={{
@@ -111,7 +112,6 @@ export default function Layout({
       >
         <Menu style={{ width: 20, height: 20 }} />
       </button>
-
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
@@ -126,56 +126,64 @@ export default function Layout({
           zIndex: 10,
         }}
       />
-
-      <SlidePanel
-        isOpen={isSideOpen}
-        onClose={closeTopModal}
-        title={appName}
-        direction="left"
-        zIndex={50}
-      >
-        <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
-      </SlidePanel>
-
-      <SlidePanel
-        isOpen={isTaskOpen}
-        onClose={closeTopModal}
-        title="태스크 창"
-        zIndex={20}
-      >
-        {task ? (
-          <TaskEditPage windowOpenTaskId={task?.id} />
-        ) : (
-          <TaskCreatePage />
+      {isSideOpen &&
+        createPortal(
+          <SlidePanel
+            isOpen={isSideOpen}
+            onClose={closeTopModal}
+            title={appName}
+            direction="left"
+            zIndex={500}
+          >
+            <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
+          </SlidePanel>,
+          document.body,
         )}
-      </SlidePanel>
-
-      <SlidePanel
-        isOpen={isSprintOpen}
-        onClose={closeTopModal}
-        title="스프린트 창"
-        zIndex={20}
-      >
-        {sprint ? (
-          <SprintEditPage windowOpenSprintId={sprint?.id} />
-        ) : (
-          <SprintCreatePage />
+      {isTaskOpen &&
+        createPortal(
+          <SlidePanel
+            isOpen={isTaskOpen}
+            onClose={closeTopModal}
+            title="태스크 창"
+          >
+            {task ? (
+              <TaskEditPage windowOpenTaskId={task?.id} />
+            ) : (
+              <TaskCreatePage />
+            )}
+          </SlidePanel>,
+          document.body,
+        )}{" "}
+      {isSprintOpen &&
+        createPortal(
+          <SlidePanel
+            isOpen={isSprintOpen}
+            onClose={closeTopModal}
+            title="스프린트 창"
+          >
+            {sprint ? (
+              <SprintEditPage windowOpenSprintId={sprint?.id} />
+            ) : (
+              <SprintCreatePage />
+            )}
+          </SlidePanel>,
+          document.body,
         )}
-      </SlidePanel>
-
-      <SlidePanel
-        isOpen={isMilestoneOpen}
-        onClose={closeTopModal}
-        title="마일스톤 창"
-        zIndex={20}
-      >
-        {milestone ? (
-          <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />
-        ) : (
-          <MilestoneCreatePage />
+      {isMilestoneOpen &&
+        createPortal(
+          <SlidePanel
+            isOpen={isMilestoneOpen}
+            onClose={closeTopModal}
+            title="마일스톤 창"
+          >
+            {milestone ? (
+              <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />
+            ) : (
+              <MilestoneCreatePage />
+            )}
+          </SlidePanel>,
+          document.body,
         )}
-      </SlidePanel>
-
       <header
         className="sticky-top border-bottom"
         style={{
@@ -192,7 +200,6 @@ export default function Layout({
           <strong className="small text-secondary">{appName}</strong>
         </div>
       </header>
-
       <main
         id="main"
         className="mx-auto"
@@ -202,6 +209,7 @@ export default function Layout({
         }}
       >
         <BackwardButton />
+        <ScrollToTopButton />
         {children}
       </main>
     </div>

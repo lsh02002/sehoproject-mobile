@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { layout } from "../../theme/Theme";
+import ScrollToTopButton from "../form/ScrollToTopButton";
 
 type SlidePanelProps = {
   isOpen: boolean;
@@ -15,9 +17,11 @@ const SlidePanel = ({
   title,
   children,
   direction = "right", // "left" | "bottom"
-  zIndex = 10,
+  zIndex = 400,
 }: SlidePanelProps) => {
   const isRight = direction === "right";
+
+  const modalBodyRef = useRef<HTMLDivElement>(null);
 
   return (
     <aside
@@ -55,7 +59,8 @@ const SlidePanel = ({
 
       {/* body */}
       <div
-        className="p-2 d-flex justify-content-center overflow-auto"
+        ref={modalBodyRef}
+        className="p-2 d-flex justify-content-center overflow-y-scroll"
         style={{ width: isRight ? "100%" : "300px" }}
       >
         <nav
@@ -65,13 +70,15 @@ const SlidePanel = ({
             minHeight: 0,
             marginBottom: 80,
             width: isRight ? "100%" : "300px",
-            height: "calc(100vh - 200px)",
+            height: "calc(100vh - 190px)",
             scrollbarWidth: "thin",
             maxWidth: layout.maxWidth,
           }}
         >
           <div style={{ paddingBottom: 100 }}>{children}</div>
         </nav>
+
+        <ScrollToTopButton scrollTarget={modalBodyRef} zIndex={1000} />
       </div>
     </aside>
   );

@@ -1,15 +1,32 @@
+import { RefObject } from "react";
+
+type Props = {
+  disabled?: boolean;
+  title?: string;
+  scrollTarget?: RefObject<HTMLElement>; // 🔥 추가
+  zIndex?: number;
+};
+
 const ScrollToTopButton = ({
   disabled,
   title = "↑",
-}: {
-  disabled?: boolean;
-  title?: string;
-}) => {
+  scrollTarget,
+  zIndex = 400,
+}: Props) => {
   const handleClick = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // 부드럽게 올라감
-    });
+    if (scrollTarget?.current) {
+      // 👉 modal 같은 특정 영역 스크롤
+      scrollTarget.current.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } else {
+      // 👉 기본: window 스크롤
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
@@ -22,8 +39,8 @@ const ScrollToTopButton = ({
         width: "50px",
         height: "50px",
         right: "10px",
-        bottom: "140px", // 🔥 기존 80px → 140px (위로 올림)
-        zIndex: 200,
+        bottom: "80px",
+        zIndex: zIndex,
       }}
     >
       {title}
