@@ -23,7 +23,7 @@ const SprintListPage = () => {
   }, [projectId]);
 
   return (
-    <ListLayout title="스프린트" to={`/sprints/projects/${projectId}/create`} icon={<GiSprint />}>      
+    <ListLayout title="스프린트" icon={<GiSprint />} componentType="sprint">
       {!isLoading && sprints?.length === 0 ? (
         <div>해당 스프린트가 존재하지 않습니다.</div>
       ) : (

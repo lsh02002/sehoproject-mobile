@@ -9,7 +9,7 @@ import { LuMilestone } from "react-icons/lu";
 const MilestoneListPage = () => {
   const { projectId } = useParams();
   const [milestones, setMilestones] = useState<MilestoneResponseType[] | null>(
-    []
+    [],
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,9 +27,9 @@ const MilestoneListPage = () => {
   return (
     <ListLayout
       title="마일스톤"
-      to={`/milestones/projects/${projectId}/create`}
       icon={<LuMilestone />}
-    >      
+      componentType="milestone"
+    >
       {!isLoading && milestones?.length === 0 ? (
         <div>해당 마일스톤이 존재하지 않습니다.</div>
       ) : (

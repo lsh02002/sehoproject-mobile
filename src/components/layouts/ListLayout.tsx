@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../context/LoginContext";
 import { Calendar } from "lucide-react";
+import ScrollToTopButton from "../form/ScrollToTopButton";
 
 type ListLayoutProps = {
   title?: string;
@@ -14,7 +15,7 @@ type ListLayoutProps = {
   emptyMessage?: string;
   children: React.ReactNode;
   icon?: React.ReactNode;
-  componentType?: "null" | "task" | "sprint";
+  componentType?: "null" | "task" | "sprint" | "milestone";
 };
 
 const ListLayout = ({
@@ -32,7 +33,7 @@ const ListLayout = ({
 }: ListLayoutProps) => {
   const hasCreate = Boolean(to);
   const navigator = useNavigate();
-  const { setIsTaskOpen, setTask, setIsSprintOpen, setSprint } = useLogin();
+  const { setIsTaskOpen, setTask, setIsSprintOpen, setSprint, setIsMilestoneOpen, setMilestone } = useLogin();
   const projectId = Number(localStorage.getItem("projectId"));
 
   const handleOpen = () => {
@@ -46,6 +47,9 @@ const ListLayout = ({
       setIsSprintOpen(true);
 
       return;
+    } else if (componentType === "milestone") {
+      setMilestone(undefined);
+      setIsMilestoneOpen(true);
     }
   };
 
@@ -131,7 +135,10 @@ const ListLayout = ({
               {emptyMessage}
             </div>
           ) : (
-            children
+            <>
+              <ScrollToTopButton />
+              {children}
+            </>
           )}
 
           <div className="d-flex align-items-center w-100" style={{ gap: 10 }}>

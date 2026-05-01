@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  ActivityLogResponseType,
-  WorkspaceResponseType,
-} from "../../types/type";
-import {
-  getLogMessagesByUserApi,
-  getWorkspacesApi,
-} from "../../api/sehomanagerapi";
+import { WorkspaceResponseType } from "../../types/type";
+import { getWorkspacesApi } from "../../api/sehomanagerapi";
 import WorkspaceCard from "../../components/card/WorkspaceCard";
 import ListLayout from "../../components/layouts/ListLayout";
 import { MdWorkspaces } from "react-icons/md";
-import ActivityLogCard from "../../components/card/ActivityLogCard";
 
 const WorkspaceListPage = () => {
   const [workspaces, setWorkspaces] = useState<WorkspaceResponseType[] | null>(
     [],
   );
   const [isLoading, setIsLoading] = useState(true);
-
-  const [logMessages, setLogMessages] = useState([]);
 
   useEffect(() => {
     getWorkspacesApi()
@@ -29,14 +20,6 @@ const WorkspaceListPage = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
-
-  useEffect(() => {
-    getLogMessagesByUserApi()
-      .then((res) => {
-        setLogMessages(res.data);
-      })
-      .catch(() => {});
   }, []);
 
   return (
@@ -52,15 +35,6 @@ const WorkspaceListPage = () => {
           <WorkspaceCard key={workspace.id} workspace={workspace} />
         ))
       )}
-      <div>내 활동 내역({logMessages?.length}) - 임시로</div>
-      {logMessages &&
-        (logMessages?.length > 0 ? (
-          logMessages?.map((log: ActivityLogResponseType) => (
-            <ActivityLogCard key={log?.id} log={log} />
-          ))
-        ) : (
-          <div>해당 메시지가 없습니다!</div>
-        ))}
     </ListLayout>
   );
 };

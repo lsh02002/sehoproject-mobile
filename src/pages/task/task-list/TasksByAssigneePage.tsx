@@ -154,10 +154,7 @@ const TaskByAssigneePage = () => {
           onScroll={handleScroll}
           onMouseDown={handleMouseDown}
           className="d-flex w-100 overflow-auto"
-          style={{
-            height: "100vh",
-            cursor: "grab",
-          }}
+          style={{ cursor: "grab" }}
         >
           <TasksByState
             title="TODO"

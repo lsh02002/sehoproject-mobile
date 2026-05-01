@@ -23,7 +23,7 @@ const TaskListPage = () => {
   }, [projectId]);
 
   return (
-    <ListLayout title="태스크" to={`/tasks/projects/${projectId}/create`} icon={<MdAddTask />}>      
+    <ListLayout title="태스크" icon={<MdAddTask />} componentType="task">
       {!isLoading && tasks?.length === 0 ? (
         <div>해당 태스크가 존재하지 않습니다.</div>
       ) : (

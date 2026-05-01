@@ -11,7 +11,6 @@ import SlidePanel from "./SlidePanel";
 import { layout } from "../../theme/Theme";
 import MilestoneEditPage from "../../pages/milestone/MilestoneEditPage";
 import MilestoneCreatePage from "../../pages/milestone/MilestoneCreatePage";
-import ScrollToTopButton from "../form/ScrollToTopButton";
 import { createPortal } from "react-dom";
 
 export type NavItem = {
@@ -212,7 +211,6 @@ export default function Layout({
         }}
       >
         <BackwardButton />
-        <ScrollToTopButton />
         {children}
       </main>
     </div>
