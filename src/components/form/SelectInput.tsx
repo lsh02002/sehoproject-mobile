@@ -57,7 +57,10 @@ const SelectInput = ({
         id={name}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        onClick={() => setIsSelectOpen(true)}
+        onClick={(e) => {
+          (e.target as HTMLInputElement).blur();
+          setIsSelectOpen(true);
+        }}
         className={`form-control ${value === "" ? "text-secondary" : ""}`}
       ></input>
       <div

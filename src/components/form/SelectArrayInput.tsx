@@ -78,7 +78,10 @@ const SelectArrayInput = ({
         name={name}
         type="button"
         disabled={disabled}
-        onClick={() => setIsSelArrayOpen(true)}
+        onClick={(e) => {
+          (e.target as HTMLInputElement).blur();
+          setIsSelArrayOpen(true);
+        }}
         className={`form-control text-start d-flex align-items-center justify-content-between ${
           values.length === 0 ? "text-secondary" : ""
         }`}
