@@ -31,7 +31,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center w-100 vh-100">
+    <div className="d-flex justify-content-center align-items-center w-100">
       <div className="w-100" style={{ maxWidth: "400px", padding: "20px" }}>
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h3 className="fw-normal mb-0">
