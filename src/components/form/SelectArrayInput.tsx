@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { layout } from "../../theme/Theme";
 
 type Option = { label: string; value: string; disabled?: boolean };
@@ -22,7 +22,27 @@ const SelectArrayInput = ({
   options,
   placeholder,
 }: SelectArrayProps) => {
-  const [open, setOpen] = useState(false);
+  const [isSelArrayOpen, setIsSelArrayOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isSelArrayOpen) return;
+
+    const handlePopState = () => {
+      setIsSelArrayOpen(false);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isSelArrayOpen]);
+
+  useEffect(() => {
+    if (isSelArrayOpen) {
+      window.history.pushState({ modal: true }, "");
+    }
+  }, [isSelArrayOpen]);
 
   const mapByValue = useMemo(
     () => new Map(options.map((o) => [o.value, o])),
@@ -58,7 +78,7 @@ const SelectArrayInput = ({
         name={name}
         type="button"
         disabled={disabled}
-        onClick={() => setOpen(true)}
+        onClick={() => setIsSelArrayOpen(true)}
         className={`form-control text-start d-flex align-items-center justify-content-between ${
           values.length === 0 ? "text-secondary" : ""
         }`}
@@ -70,27 +90,27 @@ const SelectArrayInput = ({
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={() => setOpen(false)}
-        aria-hidden={!open}
+        onClick={() => setIsSelArrayOpen(false)}
+        aria-hidden={!isSelArrayOpen}
         style={{
           top: 55,
           background: "rgba(0, 0, 0, 0.32)",
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? "auto" : "none",
+          opacity: isSelArrayOpen ? 1 : 0,
+          pointerEvents: isSelArrayOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
           zIndex: 10,
         }}
       />
 
       <aside
-        aria-hidden={!open}
+        aria-hidden={!isSelArrayOpen}
         className="w-100 start-0 position-fixed bg-white shadow d-flex flex-column"
         style={{
           bottom: 55,
           zIndex: 80,
           height: "80%",
           borderRadius: "20px 20px 0 0",
-          transform: open ? "translateY(0)" : "translateY(100%)",
+          transform: isSelArrayOpen ? "translateY(0)" : "translateY(100%)",
           transition: "transform 220ms ease",
         }}
       >
@@ -99,7 +119,7 @@ const SelectArrayInput = ({
           <button
             type="button"
             className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setOpen(false)}
+            onClick={() => setIsSelArrayOpen(false)}
             aria-label="닫기"
           >
             ×

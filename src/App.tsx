@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import LoginPage from "./pages/user/LoginPage";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import SignupPage from "./pages/user/SignupPage";
 import MainPage from "./pages/main/MainPage";
 import BottomNav from "./components/layouts/BottomNav";
@@ -14,19 +14,13 @@ import ProjectListPage from "./pages/project/ProjectListPage";
 import ProjectEditPage from "./pages/project/ProjectEditPage";
 import { StyledToastContainer } from "./components/layouts/Toast";
 import TaskListPage from "./pages/task/TaskListPage";
-import TaskEditPage from "./pages/task/TaskEditPage";
 import SprintCalendarPage from "./pages/sprint/SprintCalendarPage";
 import WorkspaceCreatePage from "./pages/workspace/WorkspaceCreatePage";
 import SpaceCreatePage from "./pages/space/SpaceCreatePage";
 import ProjectCreatePage from "./pages/project/ProjectCreatePage";
-import TaskCreatePage from "./pages/task/TaskCreatePage";
 import SprintListPage from "./pages/sprint/SprintListPage";
 import BoardList from "./pages/project/board/BoardList";
-import SprintEditPage from "./pages/sprint/SprintEditPage";
-import SprintCreatePage from "./pages/sprint/SprintCreatePage";
 import MilestoneListPage from "./pages/milestone/MilestoneListPage";
-import MilestoneEditPage from "./pages/milestone/MilestoneEditPage";
-import MilestoneCreatePage from "./pages/milestone/MilestoneCreatePage";
 import TaskByAssigneePage from "./pages/task/task-list/TasksByAssigneePage";
 import SettingsLayout from "./pages/settings/SettingsLayout";
 import { ProfileSettingsPage } from "./pages/settings/ProfileSettingsPage";
@@ -39,19 +33,7 @@ import { UserProjectIdSettingsPage } from "./pages/settings/UserProjectIdSetting
 import InboxPage from "./pages/inbox/InboxPage";
 
 function App() {
-  const location = useLocation();
-  const {
-    setIsLogin,
-    isSideOpen,
-    isTaskOpen,
-    isSprintOpen,
-    isMilestoneOpen,
-    setIsSideOpen,
-    setIsTaskOpen,
-    setIsSprintOpen,
-    setIsMilestoneOpen,
-  } = useLogin();
-  const modalHistoryPushedRef = useRef(false);
+  const { setIsLogin } = useLogin();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -62,145 +44,109 @@ function App() {
     }
   }, [setIsLogin]);
 
-  // 🔹 라우트 변경 시 모달 닫기
-  useEffect(() => {
-    if (isSideOpen) {
-      setIsSideOpen(false);
-    }
-    if (isTaskOpen) {
-      setIsTaskOpen(false);
-    }
-    if (isSprintOpen) {
-      setIsSprintOpen(false);
-    }
-    if (isMilestoneOpen) {
-      setIsMilestoneOpen(false);
-    }
-
-    modalHistoryPushedRef.current = false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
-
-  // 🔹 모달 열릴 때 뒤로가기 대응
-  useEffect(() => {
-    if (!isSideOpen && !isTaskOpen && !isSprintOpen && !isMilestoneOpen) return;
-
-    if (modalHistoryPushedRef.current) return;
-
-    window.history.pushState({ modal: true }, "");
-    modalHistoryPushedRef.current = true;
-
-    const handlePopState = () => {
-      if (modalHistoryPushedRef.current) {
-        modalHistoryPushedRef.current = false;
-
-        if (isSideOpen) {
-          setIsSideOpen(false);
-        }
-        if (isTaskOpen) {
-          setIsTaskOpen(false);
-        }
-        if (isSprintOpen) {
-          setIsSprintOpen(false);
-        }
-        if (isMilestoneOpen) {
-          setIsMilestoneOpen(false);
-        }
-      }
-    };
-
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSideOpen, isTaskOpen, isSprintOpen, isMilestoneOpen]);
-
   return (
-    <Layout>
+    <>
       <Routes>
-        <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
-        <Route path="/projects/spaces/:spaceId" element={<ProjectListPage />} />
-        <Route path="/projects/:projectId/edit" element={<ProjectEditPage />} />
-        <Route
-          path="/projects/spaces/:spaceIdParam/create"
-          element={<ProjectCreatePage />}
-        />
 
         <Route
-          path="/milestones/projects/:projectId"
-          element={<MilestoneListPage />}
-        />
-        <Route
-          path="/milestones/:milestoneId/edit"
-          element={<MilestoneEditPage />}
-        />
-        <Route
-          path="/milestones/projects/:projectIdParam/create"
-          element={<MilestoneCreatePage />}
-        />
+          path="*"
+          element={
+            <Layout>
+              <Routes>
+                <Route path="/" element={<MainPage />} />
+                <Route
+                  path="/projects/spaces/:spaceId"
+                  element={<ProjectListPage />}
+                />
+                <Route
+                  path="/projects/:projectId/edit"
+                  element={<ProjectEditPage />}
+                />
+                <Route
+                  path="/projects/spaces/:spaceIdParam/create"
+                  element={<ProjectCreatePage />}
+                />
 
-        <Route
-          path="/sprints/projects/:projectId"
-          element={<SprintListPage />}
-        />
-        <Route path="/sprints/:sprintId/edit" element={<SprintEditPage />} />
-        <Route
-          path="/sprints/projects/:projectIdParam/create"
-          element={<SprintCreatePage />}
-        />
-        <Route
-          path="/sprints/projects/:projectId/calendar"
-          element={<SprintCalendarPage />}
-        />
+                <Route
+                  path="/milestones/projects/:projectId"
+                  element={<MilestoneListPage />}
+                />
 
-        <Route path="/tasks/projects/:projectId" element={<TaskListPage />} />
-        <Route path="/tasks/:taskId/edit" element={<TaskEditPage />} />
-        <Route
-          path="/tasks/projects/:projectIdParam/create"
-          element={<TaskCreatePage />}
+                <Route
+                  path="/sprints/projects/:projectId"
+                  element={<SprintListPage />}
+                />
+
+                <Route
+                  path="/sprints/projects/:projectId/calendar"
+                  element={<SprintCalendarPage />}
+                />
+
+                <Route
+                  path="/tasks/projects/:projectId"
+                  element={<TaskListPage />}
+                />
+
+                <Route
+                  path="/boards/projects/:projectId"
+                  element={<BoardList />}
+                />
+
+                <Route path="/task-list" element={<TaskByAssigneePage />} />
+
+                <Route path="/settings" element={<SettingsLayout />}>
+                  <Route
+                    path="userProjectId"
+                    element={<UserProjectIdSettingsPage />}
+                  />
+                  <Route path="workspaces" element={<WorkspaceListPage />} />
+                  <Route
+                    path="workspace/:id/edit"
+                    element={<WorkspaceEditPage />}
+                  />
+                  <Route
+                    path="workspaces/create"
+                    element={<WorkspaceCreatePage />}
+                  />
+                  <Route
+                    path="workspace/:workspaceId/spaces"
+                    element={<SpaceListPage />}
+                  />
+                  <Route
+                    path="workspace/:workspaceId/spaces/:spaceId/edit"
+                    element={<SpaceEditPage />}
+                  />
+                  <Route
+                    path="workspace/:workspaceId/spaces/create"
+                    element={<SpaceCreatePage />}
+                  />
+                  <Route
+                    path="invitation-message"
+                    element={<InvitationMessageBoxPage />}
+                  />
+                  <Route path="profile" element={<ProfileSettingsPage />} />
+                  <Route
+                    path="preferences"
+                    element={<PreferencesSettingsPage />}
+                  />
+                  <Route
+                    path="notifications"
+                    element={<NotificationsSettingsPage />}
+                  />
+                  <Route
+                    path="project-defaults"
+                    element={<ProjectDefaultsSettingsPage />}
+                  />
+                  <Route path="security" element={<SecuritySettingsPage />} />
+                </Route>
+                <Route path="/inbox" element={<InboxPage />} />
+              </Routes>
+            </Layout>
+          }
         />
-
-        <Route path="/boards/projects/:projectId" element={<BoardList />} />
-
-        <Route path="/task-list" element={<TaskByAssigneePage />} />
-
-        <Route path="/settings" element={<SettingsLayout />}>
-          <Route path="userProjectId" element={<UserProjectIdSettingsPage />} />
-          <Route path="workspaces" element={<WorkspaceListPage />} />
-          <Route path="workspace/:id/edit" element={<WorkspaceEditPage />} />
-          <Route path="workspaces/create" element={<WorkspaceCreatePage />} />
-          <Route
-            path="workspace/:workspaceId/spaces"
-            element={<SpaceListPage />}
-          />
-          <Route
-            path="workspace/:workspaceId/spaces/:spaceId/edit"
-            element={<SpaceEditPage />}
-          />
-          <Route
-            path="workspace/:workspaceId/spaces/create"
-            element={<SpaceCreatePage />}
-          />
-          <Route
-            path="invitation-message"
-            element={<InvitationMessageBoxPage />}
-          />
-          <Route path="profile" element={<ProfileSettingsPage />} />
-          <Route path="preferences" element={<PreferencesSettingsPage />} />
-          <Route path="notifications" element={<NotificationsSettingsPage />} />
-          <Route
-            path="project-defaults"
-            element={<ProjectDefaultsSettingsPage />}
-          />
-          <Route path="security" element={<SecuritySettingsPage />} />
-        </Route>
-        <Route path="inbox" element={<InboxPage />} />
       </Routes>
-
       <StyledToastContainer
         position="bottom-center"
         autoClose={3000}
@@ -210,7 +156,7 @@ function App() {
         limit={1}
       />
       <BottomNav />
-    </Layout>
+    </>
   );
 }
 

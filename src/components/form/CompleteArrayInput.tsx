@@ -30,18 +30,38 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   debounceMs = 250,
   onError,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [isComArrayOpen, setIsComArrayOpen] = useState(false);
   const [input, setInput] = useState("");
   const [options, setOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedMap, setSelectedMap] = useState<Map<string, Option>>(
-    () => new Map()
+    () => new Map(),
   );
 
   const debounceRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!open) return;
+    if (!isComArrayOpen) return;
+
+    const handlePopState = () => {
+      setIsComArrayOpen(false);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isComArrayOpen]);
+
+  useEffect(() => {
+    if (isComArrayOpen) {
+      window.history.pushState({ modal: true }, "");
+    }
+  }, [isComArrayOpen]);
+
+  useEffect(() => {
+    if (!isComArrayOpen) return;
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -60,7 +80,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [open, input, fetchOptions, debounceMs, onError]);
+  }, [isComArrayOpen, input, fetchOptions, debounceMs, onError]);
 
   useEffect(() => {
     let cancelled = false;
@@ -88,7 +108,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   const addId = useCallback(
     (option: Option) => {
       setValues((prev) =>
-        prev.includes(option.id) ? prev : [...prev, option.id]
+        prev.includes(option.id) ? prev : [...prev, option.id],
       );
 
       setSelectedMap((prev) => {
@@ -97,14 +117,14 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
         return m;
       });
     },
-    [setValues]
+    [setValues],
   );
 
   const removeId = useCallback(
     (id: string) => {
       setValues((prev) => prev.filter((x) => x !== id));
     },
-    [setValues]
+    [setValues],
   );
 
   const toggleOption = useCallback(
@@ -115,7 +135,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
         addId(option);
       }
     },
-    [values, addId, removeId]
+    [values, addId, removeId],
   );
 
   const handleCreate = useCallback(async () => {
@@ -130,7 +150,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
       const created = await createOption(nextName);
 
       setOptions((prev) =>
-        prev.some((o) => o.id === created.id) ? prev : [created, ...prev]
+        prev.some((o) => o.id === created.id) ? prev : [created, ...prev],
       );
 
       addId(created);
@@ -154,7 +174,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
         onError?.(err);
       }
     },
-    [deleteOption, removeId, onError]
+    [deleteOption, removeId, onError],
   );
 
   const selectedLabels = values.map((id) => selectedMap.get(id)?.name ?? id);
@@ -172,7 +192,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
         id={name}
         name={name}
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => setIsComArrayOpen(true)}
         className={`form-control text-start d-flex align-items-center justify-content-between ${
           values.length === 0 ? "text-secondary" : ""
         }`}
@@ -184,27 +204,27 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={() => setOpen(false)}
-        aria-hidden={!open}
+        onClick={() => setIsComArrayOpen(false)}
+        aria-hidden={!isComArrayOpen}
         style={{
           top: 55,
           background: "rgba(0, 0, 0, 0.32)",
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? "auto" : "none",
+          opacity: isComArrayOpen ? 1 : 0,
+          pointerEvents: isComArrayOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
           zIndex: 10,
         }}
       />
 
       <aside
-        aria-hidden={!open}
+        aria-hidden={!isComArrayOpen}
         className="w-100 start-0 position-fixed bg-white shadow d-flex flex-column"
         style={{
           bottom: 55,
           zIndex: 80,
           height: "80%",
           borderRadius: "20px 20px 0 0",
-          transform: open ? "translateY(0)" : "translateY(100%)",
+          transform: isComArrayOpen ? "translateY(0)" : "translateY(100%)",
           transition: "transform 220ms ease",
         }}
       >
@@ -214,7 +234,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
           <button
             type="button"
             className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setOpen(false)}
+            onClick={() => setIsComArrayOpen(false)}
             aria-label="닫기"
           >
             ×

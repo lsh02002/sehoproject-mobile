@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Menu } from "lucide-react";
 import SidebarMenu from "./MyMenu";
 import { useLogin } from "../../context/LoginContext";
@@ -50,18 +50,39 @@ export default function Layout({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSideOpen]);
 
-  const firstLinkRef = React.useRef<HTMLAnchorElement | null>(null);
+  const closeTopModal = useCallback(() => {
+    if (isMilestoneOpen) return setIsMilestoneOpen(false);
+    if (isSprintOpen) return setIsSprintOpen(false);
+    if (isTaskOpen) return setIsTaskOpen(false);
+    if (isSideOpen) return setIsSideOpen(false);
+  }, [
+    isMilestoneOpen,
+    isSideOpen,
+    isSprintOpen,
+    isTaskOpen,
+    setIsMilestoneOpen,
+    setIsSideOpen,
+    setIsSprintOpen,
+    setIsTaskOpen,
+  ]);
 
-  React.useEffect(() => {
-    if (isSideOpen && firstLinkRef.current) firstLinkRef.current.focus();
-  }, [isSideOpen]);
+  useEffect(() => {
+    const handlePopState = () => {
+      closeTopModal();
+    };
 
-  const handleSetOpenFalse = () => {
-    setIsSideOpen(false);
-    setIsTaskOpen(false);
-    setIsSprintOpen(false);
-    setIsMilestoneOpen(false);
-  };
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (isSideOpen || isTaskOpen || isSprintOpen || isMilestoneOpen) {
+      window.history.pushState({ modal: true }, "");
+    }
+  }, [isMilestoneOpen, isSideOpen, isSprintOpen, isTaskOpen]);
 
   return (
     <div className="min-vh-100 bg-white text-dark">
@@ -94,7 +115,7 @@ export default function Layout({
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={handleSetOpenFalse}
+        onClick={closeTopModal}
         aria-hidden={!isSideOpen}
         style={{
           top: 55,
@@ -108,7 +129,7 @@ export default function Layout({
 
       <SlidePanel
         isOpen={isSideOpen}
-        onClose={handleSetOpenFalse}
+        onClose={closeTopModal}
         title={appName}
         direction="left"
         zIndex={50}
@@ -118,7 +139,7 @@ export default function Layout({
 
       <SlidePanel
         isOpen={isTaskOpen}
-        onClose={handleSetOpenFalse}
+        onClose={closeTopModal}
         title="태스크 창"
         zIndex={20}
       >
@@ -131,7 +152,7 @@ export default function Layout({
 
       <SlidePanel
         isOpen={isSprintOpen}
-        onClose={handleSetOpenFalse}
+        onClose={closeTopModal}
         title="스프린트 창"
         zIndex={20}
       >
@@ -144,7 +165,7 @@ export default function Layout({
 
       <SlidePanel
         isOpen={isMilestoneOpen}
-        onClose={handleSetOpenFalse}
+        onClose={closeTopModal}
         title="마일스톤 창"
         zIndex={20}
       >
@@ -183,7 +204,6 @@ export default function Layout({
         <BackwardButton />
         {children}
       </main>
-
     </div>
   );
 }

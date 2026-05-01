@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { layout } from "../../theme/Theme";
 
 export type Option = {
@@ -24,7 +24,27 @@ const SelectInput = ({
   options: Option[];
   placeholder?: string;
 }) => {
-  const [open, setOpen] = useState(false);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isSelectOpen) return;
+
+    const handlePopState = () => {
+      setIsSelectOpen(false);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isSelectOpen]);
+
+  useEffect(() => {
+    if (isSelectOpen) {
+      window.history.pushState({ modal: true }, "");
+    }
+  }, [isSelectOpen]);
 
   return (
     <div className="w-100 mb-3">
@@ -37,32 +57,32 @@ const SelectInput = ({
         id={name}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        onClick={() => setOpen(true)}
+        onClick={() => setIsSelectOpen(true)}
         className={`form-control ${value === "" ? "text-secondary" : ""}`}
       ></input>
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={() => setOpen(false)}
-        aria-hidden={!open}
+        onClick={() => setIsSelectOpen(false)}
+        aria-hidden={!isSelectOpen}
         style={{
           top: 55,
           background: "rgba(0, 0, 0, 0.32)",
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? "auto" : "none",
+          opacity: isSelectOpen ? 1 : 0,
+          pointerEvents: isSelectOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
           zIndex: 10,
         }}
       />
       <aside
-        aria-hidden={!open}
+        aria-hidden={!isSelectOpen}
         className={`w-100 start-0 position-fixed bg-white shadow d-flex flex-column`}
         style={{
           bottom: 55,
           zIndex: 80,
           height: "80%",
           borderRadius: "20px 20px 0 0",
-          transform: open ? "translateY(0)" : "translateY(100%)",
+          transform: isSelectOpen ? "translateY(0)" : "translateY(100%)",
           transition: "transform 220ms ease",
         }}
       >
@@ -71,7 +91,7 @@ const SelectInput = ({
           <h2 className="m-0 fs-6 fw-bold">{title}</h2>
           <button
             className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setOpen(false)}
+            onClick={() => setIsSelectOpen(false)}
             aria-label="닫기"
           >
             ×
@@ -106,7 +126,7 @@ const SelectInput = ({
                       onClick={() => {
                         if (!opt.disabled) {
                           setValue(opt.value);
-                          setOpen(false);
+                          setIsSelectOpen(false);
                         }
                       }}
                       className={`w-100 text-start px-3 py-3 border-0 bg-white ${
