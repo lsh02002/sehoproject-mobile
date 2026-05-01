@@ -100,7 +100,7 @@ export default function Layout({
         style={{
           top: 12,
           left: 12,
-          zIndex: 50,
+          zIndex: 500,
           width: 40,
           height: 40,
           borderRadius: 16,
@@ -123,7 +123,7 @@ export default function Layout({
           opacity: isSideOpen ? 1 : 0,
           pointerEvents: isSideOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
-          zIndex: 10,
+          zIndex: 150,
         }}
       />
       {createPortal(
@@ -132,7 +132,7 @@ export default function Layout({
           onClose={closeTopModal}
           title={appName}
           direction="left"
-          zIndex={500}
+          zIndex={150}
         >
           <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
         </SlidePanel>,
@@ -144,6 +144,7 @@ export default function Layout({
           isOpen={isTaskOpen}
           onClose={closeTopModal}
           title="태스크 창"
+          zIndex={100}
         >
           {task ? (
             <TaskEditPage windowOpenTaskId={task?.id} />
@@ -159,6 +160,7 @@ export default function Layout({
           isOpen={isSprintOpen}
           onClose={closeTopModal}
           title="스프린트 창"
+          zIndex={100}
         >
           {sprint ? (
             <SprintEditPage windowOpenSprintId={sprint?.id} />
@@ -174,6 +176,7 @@ export default function Layout({
           isOpen={isMilestoneOpen}
           onClose={closeTopModal}
           title="마일스톤 창"
+          zIndex={100}
         >
           {milestone ? (
             <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />

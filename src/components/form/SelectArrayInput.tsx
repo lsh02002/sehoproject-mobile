@@ -95,12 +95,14 @@ const SelectArrayInput = ({
         className="position-fixed start-0 w-100 h-100"
         onClick={() => setIsSelArrayOpen(false)}
         aria-hidden={!isSelArrayOpen}
-        style={{          
+        style={{
+          top: 0,
+          bottom: 55,
           background: "rgba(0, 0, 0, 0.32)",
           opacity: isSelArrayOpen ? 1 : 0,
           pointerEvents: isSelArrayOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
-          zIndex: 10,
+          zIndex: 200,
         }}
       />
 
@@ -109,8 +111,8 @@ const SelectArrayInput = ({
         className="w-100 start-0 position-fixed bg-white shadow d-flex flex-column"
         style={{
           bottom: 55,
-          zIndex: 80,
-          height: "80%",
+          zIndex: 200,
+          height: "70%",
           borderRadius: "20px 20px 0 0",
           transform: isSelArrayOpen ? "translateY(0)" : "translateY(100%)",
           transition: "transform 220ms ease",

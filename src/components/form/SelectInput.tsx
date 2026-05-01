@@ -68,12 +68,14 @@ const SelectInput = ({
         className="position-fixed start-0 w-100 h-100"
         onClick={() => setIsSelectOpen(false)}
         aria-hidden={!isSelectOpen}
-        style={{          
+        style={{
+          top: 0,
+          bottom: 55,
           background: "rgba(0, 0, 0, 0.32)",
           opacity: isSelectOpen ? 1 : 0,
           pointerEvents: isSelectOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
-          zIndex: 10,
+          zIndex: 200,
         }}
       />
       <aside
@@ -81,8 +83,8 @@ const SelectInput = ({
         className={`w-100 start-0 position-fixed bg-white shadow d-flex flex-column`}
         style={{
           bottom: 55,
-          zIndex: 80,
-          height: "80%",
+          zIndex: 200,
+          height: "70%",
           borderRadius: "20px 20px 0 0",
           transform: isSelectOpen ? "translateY(0)" : "translateY(100%)",
           transition: "transform 220ms ease",
@@ -101,10 +103,7 @@ const SelectInput = ({
         </div>
 
         {/* body */}
-        <div
-          className="w-100 p-2 d-flex justify-content-center overflow-auto"
-          style={{ height: "100%" }}
-        >
+        <div className="w-100 p-2 d-flex justify-content-center overflow-auto">
           <nav
             role="navigation"
             style={{

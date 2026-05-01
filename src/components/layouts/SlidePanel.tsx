@@ -17,7 +17,7 @@ const SlidePanel = ({
   title,
   children,
   direction = "right", // "left" | "bottom"
-  zIndex = 400,
+  zIndex = 50,
 }: SlidePanelProps) => {
   const isRight = direction === "right";
 
