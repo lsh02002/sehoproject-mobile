@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import LoginPage from "./pages/user/LoginPage";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import SignupPage from "./pages/user/SignupPage";
 import MainPage from "./pages/main/MainPage";
 import BottomNav from "./components/layouts/BottomNav";
@@ -39,7 +39,17 @@ import { UserProjectIdSettingsPage } from "./pages/settings/UserProjectIdSetting
 import InboxPage from "./pages/inbox/InboxPage";
 
 function App() {
-  const { setIsLogin } = useLogin();
+  const location = useLocation();
+  const {
+    setIsLogin,
+    isSideOpen,
+    isTaskOpen,
+    isSprintOpen,
+    setIsSideOpen,
+    setIsTaskOpen,
+    setIsSprintOpen,
+  } = useLogin();
+  const modalHistoryPushedRef = useRef(false);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -49,6 +59,55 @@ function App() {
       setIsLogin(false);
     }
   }, [setIsLogin]);
+
+  // 🔹 라우트 변경 시 모달 닫기
+  useEffect(() => {
+    if (isSideOpen) {
+      setIsSideOpen(false);
+    }
+    if (isTaskOpen) {
+      setIsTaskOpen(false);
+    }
+    if (isSprintOpen) {
+      setIsSprintOpen(false);
+    }
+
+    modalHistoryPushedRef.current = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
+
+  // 🔹 모달 열릴 때 뒤로가기 대응
+  useEffect(() => {
+    if (!isSideOpen && !isTaskOpen && !isSprintOpen) return;
+
+    if (modalHistoryPushedRef.current) return;
+
+    window.history.pushState({ modal: true }, "");
+    modalHistoryPushedRef.current = true;
+
+    const handlePopState = () => {
+      if (modalHistoryPushedRef.current) {
+        modalHistoryPushedRef.current = false;
+
+        if (isSideOpen) {
+          setIsSideOpen(false);
+        }
+        if (isTaskOpen) {
+          setIsTaskOpen(false);
+        }
+        if (isSprintOpen) {
+          setIsSprintOpen(false);
+        }
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSideOpen, isTaskOpen, isSprintOpen]);
 
   return (
     <Layout>
