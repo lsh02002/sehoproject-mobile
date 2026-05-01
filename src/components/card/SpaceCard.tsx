@@ -9,7 +9,7 @@ const SpaceCard = ({ space }: { space: SpaceResponseType }) => {
   return (
     <div
       className="card mb-3 shadow-sm"
-      style={{ borderRadius: "16px", cursor: "pointer" }}
+      style={{ cursor: "pointer" }}
       onClick={() =>
         navigate(
           `/settings/workspace/${space.workspaceId}/spaces/${space.id}/edit`,

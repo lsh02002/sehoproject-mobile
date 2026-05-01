@@ -9,7 +9,7 @@ const ProjectCard = ({ project }: { project: ProjectResponseType }) => {
   return (
     <div
       className="card mb-3 shadow-sm"
-      style={{ borderRadius: "16px", cursor: "pointer" }}
+      style={{ cursor: "pointer" }}
       onClick={() => navigate(`/boards/projects/${project.id}`)}
     >
       <div className="card-body d-flex justify-content-between align-items-center">

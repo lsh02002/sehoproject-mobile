@@ -14,7 +14,7 @@ const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
   };
 
   return (
-    <div className="card mb-3 shadow-sm" style={{ borderRadius: "16px" }}>
+    <div className="card mb-3 shadow-sm" style={{ cursor: "pointer" }}>
       <div className="card-body d-flex justify-content-between align-items-center">
         {/* 좌측 정보 */}
         <div className="d-flex flex-column">
