@@ -45,9 +45,11 @@ function App() {
     isSideOpen,
     isTaskOpen,
     isSprintOpen,
+    isMilestoneOpen,
     setIsSideOpen,
     setIsTaskOpen,
     setIsSprintOpen,
+    setIsMilestoneOpen,
   } = useLogin();
   const modalHistoryPushedRef = useRef(false);
 
@@ -71,6 +73,9 @@ function App() {
     if (isSprintOpen) {
       setIsSprintOpen(false);
     }
+    if (isMilestoneOpen) {
+      setIsMilestoneOpen(false);
+    }
 
     modalHistoryPushedRef.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,7 +83,7 @@ function App() {
 
   // 🔹 모달 열릴 때 뒤로가기 대응
   useEffect(() => {
-    if (!isSideOpen && !isTaskOpen && !isSprintOpen) return;
+    if (!isSideOpen && !isTaskOpen && !isSprintOpen && !isMilestoneOpen) return;
 
     if (modalHistoryPushedRef.current) return;
 
@@ -98,6 +103,9 @@ function App() {
         if (isSprintOpen) {
           setIsSprintOpen(false);
         }
+        if (isMilestoneOpen) {
+          setIsMilestoneOpen(false);
+        }
       }
     };
 
@@ -107,7 +115,7 @@ function App() {
       window.removeEventListener("popstate", handlePopState);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSideOpen, isTaskOpen, isSprintOpen]);
+  }, [isSideOpen, isTaskOpen, isSprintOpen, isMilestoneOpen]);
 
   return (
     <Layout>

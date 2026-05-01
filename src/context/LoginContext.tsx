@@ -6,7 +6,11 @@ import {
   SetStateAction,
   useContext,
 } from "react";
-import { SprintResponseType, TaskResponseType } from "../types/type";
+import {
+  MilestoneResponseType,
+  SprintResponseType,
+  TaskResponseType,
+} from "../types/type";
 
 type LoginContextValue = {
   isLogin: boolean;
@@ -23,6 +27,10 @@ type LoginContextValue = {
   setIsSprintOpen: Dispatch<SetStateAction<boolean>>;
   sprint: SprintResponseType | undefined;
   setSprint: Dispatch<SetStateAction<SprintResponseType | undefined>>;
+  isMilestoneOpen: boolean;
+  setIsMilestoneOpen: Dispatch<SetStateAction<boolean>>;
+  milestone: MilestoneResponseType | undefined;
+  setMilestone: Dispatch<SetStateAction<MilestoneResponseType | undefined>>;
 };
 
 export const LoginContext = createContext<LoginContextValue | undefined>(
@@ -37,6 +45,8 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [task, setTask] = useState<TaskResponseType>();
   const [isSprintOpen, setIsSprintOpen] = useState(false);
   const [sprint, setSprint] = useState<SprintResponseType>();
+  const [isMilestoneOpen, setIsMilestoneOpen] = useState(false);
+  const [milestone, setMilestone] = useState<MilestoneResponseType>();
 
   const value: LoginContextValue = {
     isLogin,
@@ -53,6 +63,10 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
     setIsSprintOpen,
     sprint,
     setSprint,
+    isMilestoneOpen,
+    setIsMilestoneOpen,
+    milestone,
+    setMilestone,
   };
 
   return (

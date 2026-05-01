@@ -15,7 +15,11 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { LuMilestone } from "react-icons/lu";
 
-const MilestoneEditPage = () => {
+const MilestoneEditPage = ({
+  windowOpenMilestoneId,
+}: {
+  windowOpenMilestoneId?: number;
+}) => {
   const { milestoneId } = useParams();
   const [id, setId] = useState(milestoneId);
   const [projectId, setProjectId] = useState("");
@@ -35,19 +39,21 @@ const MilestoneEditPage = () => {
   ];
 
   useEffect(() => {
-    getOneMilestoneApi(Number(milestoneId))
-      .then((res) => {
-        setId(res.data.id);
-        setProjectId(res.data.projectId);
-        setName(res.data.name);
-        setDescription(res.data.description);
-        setStatus(res.data.status);
-        setStartDate(res.data.startDate);
-        setDueDate(res.data.dueDate);
-        setTaskIds(res.data.taskIds);
-      })
-      .catch(() => {});
-  }, [milestoneId]);
+    if (windowOpenMilestoneId || milestoneId) {
+      getOneMilestoneApi(Number(windowOpenMilestoneId ?? milestoneId))
+        .then((res) => {
+          setId(res.data.id);
+          setProjectId(res.data.projectId);
+          setName(res.data.name);
+          setDescription(res.data.description);
+          setStatus(res.data.status);
+          setStartDate(res.data.startDate);
+          setDueDate(res.data.dueDate);
+          setTaskIds(res.data.taskIds);
+        })
+        .catch(() => {});
+    }
+  }, [milestoneId, windowOpenMilestoneId]);
 
   useEffect(() => {
     if (projectId) {

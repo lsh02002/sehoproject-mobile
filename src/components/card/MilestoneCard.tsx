@@ -1,10 +1,17 @@
 import React from "react";
 import { MilestoneResponseType } from "../../types/type";
-import { useNavigate } from "react-router-dom";
 import { LuMilestone } from "react-icons/lu";
+import { useLogin } from "../../context/LoginContext";
 
-const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {
-  const navigate = useNavigate();
+const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {  
+  const { setMilestone, setIsMilestoneOpen } = useLogin();
+
+  const handleOpenMilestone = (e: React.MouseEvent<HTMLSpanElement>) => {
+    e.stopPropagation();
+
+    setMilestone(milestone);
+    setIsMilestoneOpen(true);
+  };
 
   return (
     <div className="card mb-3 shadow-sm" style={{ cursor: "pointer" }}>
@@ -47,14 +54,7 @@ const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {
           <span
             className="text-primary fw-medium"
             style={{ cursor: "pointer" }}
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/milestones/${milestone.id}/edit`);
-            }}
-            onMouseOver={(e) =>
-              (e.currentTarget.style.textDecoration = "underline")
-            }
-            onMouseOut={(e) => (e.currentTarget.style.textDecoration = "none")}
+            onClick={(e) => handleOpenMilestone(e)}
           >
             EDIT
           </span>

@@ -9,6 +9,8 @@ import SprintCreatePage from "../../pages/sprint/SprintCreatePage";
 import { BackwardButton } from "../form/BackwardButton";
 import SlidePanel from "./SlidePanel";
 import { layout } from "../../theme/Theme";
+import MilestoneEditPage from "../../pages/milestone/MilestoneEditPage";
+import MilestoneCreatePage from "../../pages/milestone/MilestoneCreatePage";
 
 export type NavItem = {
   label: string;
@@ -27,11 +29,21 @@ export default function Layout({
   navItems = [],
   children,
 }: Props) {
-  const { isSideOpen, setIsSideOpen } = useLogin();
-  const { isMemuRefresh, setIsMenuRefresh, isTaskOpen, setIsTaskOpen, task } =
-    useLogin();
-
-  const { isSprintOpen, setIsSprintOpen, sprint } = useLogin();
+  const {
+    isMemuRefresh,
+    setIsMenuRefresh,
+    isSideOpen,
+    setIsSideOpen,
+    isTaskOpen,
+    setIsTaskOpen,
+    task,
+    isSprintOpen,
+    setIsSprintOpen,
+    sprint,
+    isMilestoneOpen,
+    setIsMilestoneOpen,
+    milestone,
+  } = useLogin();
 
   useEffect(() => {
     if (isSideOpen) setIsMenuRefresh(!isMemuRefresh);
@@ -48,6 +60,7 @@ export default function Layout({
     setIsSideOpen(false);
     setIsTaskOpen(false);
     setIsSprintOpen(false);
+    setIsMilestoneOpen(false);
   };
 
   return (
@@ -86,9 +99,8 @@ export default function Layout({
         style={{
           top: 55,
           background: "rgba(0, 0, 0, 0.32)",
-          opacity: isSideOpen? 1 : 0,
-          pointerEvents:
-            isSideOpen ? "auto" : "none",
+          opacity: isSideOpen ? 1 : 0,
+          pointerEvents: isSideOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
           zIndex: 10,
         }}
@@ -130,6 +142,19 @@ export default function Layout({
         )}
       </SlidePanel>
 
+      <SlidePanel
+        isOpen={isMilestoneOpen}
+        onClose={handleSetOpenFalse}
+        title="마일스톤 창"
+        zIndex={20}
+      >
+        {milestone ? (
+          <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />
+        ) : (
+          <MilestoneCreatePage />
+        )}
+      </SlidePanel>
+
       <header
         className="sticky-top border-bottom"
         style={{
@@ -159,19 +184,6 @@ export default function Layout({
         {children}
       </main>
 
-      <LockBodyScroll when={isSideOpen || isTaskOpen} />
     </div>
   );
-}
-
-function LockBodyScroll({ when }: { when: boolean }) {
-  React.useEffect(() => {
-    if (!when) return;
-    const original = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, [when]);
-  return null;
 }
