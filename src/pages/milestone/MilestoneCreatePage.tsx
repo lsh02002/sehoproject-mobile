@@ -13,6 +13,7 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { useParams } from "react-router-dom";
 import { LuMilestone } from "react-icons/lu";
+import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 const MilestoneCreatePage = () => {
   const { projectIdParam } = useParams();
@@ -95,7 +96,7 @@ const MilestoneCreatePage = () => {
           setData={setProjectId}
         />
         <TextInput name="name" title="이름" data={name} setData={setName} />
-        <TextInput
+        <QuillEditorInput
           name="description"
           title="상세설명"
           data={description}

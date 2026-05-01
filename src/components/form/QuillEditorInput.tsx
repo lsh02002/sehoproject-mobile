@@ -20,6 +20,27 @@ const QuillEditorInput = ({
 }) => {
   const quillRef = useRef<ReactQuill | null>(null);
   const [isEmpty, setIsEmpty] = useState(true);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isEditorOpen) return;
+
+    const handlePopState = () => {
+      setIsEditorOpen(false);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isEditorOpen]);
+
+  useEffect(() => {
+    if (isEditorOpen) {
+      window.history.pushState({ modal: true }, "");
+    }
+  }, [isEditorOpen]);
 
   useEffect(() => {
     const editor = quillRef.current?.getEditor();
@@ -42,7 +63,7 @@ const QuillEditorInput = ({
       root.removeEventListener("compositionstart", handleCompositionStart);
       root.removeEventListener("compositionend", handleCompositionEnd);
     };
-  }, []);
+  }, [isEditorOpen]);
 
   return (
     <div className="w-100 mb-3">
@@ -53,38 +74,112 @@ const QuillEditorInput = ({
       </label>
 
       <div
-        className={`w-100 quill-editor-bootstrap ${disabled ? "is-disabled" : ""}`}
-        style={
-          {
-            ["--quill-min-height" as any]: `${Math.max(rows, 1) * 24 + 24}px`,
-            ["--quill-min-height-mobile" as any]: `${Math.max(rows, 1) * 24 + 32}px`,
-            position: "relative",
-          } as React.CSSProperties
-        }
+        onClick={() => {
+          if (!disabled) setIsEditorOpen(true);
+        }}
+        className={`form-control ${
+          !data || data === "<p><br></p>" ? "text-secondary" : ""
+        }`}
+        style={{
+          minHeight: 3 * 24 + 32,
+          cursor: disabled ? "not-allowed" : "pointer",
+          overflow: "hidden",
+        }}
       >
-        <ReactQuill
-          ref={quillRef}
-          theme="snow"
-          value={data}
-          onChange={(value, _delta, _source, editor) => {
-            setData(value);
-            setIsEmpty(editor.getText().trim().length === 0);
-          }}
-          readOnly={disabled}
-          placeholder={isEmpty ? `${title}을(를) 입력하세요` : ""}
-          modules={{
-            toolbar: disabled
-              ? false
-              : [
-                  ["bold", "italic", "underline", "strike"],
-                  [{ color: [] }, { background: [] }],
-                  [{ list: "ordered" }, { list: "bullet" }],
-                  ["blockquote", "link"],
-                  ["clean"],
-                ],
-          }}
-        />
+        {data && data !== "<p><br></p>" && (
+          <div
+            dangerouslySetInnerHTML={{ __html: data }}
+            style={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          />
+        )}
+        {isEmpty && `${title}을(를) 입력하세요`}
       </div>
+
+      <div
+        role="presentation"
+        className="position-fixed start-0 w-100 h-100"
+        onClick={() => setIsEditorOpen(false)}
+        aria-hidden={!isEditorOpen}
+        style={{
+          top: 0,
+          bottom: 55,
+          background: "rgba(0, 0, 0, 0.32)",
+          opacity: isEditorOpen ? 1 : 0,
+          pointerEvents: isEditorOpen ? "auto" : "none",
+          transition: "opacity 160ms ease",
+          zIndex: 200,
+        }}
+      />
+
+      <aside
+        aria-hidden={!isEditorOpen}
+        className="w-100 start-0 position-fixed bg-white shadow d-flex flex-column"
+        style={{
+          bottom: 55,
+          zIndex: 200,
+          height: "70%",
+          borderRadius: "20px 20px 0 0",
+          transform: isEditorOpen ? "translateY(0)" : "translateY(100%)",
+          transition: "transform 220ms ease",
+        }}
+      >
+        <div className="w-100 d-flex align-items-center justify-content-between border-bottom px-3">
+          <h2 className="m-0 fs-6 fw-bold">{title}</h2>
+          <button
+            className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
+            onClick={() => setIsEditorOpen(false)}
+            aria-label="닫기"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="w-100 p-2 d-flex justify-content-center overflow-auto">
+          <div
+            className={`w-100 quill-editor-bootstrap ${
+              disabled ? "is-disabled" : ""
+            }`}
+            style={
+              {
+                ["--quill-min-height" as any]: `${Math.max(rows, 1) * 24 + 24}px`,
+                ["--quill-min-height-mobile" as any]: `${
+                  Math.max(rows, 1) * 24 + 32
+                }px`,
+                position: "relative",
+                maxWidth: layout.maxWidth,
+                paddingBottom: 100,
+              } as React.CSSProperties
+            }
+          >
+            <ReactQuill
+              ref={quillRef}
+              theme="snow"
+              value={data}
+              onChange={(value, _delta, _source, editor) => {
+                setData(value);
+                setIsEmpty(editor.getText().trim().length === 0);
+              }}
+              readOnly={disabled}
+              placeholder={isEmpty ? `${title}을(를) 입력하세요` : ""}
+              modules={{
+                toolbar: disabled
+                  ? false
+                  : [
+                      ["bold", "italic", "underline", "strike"],
+                      [{ color: [] }, { background: [] }],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["blockquote", "link"],
+                      ["clean"],
+                    ],
+              }}
+            />
+          </div>
+        </div>
+      </aside>
     </div>
   );
 };

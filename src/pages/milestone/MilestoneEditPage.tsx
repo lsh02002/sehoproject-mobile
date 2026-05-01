@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { LuMilestone } from "react-icons/lu";
+import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 const MilestoneEditPage = ({
   windowOpenMilestoneId,
@@ -72,12 +73,12 @@ const MilestoneEditPage = ({
         projectKey: "",
         projectId: Number(projectId), // 실제로는 서버 id 또는 uuid로 대체
         name,
-        description: "",
+        description,
       }));
 
       setTaskIds(newTaskOptions);
     },
-    [projectId, taskOptions],
+    [description, projectId, taskOptions],
   );
 
   const OnEditSubmit = () => {
@@ -128,6 +129,13 @@ const MilestoneEditPage = ({
         </TwoDiv>
 
         <TextInput name="name" title="이름" data={name} setData={setName} />
+        
+        <QuillEditorInput
+          name="description"
+          title="상세설명"
+          data={description}
+          setData={setDescription}
+        />
 
         <SelectInput
           name="state"

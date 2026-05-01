@@ -8,6 +8,7 @@ import DateInput from "../../components/form/DateInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import { SiPolymerproject } from "react-icons/si";
+import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 const ProjectCreatePage = () => {
   const { spaceIdParam } = useParams();
@@ -69,7 +70,7 @@ const ProjectCreatePage = () => {
           setData={setProjectKey}
         />
 
-        <TextInput
+        <QuillEditorInput
           name="description"
           title="상세설명"
           data={description}

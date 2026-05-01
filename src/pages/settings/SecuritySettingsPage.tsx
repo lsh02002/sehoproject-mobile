@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ConfirmButton from "../../components/form/ConfirmButton";
-import PasswordInput from "../../components/form/PasswordInput";
+import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 
 export function SecuritySettingsPage() {
   const [newPassword, setNewPassword] = useState("");
@@ -14,7 +14,7 @@ export function SecuritySettingsPage() {
 
         <div className="row g-3">
           <div className="col-12 col-md-6">
-            <PasswordInput
+            <PasswordVisibleInput
               name="newPassword"
               title="새 비밀번호"
               data={newPassword}
@@ -23,7 +23,7 @@ export function SecuritySettingsPage() {
           </div>
 
           <div className="col-12 col-md-6">
-            <PasswordInput
+            <PasswordVisibleInput
               name="confirmPassword"
               title="새 비밀번호 확인"
               data={confirmPassword}

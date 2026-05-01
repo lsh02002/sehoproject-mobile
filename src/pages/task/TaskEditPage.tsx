@@ -19,6 +19,7 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import { MdAddTask } from "react-icons/md";
+import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const { taskId } = useParams();
@@ -195,7 +196,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
 
         <TextInput name="name" title="이름" data={name} setData={setName} />
 
-        <TextInput
+        <QuillEditorInput
           name="description"
           title="상세설명"
           data={description}

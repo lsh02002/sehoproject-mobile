@@ -1,8 +1,8 @@
 import { useState } from "react";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import TextInput from "../../components/form/TextInput";
-import PasswordInput from "../../components/form/PasswordInput";
 import DateInput from "../../components/form/DateInput";
+import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 
 /*********************************
  * 2) 각 단일 페이지 컴포넌트
@@ -39,7 +39,7 @@ export function ProfileSettingsPage() {
         {/* 두 번째 줄 */}
         <div className="row g-3">
           <div className="col-12 col-md-6">
-            <PasswordInput
+            <PasswordVisibleInput
               name="password"
               title="비밀번호"
               data={password}

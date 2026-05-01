@@ -14,6 +14,7 @@ import {
   getUsersNotInSpaceApi,
 } from "../../api/sehomanagerapi";
 import { toast } from "react-toastify";
+import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 type ProjectLite = { id: number | string; name: string };
 
@@ -238,12 +239,11 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
         <div className="border rounded-4 bg-white p-3 mb-3 shadow-sm">
           <h4 className="fw-bold mb-3">메모 (선택)</h4>
 
-          <textarea
-            className="form-control"
-            placeholder="메모를 입력하세요 (선택)"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            style={{ minHeight: 100 }}
+          <QuillEditorInput
+            name="note"
+            title="메모"
+            data={note}
+            setData={setNote}
           />
         </div>
 

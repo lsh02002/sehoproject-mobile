@@ -9,6 +9,7 @@ import { CompleteArrayInput } from "../../components/form/CompleteArrayInput";
 import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import { SiPolymerproject } from "react-icons/si";
+import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 const ProjectEditPage = () => {
   const { projectId } = useParams();
@@ -138,7 +139,7 @@ return (
 
       <TextInput name="name" title="이름" data={name} setData={setName} />
 
-      <TextInput
+      <QuillEditorInput
         name="description"
         title="상세설명"
         data={description}

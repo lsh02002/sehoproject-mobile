@@ -9,6 +9,7 @@ import {
 } from "../../api/sehomanagerapi";
 import { UsersInfoType, WorkspaceInviteType } from "../../types/type";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
+import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
   const [invitedUserEmails, setInvitedUserEmails] = useState<string[]>([]);
@@ -83,12 +84,11 @@ const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
           options={roleOptions}
         />
 
-        <textarea
-          className="form-control rounded-3"
-          style={{ minHeight: "96px", resize: "vertical" }}
-          placeholder="간단한 메시지를 입력하세요 (선택)"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+        <QuillEditorInput
+          name="message"
+          title="메시지"
+          data={message}
+          setData={setMessage}
         />
 
         <TextInput

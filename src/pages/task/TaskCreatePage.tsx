@@ -20,6 +20,7 @@ import DateInput from "../../components/form/DateInput";
 import { toast } from "react-toastify";
 import { MdAddTask } from "react-icons/md";
 import { useLogin } from "../../context/LoginContext";
+import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 const TaskCreatePage = () => {
   const { isTaskOpen } = useLogin();
@@ -130,7 +131,7 @@ const TaskCreatePage = () => {
     };
 
     createTaskApi(data)
-      .then((res) => {        
+      .then((res) => {
         toast.success("생성을 성공했습니다!");
       })
       .catch(() => {});
@@ -160,7 +161,7 @@ const TaskCreatePage = () => {
 
         <TextInput name="name" title="이름" data={name} setData={setName} />
 
-        <TextInput
+        <QuillEditorInput
           name="description"
           title="상세설명"
           data={description}
