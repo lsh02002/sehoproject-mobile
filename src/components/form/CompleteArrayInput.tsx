@@ -206,8 +206,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
         className="position-fixed start-0 w-100 h-100"
         onClick={() => setIsComArrayOpen(false)}
         aria-hidden={!isComArrayOpen}
-        style={{
-          top: 55,
+        style={{          
           background: "rgba(0, 0, 0, 0.32)",
           opacity: isComArrayOpen ? 1 : 0,
           pointerEvents: isComArrayOpen ? "auto" : "none",

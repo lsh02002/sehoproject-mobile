@@ -95,8 +95,7 @@ const SelectArrayInput = ({
         className="position-fixed start-0 w-100 h-100"
         onClick={() => setIsSelArrayOpen(false)}
         aria-hidden={!isSelArrayOpen}
-        style={{
-          top: 55,
+        style={{          
           background: "rgba(0, 0, 0, 0.32)",
           opacity: isSelArrayOpen ? 1 : 0,
           pointerEvents: isSelArrayOpen ? "auto" : "none",

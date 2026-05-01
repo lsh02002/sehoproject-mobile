@@ -68,8 +68,7 @@ const SelectInput = ({
         className="position-fixed start-0 w-100 h-100"
         onClick={() => setIsSelectOpen(false)}
         aria-hidden={!isSelectOpen}
-        style={{
-          top: 55,
+        style={{          
           background: "rgba(0, 0, 0, 0.32)",
           opacity: isSelectOpen ? 1 : 0,
           pointerEvents: isSelectOpen ? "auto" : "none",
