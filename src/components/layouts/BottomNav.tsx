@@ -35,16 +35,29 @@ const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
   `${navLinkBaseClass} ${isActive ? "text-primary fw-semibold" : "text-secondary"}`;
 
 const BottomNav = () => {
-  const { isTaskOpen, isSprintOpen, setIsTaskOpen, setIsSprintOpen } =
-    useLogin();
+  const {
+    isSideOpen,
+    isTaskOpen,
+    isSprintOpen,
+    isMilestoneOpen,
+    setIsSideOpen,
+    setIsTaskOpen,
+    setIsSprintOpen,
+    setIsMilestoneOpen,
+  } = useLogin();
 
   const handelSetOpenFalse = () => {
+    if (isSideOpen) {
+      setIsSideOpen(false);
+    }
     if (isTaskOpen) {
       setIsTaskOpen(false);
     }
-
     if (isSprintOpen) {
       setIsSprintOpen(false);
+    }
+    if (isMilestoneOpen) {
+      setIsMilestoneOpen(false);
     }
   };
 
