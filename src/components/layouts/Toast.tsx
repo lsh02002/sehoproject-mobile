@@ -1,43 +1,37 @@
 import { ToastContainer, ToastContainerProps } from "react-toastify";
 
-export const StyledToastContainer = (props: ToastContainerProps) => {
-  return (
-    <>
-      <style>
-        {`
-          .toast-container-wrapper {
-            padding: 0 20px;
-            box-sizing: border-box;
-            margin-bottom: 70px;
-            z-index: 1000;
-          }
+export const BootstrapToastContainer = (props: ToastContainerProps) => (
+  <ToastContainer
+    position="bottom-center"
+    autoClose={3000}
+    hideProgressBar
+    closeOnClick
+    pauseOnHover={false}
+    limit={1}
+    {...props}
+    toastClassName={(context) => {
+      const type = context?.type;
+      const typeClass =
+        type === "success"
+          ? "bg-success text-white"
+          : type === "warning"
+          ? "bg-warning text-dark"
+          : type === "error"
+          ? "bg-danger text-white"
+          : "bg-info text-white";
 
-          .Toastify__toast {
-            color: white;
-            font-size: 0.9rem;
-          }
-
-          .Toastify__toast--success {
-            background-color: #28a745;
-          }
-
-          .Toastify__toast--warning {
-            background-color: #f0ad4e;
-          }
-
-          .Toastify__toast--error {
-            background-color: #dc3545;
-          }
-
-          .Toastify__toast--info {
-            background-color: #17a2b8;
-          }
-        `}
-      </style>
-
-      <div className="toast-container-wrapper">
-        <ToastContainer {...props} />
-      </div>
-    </>
-  );
-};
+      return `rounded-3 px-3 py-2 pe-4 position-relative ${typeClass}`;
+    }}
+    className="m-0 p-0"
+    closeButton={({ closeToast }) => (
+      <button
+        onClick={closeToast}
+        className="btn-close btn-close-white position-absolute top-0 end-0 m-2"
+      />
+    )}
+    style={{
+      bottom: "100px",
+      fontSize: "1rem",
+    }}
+  />
+);

@@ -35,7 +35,7 @@ const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
   `${navLinkBaseClass} ${isActive ? "text-primary fw-semibold" : "text-secondary"}`;
 
 const BottomNav = () => {
-  const { closeTopModal } = useModalManager();
+  const { closeAllModals } = useModalManager();
 
   return (
     <nav
@@ -49,8 +49,11 @@ const BottomNav = () => {
             to={to}
             className={getNavLinkClass}
             onClick={(e) => {
-              e.stopPropagation();
-              closeTopModal();
+              e.stopPropagation(); // 필요하면 유지
+              if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+              }
+              closeAllModals();
             }}
           >
             {icon}

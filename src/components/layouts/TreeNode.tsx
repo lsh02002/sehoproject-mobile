@@ -258,27 +258,7 @@ export function convertToTreeNode(
         type: space.type,
         disabled: space.canEnter === false,
         children: projects.map((project) => {
-          const milestones = Array.isArray(project.milestoneNodes)
-            ? project.milestoneNodes
-            : [];
-          const sprints = Array.isArray(project.sprintNodes)
-            ? project.sprintNodes
-            : [];
-
-          const children: TreeNodeType[] = [
-            ...milestones.map((m) => ({
-              id: m.id,
-              name: m.name,
-              type: "MILESTONE" as const,
-              disabled: m.canEnter === false,
-            })),
-            ...sprints.map((t) => ({
-              id: t.id,
-              name: t.name,
-              type: "SPRINT" as const,
-              disabled: t.canEnter === false,
-            })),
-          ];
+          const children: TreeNodeType[] = [];
 
           return {
             id: project.id,
@@ -326,7 +306,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   onSelect,
   fontSize,
 }) {
-  const redirect = useNavigate();
+  const navigate = useNavigate();
 
   const hasChildren = Boolean(node.children?.length);
   const isSelected = selectedId === node.id;
@@ -338,35 +318,27 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
 
     if (isDisabled) return;
 
+    // ⭐ 핵심 추가
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
+    setOpen(false); // ⭐ panel 닫기
+
     if (node.id === "root") {
-      redirect("/settings/workspaces");
+      navigate("/settings/workspaces");
       return;
     }
 
     switch (node.type) {
       case "WORKSPACE":
-        setOpen(false);
-        redirect(`/settings/workspace/${node.id}/spaces`);
+        navigate(`/settings/workspace/${node.id}/spaces`);
         break;
       case "SPACE":
-        setOpen(false);
-        redirect(`/projects/spaces/${node.id}`);
+        navigate(`/projects/spaces/${node.id}`);
         break;
       case "PROJECT":
-        setOpen(false);
-        redirect(`/boards/projects/${node.id}`);
-        break;
-      case "MILESTONE":
-        setOpen(false);
-        redirect(`/milestones/${node.id}/edit`);
-        break;
-      case "SPRINT":
-        setOpen(false);
-        redirect(`/sprints/${node.id}/edit`);
-        break;
-      case "TASK":
-        setOpen(false);
-        redirect(`/tasks/${node.id}`);
+        navigate(`/boards/projects/${node.id}`);
         break;
     }
   };
@@ -504,8 +476,13 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
               onClick={(e) => {
                 if (isDisabled) return;
                 e.stopPropagation();
+
+                if (document.activeElement instanceof HTMLElement) {
+                  document.activeElement.blur();
+                }
+
                 setOpen(false);
-                redirect(`/sprints/projects/${node.id}/calendar`);
+                navigate(`/sprints/projects/${node.id}/calendar`);
               }}
               style={{
                 color: node.disabled ? "#aaa" : "inherit",

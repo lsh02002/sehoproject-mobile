@@ -13,15 +13,15 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 root.render(
-  <BrowserRouter>
-    <LoginProvider>
-      <ScrollProvider>
-        <ModalManager>
+  <ModalManager>
+    <BrowserRouter>
+      <LoginProvider>
+        <ScrollProvider>
           <App />
-        </ModalManager>
-      </ScrollProvider>
-    </LoginProvider>
-  </BrowserRouter>,
+        </ScrollProvider>
+      </LoginProvider>
+    </BrowserRouter>
+  </ModalManager>,
 );
 
 // If you want to start measuring performance in your app, pass a function

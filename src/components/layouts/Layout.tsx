@@ -11,7 +11,7 @@ import SlidePanel from "./SlidePanel";
 import { layout } from "../../theme/Theme";
 import MilestoneEditPage from "../../pages/milestone/MilestoneEditPage";
 import MilestoneCreatePage from "../../pages/milestone/MilestoneCreatePage";
-import { createPortal } from "react-dom";
+import SlideSidePanel from "./SlideSidePanel";
 
 export type NavItem = {
   label: string;
@@ -33,11 +33,11 @@ export default function Layout({
   const {
     isMemuRefresh,
     setIsMenuRefresh,
-    isSideOpen,
-    setIsSideOpen,
     task,
     sprint,
     milestone,
+    isSideOpen,
+    setIsSideOpen,
   } = useLogin();
 
   useEffect(() => {
@@ -71,78 +71,54 @@ export default function Layout({
       >
         <Menu style={{ width: 20, height: 20 }} />
       </button>
-
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={() => setIsSideOpen(false)}
-        aria-hidden={!isSideOpen}
         style={{
           top: 55,
+          zIndex: 150,
           background: "rgba(0, 0, 0, 0.32)",
           opacity: isSideOpen ? 1 : 0,
           pointerEvents: isSideOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
-          zIndex: 150,
         }}
+        onClick={() => setIsSideOpen(false)}
+        aria-hidden={!isSideOpen}
       />
+      <SlideSidePanel
+        isOpen={isSideOpen}
+        setIsOpen={setIsSideOpen}
+        title="사이드 창"
+        zIndex={200}
+        direction="left"
+        name="side"
+      >
+        <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
+      </SlideSidePanel>
 
-      {createPortal(
-        <SlidePanel          
-          title={appName}
-          direction="left"
-          zIndex={150}
-          name="side"
-        >
-          <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
-        </SlidePanel>,
-        document.body,
-      )}
+      <SlidePanel title="태스크 창" zIndex={100} name="task">
+        {task ? (
+          <TaskEditPage windowOpenTaskId={task?.id} />
+        ) : (
+          <TaskCreatePage />
+        )}
+      </SlidePanel>
 
-      {createPortal(
-        <SlidePanel          
-          title="태스크 창"
-          zIndex={100}
-          name="task"
-        >
-          {task ? (
-            <TaskEditPage windowOpenTaskId={task?.id} />
-          ) : (
-            <TaskCreatePage />
-          )}
-        </SlidePanel>,
-        document.body,
-      )}
+      <SlidePanel title="스프린트 창" zIndex={100} name="sprint">
+        {sprint ? (
+          <SprintEditPage windowOpenSprintId={sprint?.id} />
+        ) : (
+          <SprintCreatePage />
+        )}
+      </SlidePanel>
 
-      {createPortal(
-        <SlidePanel          
-          title="스프린트 창"
-          zIndex={100}
-          name="sprint"
-        >
-          {sprint ? (
-            <SprintEditPage windowOpenSprintId={sprint?.id} />
-          ) : (
-            <SprintCreatePage />
-          )}
-        </SlidePanel>,
-        document.body,
-      )}
-
-      {createPortal(
-        <SlidePanel          
-          title="마일스톤 창"
-          zIndex={100}
-          name="milestone"
-        >
-          {milestone ? (
-            <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />
-          ) : (
-            <MilestoneCreatePage />
-          )}
-        </SlidePanel>,
-        document.body,
-      )}
+      <SlidePanel title="마일스톤 창" zIndex={100} name="milestone">
+        {milestone ? (
+          <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />
+        ) : (
+          <MilestoneCreatePage />
+        )}
+      </SlidePanel>
 
       <header
         className="sticky-top border-bottom"

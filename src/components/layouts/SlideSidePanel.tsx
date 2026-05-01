@@ -1,25 +1,25 @@
 import { useRef } from "react";
-import { useModalManager } from "../../context/ModalManager";
 import { layout } from "../../theme/Theme";
 
-type SlidePanelProps = {
+type SlideSidePanelProps = {
   title: string;
   children: React.ReactNode;
   direction?: "left" | "right" | "bottom";
   zIndex?: number;
   name: string;
+  isOpen: boolean;
+  setIsOpen: (v: boolean) => void;
 };
 
-const SlidePanel = ({
+const SlideSidePanel = ({
   title,
   children,
   direction = "right",
   zIndex = 50,
   name,
-}: SlidePanelProps) => {
-  const { closeModal, isOpen } = useModalManager();
-
-  const isOpenPanel = isOpen(name);
+  isOpen,
+  setIsOpen,
+}: SlideSidePanelProps) => {
   const isRight = direction === "right";
 
   const sidebarRef = useRef<HTMLElement | null>(null);
@@ -34,13 +34,13 @@ const SlidePanel = ({
       activeElement.blur();
     }
 
-    closeModal(name);
+    setIsOpen(false);
   };
 
   return (
     <aside
       ref={sidebarRef}
-      // aria-hidden={!isOpenPanel}      
+      // aria-hidden={!isOpenPanel}
       className="position-fixed bg-white d-flex flex-column start-0"
       style={{
         top: 55,
@@ -48,10 +48,10 @@ const SlidePanel = ({
         width: isRight ? "100%" : "300px",
         borderRadius: isRight ? 0 : "20px 20px 0 0",
         transform: isRight
-          ? isOpenPanel
+          ? isOpen
             ? "translateX(0)"
             : "translateX(100%)"
-          : isOpenPanel
+          : isOpen
             ? "translateX(0)"
             : "translateX(-100%)",
         transition: "transform 220ms ease",
@@ -96,4 +96,4 @@ const SlidePanel = ({
   );
 };
 
-export default SlidePanel;
+export default SlideSidePanel;
