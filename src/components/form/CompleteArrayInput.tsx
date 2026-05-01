@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { layout } from "../../theme/Theme";
 
 type Option = { id: string; name: string };
 
@@ -13,7 +14,6 @@ export type CompleteArrayInputPropsType = {
   hydrateSelected?: (ids: string[]) => Promise<Option[]>;
   placeholder?: string;
   debounceMs?: number;
-  maxMenuHeight?: number;
   onError?: (err: unknown) => void;
 };
 
@@ -28,26 +28,28 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   hydrateSelected,
   placeholder = "추가...",
   debounceMs = 250,
-  maxMenuHeight = 240,
   onError,
 }) => {
+  const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [options, setOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(false);
-  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const [selectedMap, setSelectedMap] = useState<Map<string, Option>>(
-    () => new Map(),
+    () => new Map()
   );
+
   const debounceRef = useRef<number | null>(null);
 
   useEffect(() => {
+    if (!open) return;
+
     if (debounceRef.current) clearTimeout(debounceRef.current);
+
     setLoading(true);
     debounceRef.current = window.setTimeout(async () => {
       try {
         const list = await fetchOptions(input.trim());
         setOptions(list);
-        setFocusedIndex(list.length ? 0 : -1);
       } catch (err) {
         onError?.(err);
       } finally {
@@ -58,67 +60,80 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [input, fetchOptions, debounceMs, onError]);
+  }, [open, input, fetchOptions, debounceMs, onError]);
 
   useEffect(() => {
     let cancelled = false;
+
     (async () => {
       try {
-        if (hydrateSelected) {
-          const hydrated = await hydrateSelected(values);
-          if (cancelled) return;
-          const m = new Map<string, Option>();
-          hydrated.forEach((o) => m.set(o.id, o));
-          setSelectedMap(m);
-        }
+        if (!hydrateSelected || values.length === 0) return;
+
+        const hydrated = await hydrateSelected(values);
+        if (cancelled) return;
+
+        const m = new Map<string, Option>();
+        hydrated.forEach((o) => m.set(o.id, o));
+        setSelectedMap(m);
       } catch (err) {
         onError?.(err);
       }
     })();
+
     return () => {
       cancelled = true;
     };
   }, [values, hydrateSelected, onError]);
 
-  const toggleId = useCallback(
-    (id: string) => {
-      setValues((prev) =>
-        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-      );
-    },
-    [setValues],
-  );
-
   const addId = useCallback(
-    (id: string) => {
-      setValues((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    (option: Option) => {
+      setValues((prev) =>
+        prev.includes(option.id) ? prev : [...prev, option.id]
+      );
+
+      setSelectedMap((prev) => {
+        const m = new Map(prev);
+        m.set(option.id, option);
+        return m;
+      });
     },
-    [setValues],
+    [setValues]
   );
 
   const removeId = useCallback(
     (id: string) => {
       setValues((prev) => prev.filter((x) => x !== id));
     },
-    [setValues],
+    [setValues]
+  );
+
+  const toggleOption = useCallback(
+    (option: Option) => {
+      if (values.includes(option.id)) {
+        removeId(option.id);
+      } else {
+        addId(option);
+      }
+    },
+    [values, addId, removeId]
   );
 
   const handleCreate = useCallback(async () => {
     if (!createOption) return;
+
     const nextName = input.trim();
     if (!nextName) return;
+
     try {
       setLoading(true);
+
       const created = await createOption(nextName);
+
       setOptions((prev) =>
-        prev.some((o) => o.id === created.id) ? prev : [created, ...prev],
+        prev.some((o) => o.id === created.id) ? prev : [created, ...prev]
       );
-      addId(created.id);
-      setSelectedMap((prev) => {
-        const m = new Map(prev);
-        m.set(created.id, created);
-        return m;
-      });
+
+      addId(created);
       setInput("");
     } catch (err) {
       onError?.(err);
@@ -127,74 +142,202 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
     }
   }, [createOption, input, addId, onError]);
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!options.length) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setFocusedIndex((i) => (i + 1) % options.length);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setFocusedIndex((i) => (i - 1 + options.length) % options.length);
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (focusedIndex >= 0 && focusedIndex < options.length) {
-        toggleId(options[focusedIndex].id);
-      } else if (createOption && input.trim()) {
-        void handleCreate();
+  const handleDeleteOption = useCallback(
+    async (option: Option) => {
+      if (!deleteOption) return;
+
+      try {
+        await deleteOption(option.id);
+        removeId(option.id);
+        setOptions((prev) => prev.filter((o) => o.id !== option.id));
+      } catch (err) {
+        onError?.(err);
       }
-    }
-  };
+    },
+    [deleteOption, removeId, onError]
+  );
+
+  const selectedLabels = values.map((id) => selectedMap.get(id)?.name ?? id);
+
+  const displayValue =
+    selectedLabels.length > 0
+      ? selectedLabels.join(", ")
+      : placeholder || `${title || "항목"}을(를) 선택하세요`;
 
   return (
-    <div className="w-100 mb-3 position-relative">
+    <div className="w-100 mb-3">
       {title && <label className="form-label fw-semibold">{title}</label>}
 
-      {values.length > 0 && (
-        <div className="d-flex flex-wrap gap-2 mb-2">
-          {values.map((id) => {
-            const label = selectedMap.get(id)?.name ?? id;
-            return (
-              <span
-                key={id}
-                className="badge text-bg-secondary d-inline-flex align-items-center gap-1 px-3 py-2"
-              >
-                {label}
-                <button
-                  type="button"
-                  className="btn-close btn-close-white ms-1"
-                  aria-label="삭제"
-                  onClick={() => removeId(id)}
-                  style={{ fontSize: "0.55rem" }}
-                />
-              </span>
-            );
-          })}
-        </div>
-      )}
-
-      <input
+      <button
+        id={name}
         name={name}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={onKeyDown}
-        placeholder={placeholder}
-        className="form-control"
-      />
+        type="button"
+        onClick={() => setOpen(true)}
+        className={`form-control text-start d-flex align-items-center justify-content-between ${
+          values.length === 0 ? "text-secondary" : ""
+        }`}
+      >
+        <span>{displayValue}</span>
+        <span aria-hidden>▾</span>
+      </button>
 
       <div
-        className="mt-2"
-        style={{ maxHeight: `${maxMenuHeight}px`, overflowY: "auto" }}
+        role="presentation"
+        className="position-fixed start-0 w-100 h-100"
+        onClick={() => setOpen(false)}
+        aria-hidden={!open}
+        style={{
+          top: 55,
+          background: "rgba(0, 0, 0, 0.32)",
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? "auto" : "none",
+          transition: "opacity 160ms ease",
+          zIndex: 10,
+        }}
+      />
+
+      <aside
+        aria-hidden={!open}
+        className="w-100 start-0 position-fixed bg-white shadow d-flex flex-column"
+        style={{
+          bottom: 55,
+          zIndex: 80,
+          height: "80%",
+          borderRadius: "20px 20px 0 0",
+          transform: open ? "translateY(0)" : "translateY(100%)",
+          transition: "transform 220ms ease",
+        }}
       >
-        {!loading && createOption && input.trim() && (
+        <div className="w-100 d-flex align-items-center justify-content-between border-bottom px-3 py-2">
+          <h2 className="m-0 fs-6 fw-bold">{title}</h2>
+
           <button
             type="button"
-            className="btn btn-outline-primary btn-sm"
-            onClick={() => handleCreate()}
+            className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
+            onClick={() => setOpen(false)}
+            aria-label="닫기"
           >
-            “{input.trim()}” 추가
+            ×
           </button>
-        )}
-      </div>
+        </div>
+
+        <div
+          className="w-100 p-2 d-flex justify-content-center overflow-auto"
+          style={{ height: "100%" }}
+        >
+          <nav
+            role="listbox"
+            aria-multiselectable="true"
+            style={{
+              flex: 1,
+              minHeight: 0,
+              marginBottom: 80,
+              width: "100%",
+              scrollbarWidth: "thin",
+              maxWidth: layout.maxWidth,
+            }}
+          >
+            <div className="p-2">
+              <input
+                name={name}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={placeholder}
+                className="form-control"
+                autoFocus
+              />
+            </div>
+
+            {values.length > 0 && (
+              <div className="d-flex flex-wrap gap-2 px-2 pb-2">
+                {values.map((id) => {
+                  const label = selectedMap.get(id)?.name ?? id;
+
+                  return (
+                    <span
+                      key={id}
+                      className="badge text-bg-secondary d-inline-flex align-items-center gap-1 px-3 py-2"
+                    >
+                      {label}
+                      <button
+                        type="button"
+                        className="btn-close btn-close-white ms-1"
+                        aria-label="삭제"
+                        onClick={() => removeId(id)}
+                        style={{ fontSize: "0.55rem" }}
+                      />
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+
+            <div style={{ paddingBottom: 100 }}>
+              {loading && (
+                <div className="px-3 py-3 text-secondary">불러오는 중...</div>
+              )}
+
+              {!loading && createOption && input.trim() && (
+                <button
+                  type="button"
+                  className="w-100 text-start px-3 py-3 border-0 bg-white fw-semibold"
+                  onClick={handleCreate}
+                  style={{ borderBottom: "1px solid #eee" }}
+                >
+                  “{input.trim()}” 추가
+                </button>
+              )}
+
+              {!loading && options.length === 0 && (
+                <div className="px-3 py-3 text-secondary">
+                  검색 결과가 없습니다.
+                </div>
+              )}
+
+              {!loading &&
+                options.map((opt) => {
+                  const checked = values.includes(opt.id);
+
+                  return (
+                    <div
+                      key={opt.id}
+                      className="w-100 d-flex align-items-center"
+                      style={{ borderBottom: "1px solid #eee" }}
+                    >
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected={checked}
+                        onClick={() => toggleOption(opt)}
+                        className={`flex-grow-1 d-flex align-items-center gap-2 text-start px-3 py-3 border-0 bg-white ${
+                          checked ? "fw-bold" : ""
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          readOnly
+                          className="form-check-input mt-0"
+                        />
+                        <span>{opt.name}</span>
+                      </button>
+
+                      {deleteOption && (
+                        <button
+                          type="button"
+                          className="btn btn-sm text-danger me-2"
+                          onClick={() => handleDeleteOption(opt)}
+                        >
+                          삭제
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+          </nav>
+        </div>
+      </aside>
     </div>
   );
 };
