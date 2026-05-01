@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { layout } from "../../theme/Theme";
 
 const QuillEditorInput = ({
   disabled,
@@ -163,7 +164,7 @@ const quillStyles = `
   cursor: not-allowed;
 }
 
-@media (max-width: 640px) {
+@media (max-width: ${layout.maxWidth}) {
   .quill-editor-bootstrap .ql-toolbar {
     padding: 6px 8px;
     row-gap: 6px;

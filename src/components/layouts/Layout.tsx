@@ -7,6 +7,8 @@ import TaskCreatePage from "../../pages/task/TaskCreatePage";
 import SprintEditPage from "../../pages/sprint/SprintEditPage";
 import SprintCreatePage from "../../pages/sprint/SprintCreatePage";
 import { BackwardButton } from "../form/BackwardButton";
+import SlidePanel from "./SlidePanel";
+import { layout } from "../../theme/Theme";
 
 export type NavItem = {
   label: string;
@@ -42,6 +44,12 @@ export default function Layout({
     if (open && firstLinkRef.current) firstLinkRef.current.focus();
   }, [open]);
 
+  const handleSetOpenFalse = () => {
+    setOpen(false);
+    setIsTaskOpen(false);
+    setIsSprintOpen(false);
+  };
+
   return (
     <div className="min-vh-100 bg-white text-dark">
       <a
@@ -72,144 +80,54 @@ export default function Layout({
 
       <div
         role="presentation"
-        className="position-fixed top-0 start-0 w-100 h-100"
-        onClick={() => {
-          setOpen(false);
-          setIsTaskOpen(false);
-          setIsSprintOpen(false);
-        }}
+        className="position-fixed start-0 w-100 h-100"
+        onClick={handleSetOpenFalse}
         aria-hidden={!(open || isTaskOpen || isSprintOpen)}
         style={{
+          top: 55,
           background: "rgba(0, 0, 0, 0.32)",
           opacity: open || isTaskOpen || isSprintOpen ? 1 : 0,
           pointerEvents: open || isTaskOpen || isSprintOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
-          zIndex: 40,
+          zIndex: 10,
         }}
       />
 
-      <aside
-        id="side-nav"
-        aria-hidden={!open}
-        className="position-fixed top-0 start-0 bg-white shadow"
-        style={{
-          zIndex: 45,
-          transform: open ? "translateX(0)" : "translateX(-100%)",
-          transition: "transform 220ms ease",
-        }}
+      <SlidePanel
+        isOpen={open}
+        onClose={handleSetOpenFalse}
+        title={appName}
+        direction="left"
+        zIndex={50}
       >
-        <div className="d-flex align-items-center justify-content-between border-bottom px-3 w-100">
-          <h2 className="m-0 fs-6 fw-bold">{appName}</h2>
-          <button
-            className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setOpen(false)}
-            aria-label="메뉴 닫기"
-          >
-            ×
-          </button>
-        </div>
+        <SidebarMenu open={open} setOpen={setOpen} />
+      </SlidePanel>
 
-        <nav
-          className="w-100 p-2 overflow-auto"
-          role="navigation"
-          aria-label="주 메뉴"
-          style={{
-            flex: 1,
-            minHeight: 0,
-            marginBottom: 80,
-            maxWidth: 640,
-            scrollbarWidth: "thin",
-          }}
-        >
-          <SidebarMenu open={open} setOpen={setOpen} />
-        </nav>
-      </aside>
-
-      <aside
-        id="side-nav"
-        aria-hidden={!isTaskOpen}
-        className="position-fixed start-0 end-0 bottom-0 w-100 bg-white shadow d-flex flex-column align-items-center overflow-hidden"
-        style={{
-          top: 200,
-          zIndex: 45,
-          borderRadius: "20px 20px 0 0",
-          transform: isTaskOpen ? "translateY(0)" : "translateY(100%)",
-          transition: "transform 220ms ease",
-        }}
+      <SlidePanel
+        isOpen={isTaskOpen}
+        onClose={handleSetOpenFalse}
+        title="태스크 창"
+        zIndex={20}
       >
-        <div className="d-flex align-items-center justify-content-between border-bottom px-3 w-100">
-          <h2 className="m-0 fs-6 fw-bold">태스크 창</h2>
-          <button
-            className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setIsTaskOpen(false)}
-            aria-label="메뉴 닫기"
-          >
-            ×
-          </button>
-        </div>
+        {task ? (
+          <TaskEditPage windowOpenTaskId={task?.id} />
+        ) : (
+          <TaskCreatePage />
+        )}
+      </SlidePanel>
 
-        <nav
-          className="w-100 p-2 overflow-auto"
-          role="navigation"
-          aria-label="주 메뉴"
-          style={{
-            flex: 1,
-            minHeight: 0,
-            marginBottom: 80,
-            maxWidth: 640,
-            scrollbarWidth: "thin",
-          }}
-        >
-          {task ? (
-            <TaskEditPage windowOpenTaskId={task?.id} />
-          ) : (
-            <TaskCreatePage />
-          )}
-        </nav>
-      </aside>
-
-      <aside
-        id="side-nav"
-        aria-hidden={!isSprintOpen}
-        className="position-fixed start-0 end-0 bottom-0 w-100 bg-white shadow d-flex flex-column align-items-center overflow-hidden"
-        style={{
-          top: 200,
-          zIndex: 45,
-          borderRadius: "20px 20px 0 0",
-          transform: isSprintOpen ? "translateY(0)" : "translateY(100%)",
-          transition: "transform 220ms ease",
-        }}
+      <SlidePanel
+        isOpen={isSprintOpen}
+        onClose={handleSetOpenFalse}
+        title="스프린트 창"
+        zIndex={20}
       >
-        <div className="d-flex align-items-center justify-content-between border-bottom px-3 w-100">
-          <h2 className="m-0 fs-6 fw-bold">스프린트 창</h2>
-          <button
-            className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setIsSprintOpen(false)}
-            aria-label="메뉴 닫기"
-          >
-            ×
-          </button>
-        </div>
-
-        <nav
-          className="w-100 p-2 overflow-auto"
-          role="navigation"
-          aria-label="주 메뉴"
-          style={{
-            flex: 1,
-            minHeight: 0,
-            marginBottom: 80,
-            maxWidth: 640,
-            scrollbarWidth: "thin",
-          }}
-        >
-          {sprint ? (
-            <SprintEditPage windowOpenSprintId={sprint?.id} />
-          ) : (
-            <SprintCreatePage />
-          )}
-        </nav>
-      </aside>
+        {sprint ? (
+          <SprintEditPage windowOpenSprintId={sprint?.id} />
+        ) : (
+          <SprintCreatePage />
+        )}
+      </SlidePanel>
 
       <header
         className="sticky-top border-bottom"
@@ -222,7 +140,7 @@ export default function Layout({
       >
         <div
           className="h-100 d-flex align-items-center justify-content-center mx-auto px-5"
-          style={{ maxWidth: 640 }}
+          style={{ maxWidth: layout.maxWidth }}
         >
           <strong className="small text-secondary">{appName}</strong>
         </div>
@@ -232,7 +150,7 @@ export default function Layout({
         id="main"
         className="mx-auto"
         style={{
-          maxWidth: 640,
+          maxWidth: layout.maxWidth,
           paddingBottom: 100,
         }}
       >

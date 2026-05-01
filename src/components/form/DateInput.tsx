@@ -10,7 +10,7 @@ interface DateInputProps {
 
 const formatDate = (date?: Date) => {
   if (!date) return "";
-  return date.toISOString().slice(0, 10);
+  return new Date(date)?.toISOString().slice(0, 10);
 };
 
 const parseDate = (value: string): Date | undefined => {
@@ -19,12 +19,17 @@ const parseDate = (value: string): Date | undefined => {
   return isNaN(parsed.getTime()) ? undefined : parsed;
 };
 
-const DateInput = ({ disabled, title, selected, setSelected }: DateInputProps) => {
+const DateInput = ({
+  disabled,
+  title,
+  selected,
+  setSelected,
+}: DateInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(formatDate(selected));
+  const [inputValue, setInputValue] = useState<Date | undefined>(selected);
 
   useEffect(() => {
-    setInputValue(formatDate(selected));
+    setInputValue(selected);
   }, [selected]);
 
   return (
@@ -38,11 +43,11 @@ const DateInput = ({ disabled, title, selected, setSelected }: DateInputProps) =
           type="text"
           className="form-control date-input-field"
           placeholder="yyyy-MM-dd"
-          value={inputValue}
+          value={formatDate(inputValue)}
           disabled={disabled}
           onChange={(e) => {
             const value = e.target.value;
-            setInputValue(value);
+            setInputValue(parseDate(value));
 
             const parsed = parseDate(value);
             if (parsed) {
@@ -69,7 +74,7 @@ const DateInput = ({ disabled, title, selected, setSelected }: DateInputProps) =
               onChange={(value) => {
                 if (value instanceof Date) {
                   setSelected(value);
-                  setInputValue(formatDate(value));
+                  setInputValue(value);
                   setIsOpen(false);
                 }
               }}

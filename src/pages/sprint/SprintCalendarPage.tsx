@@ -29,7 +29,7 @@ const addMonthsClamped = (date: Date, months: number) => {
 };
 
 const formatYM = (date: Date) =>
-  date.toLocaleDateString("ko-KR", { year: "numeric", month: "long" });
+  date?.toLocaleDateString("ko-KR", { year: "numeric", month: "long" });
 
 const ymKey = (d: Date) => `${d.getFullYear()}-${d.getMonth() + 1}`;
 
@@ -89,8 +89,8 @@ const SprintCalendarPage = () => {
         id: String(sprint.id),
         title: sprint.name,
         // FullCalendar의 end는 exclusive → +1일 보정
-        start: addDaysISO(sprint.startDate.toString(), 1),
-        end: addDaysISO(sprint.endDate.toString(), 1),
+        start: addDaysISO(sprint.startDate?.toString(), 1),
+        end: addDaysISO(sprint.endDate?.toString(), 1),
         display: "block",
         color: getStableColor(sprint.id),
       })),
