@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../context/LoginContext";
 import { Calendar } from "lucide-react";
 import ScrollToTopButton from "../form/ScrollToTopButton";
+import { useModalManager } from "../../context/ModalManager";
 
 type ListLayoutProps = {
   title?: string;
@@ -33,23 +34,24 @@ const ListLayout = ({
 }: ListLayoutProps) => {
   const hasCreate = Boolean(to);
   const navigator = useNavigate();
-  const { setIsTaskOpen, setTask, setIsSprintOpen, setSprint, setIsMilestoneOpen, setMilestone } = useLogin();
+  const { setTask, setSprint, setMilestone } = useLogin();
+  const { openModal } = useModalManager();
   const projectId = Number(localStorage.getItem("projectId"));
 
   const handleOpen = () => {
     if (componentType === "task") {
       setTask(undefined);
-      setIsTaskOpen(true);
+      openModal("task");
 
       return;
     } else if (componentType === "sprint") {
       setSprint(undefined);
-      setIsSprintOpen(true);
+      openModal("sprint");
 
       return;
     } else if (componentType === "milestone") {
       setMilestone(undefined);
-      setIsMilestoneOpen(true);
+      openModal("milestone");
     }
   };
 

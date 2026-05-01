@@ -13,11 +13,8 @@ import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { GiSprint } from "react-icons/gi";
-import { useLogin } from "../../context/LoginContext";
 
 const SprintCreatePage = () => {
-  const { isSprintOpen } = useLogin();
-
   const { projectIdParam } = useParams();
   const [projectId, setProjectId] = useState(projectIdParam);
   const [name, setName] = useState("");
@@ -32,12 +29,6 @@ const SprintCreatePage = () => {
     { label: "ACTIVE", value: "ACTIVE" },
     { label: "CLOSED", value: "CLOSED" },
   ];
-
-  useEffect(() => {
-    if (isSprintOpen) {
-      setProjectId(String(localStorage.getItem("projectId")) ?? projectIdParam);
-    }
-  }, [isSprintOpen, projectIdParam]);
 
   useEffect(() => {
     if (projectId) {

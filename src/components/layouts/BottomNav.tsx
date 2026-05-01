@@ -5,7 +5,7 @@ import { ReactComponent as HomeIcon } from "../../assets/home.svg";
 import { ReactComponent as InboxIcon } from "../../assets/inbox.svg";
 import { ReactComponent as TaskListIcon } from "../../assets/task-list.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/dashboard.svg";
-import { useLogin } from "../../context/LoginContext";
+import { useModalManager } from "../../context/ModalManager";
 
 const iconStyle: React.CSSProperties = {
   width: "2rem",
@@ -35,31 +35,7 @@ const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
   `${navLinkBaseClass} ${isActive ? "text-primary fw-semibold" : "text-secondary"}`;
 
 const BottomNav = () => {
-  const {
-    isSideOpen,
-    isTaskOpen,
-    isSprintOpen,
-    isMilestoneOpen,
-    setIsSideOpen,
-    setIsTaskOpen,
-    setIsSprintOpen,
-    setIsMilestoneOpen,
-  } = useLogin();
-
-  const handelSetOpenFalse = () => {
-    if (isSideOpen) {
-      setIsSideOpen(false);
-    }
-    if (isTaskOpen) {
-      setIsTaskOpen(false);
-    }
-    if (isSprintOpen) {
-      setIsSprintOpen(false);
-    }
-    if (isMilestoneOpen) {
-      setIsMilestoneOpen(false);
-    }
-  };
+  const { closeTopModal } = useModalManager();
 
   return (
     <nav
@@ -72,7 +48,10 @@ const BottomNav = () => {
             key={to}
             to={to}
             className={getNavLinkClass}
-            onClick={handelSetOpenFalse}
+            onClick={(e) => {
+              e.stopPropagation();
+              closeTopModal();
+            }}
           >
             {icon}
             <small>{label}</small>

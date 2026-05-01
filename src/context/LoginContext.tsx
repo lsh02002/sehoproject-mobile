@@ -19,16 +19,10 @@ type LoginContextValue = {
   setIsMenuRefresh: Dispatch<SetStateAction<boolean>>;
   isSideOpen: boolean;
   setIsSideOpen: Dispatch<SetStateAction<boolean>>;
-  isTaskOpen: boolean;
-  setIsTaskOpen: Dispatch<SetStateAction<boolean>>;
   task: TaskResponseType | undefined;
   setTask: Dispatch<SetStateAction<TaskResponseType | undefined>>;
-  isSprintOpen: boolean;
-  setIsSprintOpen: Dispatch<SetStateAction<boolean>>;
   sprint: SprintResponseType | undefined;
   setSprint: Dispatch<SetStateAction<SprintResponseType | undefined>>;
-  isMilestoneOpen: boolean;
-  setIsMilestoneOpen: Dispatch<SetStateAction<boolean>>;
   milestone: MilestoneResponseType | undefined;
   setMilestone: Dispatch<SetStateAction<MilestoneResponseType | undefined>>;
 };
@@ -41,11 +35,8 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [isMemuRefresh, setIsMenuRefresh] = useState(false);
   const [isSideOpen, setIsSideOpen] = useState(false);
-  const [isTaskOpen, setIsTaskOpen] = useState(false);
   const [task, setTask] = useState<TaskResponseType>();
-  const [isSprintOpen, setIsSprintOpen] = useState(false);
   const [sprint, setSprint] = useState<SprintResponseType>();
-  const [isMilestoneOpen, setIsMilestoneOpen] = useState(false);
   const [milestone, setMilestone] = useState<MilestoneResponseType>();
 
   const value: LoginContextValue = {
@@ -55,16 +46,10 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
     setIsMenuRefresh,
     isSideOpen,
     setIsSideOpen,
-    isTaskOpen,
-    setIsTaskOpen,
     task,
     setTask,
-    isSprintOpen,
-    setIsSprintOpen,
     sprint,
     setSprint,
-    isMilestoneOpen,
-    setIsMilestoneOpen,
     milestone,
     setMilestone,
   };

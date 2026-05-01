@@ -15,12 +15,14 @@ type ModalManagerContextValue = {
   topModal: ModalName | null;
   isOpen: (name: ModalName) => boolean;
   openModal: (name: ModalName) => void;
-  closeTopModal: () => void;
+  closeTopModal: () => void;  
   closeModal: (name: ModalName) => void;
   closeAllModals: () => void;
 };
 
-const ModalManagerContext = createContext<ModalManagerContextValue | null>(null);
+const ModalManagerContext = createContext<ModalManagerContextValue | null>(
+  null,
+);
 
 export function ModalManager({ children }: { children: React.ReactNode }) {
   const [openModals, setOpenModals] = useState<ModalName[]>([]);
@@ -52,25 +54,13 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
     }
   }, [syncStack]);
 
-  const closeModal = useCallback(
-    (name: ModalName) => {
-      const stack = stackRef.current;
-      if (stack.length === 0) return;
+  const closeModal = useCallback((name: ModalName) => {
+    const top = stackRef.current.at(-1);
 
-      const top = stack.at(-1);
+    if (top !== name) return;
 
-      // 일반적으로는 최상단 모달만 닫는 게 안전함
-      if (top === name) {
-        closeTopModal();
-        return;
-      }
-
-      // 최상단이 아닌 모달을 강제로 제거
-      const nextStack = stack.filter((modalName) => modalName !== name);
-      syncStack(nextStack);
-    },
-    [closeTopModal, syncStack]
-  );
+    window.history.back();
+  }, []);
 
   const closeAllModals = useCallback(() => {
     const count = stackRef.current.length;

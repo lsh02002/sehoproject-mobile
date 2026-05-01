@@ -19,12 +19,9 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import DateInput from "../../components/form/DateInput";
 import { toast } from "react-toastify";
 import { MdAddTask } from "react-icons/md";
-import { useLogin } from "../../context/LoginContext";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 
 const TaskCreatePage = () => {
-  const { isTaskOpen } = useLogin();
-
   const { projectIdParam } = useParams();
   const [projectId, setProjectId] = useState(projectIdParam);
   const [name, setName] = useState("");
@@ -59,12 +56,6 @@ const TaskCreatePage = () => {
     { label: "BUG", value: "BUG" },
     { label: "EPIC", value: "EPIC" },
   ];
-
-  useEffect(() => {
-    if (isTaskOpen) {
-      setProjectId(String(localStorage.getItem("projectId")) ?? projectIdParam);
-    }
-  }, [isTaskOpen, projectIdParam]);
 
   useEffect(() => {
     getUserInfosApi()
