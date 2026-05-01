@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { layout } from "../../theme/Theme";
+import { useModalManager } from "../../context/ModalManager";
 
 type Option = { id: string; name: string };
 
@@ -30,7 +31,11 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   debounceMs = 250,
   onError,
 }) => {
-  const [isComArrayOpen, setIsComArrayOpen] = useState(false);
+  const { openModal, closeModal, isOpen } = useModalManager();
+
+  const modalKey = name || "complete-array";
+  const isComArrayOpen = isOpen(modalKey);
+
   const [input, setInput] = useState("");
   const [options, setOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(false);
@@ -39,26 +44,6 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
   );
 
   const debounceRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!isComArrayOpen) return;
-
-    const handlePopState = () => {
-      setIsComArrayOpen(false);
-    };
-
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [isComArrayOpen]);
-
-  useEffect(() => {
-    if (isComArrayOpen) {
-      window.history.pushState({ modal: true }, "");
-    }
-  }, [isComArrayOpen]);
 
   useEffect(() => {
     if (!isComArrayOpen) return;
@@ -192,7 +177,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
         id={name}
         name={name}
         type="button"
-        onClick={() => setIsComArrayOpen(true)}
+        onClick={() => openModal(modalKey)}
         className={`form-control text-start d-flex align-items-center justify-content-between ${
           values.length === 0 ? "text-secondary" : ""
         }`}
@@ -204,7 +189,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={() => setIsComArrayOpen(false)}
+        onClick={() => closeModal(modalKey)}
         aria-hidden={!isComArrayOpen}
         style={{
           top: 0,
@@ -235,7 +220,7 @@ export const CompleteArrayInput: React.FC<CompleteArrayInputPropsType> = ({
           <button
             type="button"
             className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setIsComArrayOpen(false)}
+            onClick={() => closeModal(modalKey)}
             aria-label="닫기"
           >
             ×

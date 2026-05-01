@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { layout } from "../../theme/Theme";
+import { useModalManager } from "../../context/ModalManager";
 
 type Option = { label: string; value: string; disabled?: boolean };
 
@@ -22,27 +23,9 @@ const SelectArrayInput = ({
   options,
   placeholder,
 }: SelectArrayProps) => {
-  const [isSelArrayOpen, setIsSelArrayOpen] = useState(false);
+  const { openModal, closeModal, isOpen } = useModalManager();
 
-  useEffect(() => {
-    if (!isSelArrayOpen) return;
-
-    const handlePopState = () => {
-      setIsSelArrayOpen(false);
-    };
-
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [isSelArrayOpen]);
-
-  useEffect(() => {
-    if (isSelArrayOpen) {
-      window.history.pushState({ modal: true }, "");
-    }
-  }, [isSelArrayOpen]);
+  const isSelArrayOpen = isOpen(name);
 
   const mapByValue = useMemo(
     () => new Map(options.map((o) => [o.value, o])),
@@ -80,7 +63,7 @@ const SelectArrayInput = ({
         disabled={disabled}
         onClick={(e) => {
           (e.target as HTMLInputElement).blur();
-          setIsSelArrayOpen(true);
+          openModal(name);
         }}
         className={`form-control text-start d-flex align-items-center justify-content-between ${
           values.length === 0 ? "text-secondary" : ""
@@ -93,7 +76,7 @@ const SelectArrayInput = ({
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={() => setIsSelArrayOpen(false)}
+        onClick={() => closeModal(name)}
         aria-hidden={!isSelArrayOpen}
         style={{
           top: 0,
@@ -123,7 +106,7 @@ const SelectArrayInput = ({
           <button
             type="button"
             className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setIsSelArrayOpen(false)}
+            onClick={() => closeModal(name)}
             aria-label="닫기"
           >
             ×

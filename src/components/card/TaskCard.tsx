@@ -3,15 +3,17 @@ import { TaskResponseType } from "../../types/type";
 import { SiGoogletasks } from "react-icons/si";
 import { GrInProgress } from "react-icons/gr";
 import { useLogin } from "../../context/LoginContext";
+import { useModalManager } from "../../context/ModalManager";
 
 const TaskCard = ({ task }: { task: TaskResponseType }) => {
-  const { setIsTaskOpen, setTask } = useLogin();
+  const { setTask } = useLogin();
+  const { openModal } = useModalManager();
 
   const handleOpenTask = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
     setTask(task);
-    setIsTaskOpen(true);
+    openModal("task"); // ✅ 변경
   };
 
   return (

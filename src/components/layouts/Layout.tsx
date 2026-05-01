@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Menu } from "lucide-react";
 import SidebarMenu from "./MyMenu";
 import { useLogin } from "../../context/LoginContext";
@@ -35,14 +35,8 @@ export default function Layout({
     setIsMenuRefresh,
     isSideOpen,
     setIsSideOpen,
-    isTaskOpen,
-    setIsTaskOpen,
     task,
-    isSprintOpen,
-    setIsSprintOpen,
     sprint,
-    isMilestoneOpen,
-    setIsMilestoneOpen,
     milestone,
   } = useLogin();
 
@@ -50,40 +44,6 @@ export default function Layout({
     if (isSideOpen) setIsMenuRefresh(!isMemuRefresh);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSideOpen]);
-
-  const closeTopModal = useCallback(() => {
-    if (isMilestoneOpen) return setIsMilestoneOpen(false);
-    if (isSprintOpen) return setIsSprintOpen(false);
-    if (isTaskOpen) return setIsTaskOpen(false);
-    if (isSideOpen) return setIsSideOpen(false);
-  }, [
-    isMilestoneOpen,
-    isSideOpen,
-    isSprintOpen,
-    isTaskOpen,
-    setIsMilestoneOpen,
-    setIsSideOpen,
-    setIsSprintOpen,
-    setIsTaskOpen,
-  ]);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      closeTopModal();
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (isSideOpen || isTaskOpen || isSprintOpen || isMilestoneOpen) {
-      window.history.pushState({ modal: true }, "");
-    }
-  }, [isMilestoneOpen, isSideOpen, isSprintOpen, isTaskOpen]);
 
   return (
     <div className="min-vh-100 bg-white text-dark">
@@ -111,10 +71,11 @@ export default function Layout({
       >
         <Menu style={{ width: 20, height: 20 }} />
       </button>
+
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={closeTopModal}
+        onClick={() => setIsSideOpen(false)}
         aria-hidden={!isSideOpen}
         style={{
           top: 55,
@@ -125,13 +86,13 @@ export default function Layout({
           zIndex: 150,
         }}
       />
+
       {createPortal(
-        <SlidePanel
-          isOpen={isSideOpen}
-          onClose={closeTopModal}
+        <SlidePanel          
           title={appName}
           direction="left"
           zIndex={150}
+          name="side"
         >
           <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
         </SlidePanel>,
@@ -139,11 +100,10 @@ export default function Layout({
       )}
 
       {createPortal(
-        <SlidePanel
-          isOpen={isTaskOpen}
-          onClose={closeTopModal}
+        <SlidePanel          
           title="태스크 창"
           zIndex={100}
+          name="task"
         >
           {task ? (
             <TaskEditPage windowOpenTaskId={task?.id} />
@@ -155,11 +115,10 @@ export default function Layout({
       )}
 
       {createPortal(
-        <SlidePanel
-          isOpen={isSprintOpen}
-          onClose={closeTopModal}
+        <SlidePanel          
           title="스프린트 창"
           zIndex={100}
+          name="sprint"
         >
           {sprint ? (
             <SprintEditPage windowOpenSprintId={sprint?.id} />
@@ -171,11 +130,10 @@ export default function Layout({
       )}
 
       {createPortal(
-        <SlidePanel
-          isOpen={isMilestoneOpen}
-          onClose={closeTopModal}
+        <SlidePanel          
           title="마일스톤 창"
           zIndex={100}
+          name="milestone"
         >
           {milestone ? (
             <MilestoneEditPage windowOpenMilestoneId={milestone?.id} />

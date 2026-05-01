@@ -2,15 +2,17 @@ import React from "react";
 import { SprintResponseType } from "../../types/type";
 import { GiSprint } from "react-icons/gi";
 import { useLogin } from "../../context/LoginContext";
+import { useModalManager } from "../../context/ModalManager";
 
 const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
-  const { setSprint, setIsSprintOpen } = useLogin();
+  const { setSprint } = useLogin();
+  const { openModal } = useModalManager();
 
   const handleOpenSprint = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
     setSprint(sprint);
-    setIsSprintOpen(true);
+    openModal("sprint");
   };
 
   return (

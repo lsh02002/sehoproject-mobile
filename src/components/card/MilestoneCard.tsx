@@ -2,15 +2,17 @@ import React from "react";
 import { MilestoneResponseType } from "../../types/type";
 import { LuMilestone } from "react-icons/lu";
 import { useLogin } from "../../context/LoginContext";
+import { useModalManager } from "../../context/ModalManager";
 
-const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {  
-  const { setMilestone, setIsMilestoneOpen } = useLogin();
+const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {
+  const { setMilestone } = useLogin();
+  const { openModal } = useModalManager();
 
   const handleOpenMilestone = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
     setMilestone(milestone);
-    setIsMilestoneOpen(true);
+    openModal("milestone");
   };
 
   return (

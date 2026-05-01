@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { layout } from "../../theme/Theme";
+import { useModalManager } from "../../context/ModalManager";
 
 const QuillEditorInput = ({
   disabled,
@@ -20,27 +21,9 @@ const QuillEditorInput = ({
 }) => {
   const quillRef = useRef<ReactQuill | null>(null);
   const [isEmpty, setIsEmpty] = useState(true);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
-  useEffect(() => {
-    if (!isEditorOpen) return;
-
-    const handlePopState = () => {
-      setIsEditorOpen(false);
-    };
-
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [isEditorOpen]);
-
-  useEffect(() => {
-    if (isEditorOpen) {
-      window.history.pushState({ modal: true }, "");
-    }
-  }, [isEditorOpen]);
+  const { openModal, closeModal, isOpen } = useModalManager();
+  const isEditorOpen = isOpen(name);
 
   useEffect(() => {
     const editor = quillRef.current?.getEditor();
@@ -75,7 +58,7 @@ const QuillEditorInput = ({
 
       <div
         onClick={() => {
-          if (!disabled) setIsEditorOpen(true);
+          if (!disabled) openModal(name);
         }}
         className={`form-control ${
           !data || data === "<p><br></p>" ? "text-secondary" : ""
@@ -102,7 +85,7 @@ const QuillEditorInput = ({
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
-        onClick={() => setIsEditorOpen(false)}
+        onClick={() => closeModal(name)}
         aria-hidden={!isEditorOpen}
         style={{
           top: 0,
@@ -131,7 +114,7 @@ const QuillEditorInput = ({
           <h2 className="m-0 fs-6 fw-bold">{title}</h2>
           <button
             className="btn border-0 bg-transparent fs-3 text-secondary px-1 py-0"
-            onClick={() => setIsEditorOpen(false)}
+            onClick={() => closeModal(name)}
             aria-label="닫기"
           >
             ×
@@ -185,8 +168,6 @@ const QuillEditorInput = ({
 };
 
 export default QuillEditorInput;
-
-/* ===================== CSS (Bootstrap 기반) ===================== */
 
 const quillStyles = `
 .quill-editor-bootstrap {
