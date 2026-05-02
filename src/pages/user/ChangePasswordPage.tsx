@@ -25,7 +25,7 @@ const ChangePasswordPage = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100">
-      <div className="w-100" style={{ maxWidth: "400px", padding: "20px" }}>
+      <div className="w-100">
         
         <PasswordVisibleInput
           name="oldpassword"
