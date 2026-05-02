@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useLogin } from "../../context/LoginContext";
 import { Calendar } from "lucide-react";
 import ScrollToTopButton from "../form/ScrollToTopButton";
@@ -36,7 +36,8 @@ const ListLayout = ({
   const navigator = useNavigate();
   const { setTask, setSprint, setMilestone } = useLogin();
   const { openModal } = useModalManager();
-  const projectId = Number(localStorage.getItem("projectId"));
+  const { projectIdParam } = useParams();
+  const projectId = Number(projectIdParam ?? localStorage.getItem("projectId"));
 
   const handleOpen = () => {
     if (componentType === "task") {

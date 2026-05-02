@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import {
   AssigneeRequestType,
   AssignInfoType,
@@ -20,10 +19,11 @@ import DateInput from "../../components/form/DateInput";
 import { toast } from "react-toastify";
 import { MdAddTask } from "react-icons/md";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
+import { useLogin } from "../../context/LoginContext";
 
 const TaskCreatePage = () => {
-  const { projectIdParam } = useParams();
-  const [projectId, setProjectId] = useState(projectIdParam);
+  const projectIdLocal = localStorage.getItem("projectId");
+  const { projectId, setProjectId } = useLogin();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [state, setState] = useState("TODO");
@@ -58,6 +58,12 @@ const TaskCreatePage = () => {
   ];
 
   useEffect(() => {
+    if (!projectId) {      
+      setProjectId(Number(projectIdLocal));
+    }
+  }, [projectId, projectIdLocal, setProjectId]);
+
+  useEffect(() => {
     getUserInfosApi()
       .then((res) => {
         setAssigneeOptions(res.data);
@@ -67,7 +73,7 @@ const TaskCreatePage = () => {
 
   useEffect(() => {
     if (projectId) {
-      getTagsByProjectApi(Number(projectId))
+      getTagsByProjectApi(projectId)
         .then((res) => {
           setTagOptions(res.data);
         })
@@ -146,8 +152,8 @@ const TaskCreatePage = () => {
           name="projectId"
           title="프로젝트 아이디"
           disabled
-          data={projectId ?? "null"}
-          setData={setProjectId}
+          data={String(projectId) ?? projectIdLocal ?? ""}
+          setData={() => {}}
         />
 
         <TextInput name="name" title="이름" data={name} setData={setName} />

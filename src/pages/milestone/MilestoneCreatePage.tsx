@@ -11,13 +11,13 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
-import { useParams } from "react-router-dom";
 import { LuMilestone } from "react-icons/lu";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
+import { useLogin } from "../../context/LoginContext";
 
 const MilestoneCreatePage = () => {
-  const { projectIdParam } = useParams();
-  const [projectId, setProjectId] = useState(projectIdParam);
+  const projectIdLocal = localStorage.getItem("projectId");
+  const { projectId, setProjectId } = useLogin();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("PLANNED");
@@ -34,9 +34,15 @@ const MilestoneCreatePage = () => {
   ];
 
   useEffect(() => {
+    if (!projectId) {
+      setProjectId(Number(projectIdLocal));
+    }
+  }, [projectId, projectIdLocal, setProjectId]);
+
+  useEffect(() => {
     if (projectId) {
       getTasksByProjectApi(Number(projectId))
-        .then((res) => {          
+        .then((res) => {
           setTaskOptions(res.data);
         })
         .catch(() => {});
@@ -72,7 +78,7 @@ const MilestoneCreatePage = () => {
     };
 
     createMilestoneApi(data)
-      .then((res) => {        
+      .then((res) => {
         toast.success("생성을 성공했습니다!");
       })
       .catch(() => {});
@@ -92,8 +98,8 @@ const MilestoneCreatePage = () => {
           name="projectId"
           title="프로젝트 아이디"
           disabled
-          data={projectId ?? ""}
-          setData={setProjectId}
+          data={String(projectId) ?? projectIdLocal ?? ""}
+          setData={() => {}}
         />
         <TextInput name="name" title="이름" data={name} setData={setName} />
         <QuillEditorInput

@@ -1,5 +1,4 @@
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import {
   createSprintApi,
@@ -13,10 +12,11 @@ import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { GiSprint } from "react-icons/gi";
+import { useLogin } from "../../context/LoginContext";
 
 const SprintCreatePage = () => {
-  const { projectIdParam } = useParams();
-  const [projectId, setProjectId] = useState(projectIdParam);
+  const projectIdLocal = localStorage.getItem("projectId");
+  const { projectId, setProjectId } = useLogin();
   const [name, setName] = useState("");
   const [state, setState] = useState("PLANNED");
   const [startDate, setStartDate] = useState<Date>();
@@ -29,6 +29,12 @@ const SprintCreatePage = () => {
     { label: "ACTIVE", value: "ACTIVE" },
     { label: "CLOSED", value: "CLOSED" },
   ];
+
+  useEffect(() => {
+    if (!projectId) {
+      setProjectId(Number(projectIdLocal));
+    }
+  }, [projectId, projectIdLocal, setProjectId]);
 
   useEffect(() => {
     if (projectId) {
@@ -89,8 +95,8 @@ const SprintCreatePage = () => {
             name="projectId"
             title="프로젝트 아이디"
             disabled
-            data={projectId ?? ""}
-            setData={setProjectId}
+            data={String(projectId) ?? projectIdLocal ?? ""}
+            setData={() => {}}
           />
         </TwoDiv>
 
