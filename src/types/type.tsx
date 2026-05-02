@@ -15,6 +15,12 @@ export type SignupResponseType = {
   updatedAt?: string;
 }
 
+export type ChangePasswordRequestType = {
+  oldPassword: string;
+  newPassword: string;
+  newPasswordConfirm: string;
+}
+
 export type UsersInfoType = {
   userId: number;
   nickname: string;

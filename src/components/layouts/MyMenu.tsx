@@ -163,27 +163,43 @@ export default function SidebarMenu({
         </span>
 
         {isLogin ? (
-          <span
-            className="small"
-            style={{
-              cursor: "pointer",
-              padding: "6px 10px",
-              borderRadius: 6,
-            }}
-            onClick={() => {
-              localStorage.removeItem("userId");
-              localStorage.removeItem("name");
-              localStorage.removeItem("workspaceId");
-              localStorage.removeItem("accessToken");
-              localStorage.removeItem("refreshToken");
+          <>
+            <span
+              className="small"
+              style={{
+                cursor: "pointer",
+                padding: "6x 10px",
+                border: 6,
+              }}
+              onClick={() => {
+                setOpen(false);
+                navigate("/change-password");
+              }}
+            >
+              비밀번호 변경
+            </span>
+            <span
+              className="small"
+              style={{
+                cursor: "pointer",
+                padding: "6px 10px",
+                borderRadius: 6,
+              }}
+              onClick={() => {
+                localStorage.removeItem("userId");
+                localStorage.removeItem("name");
+                localStorage.removeItem("workspaceId");
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
 
-              setIsLogin(false);
-              setOpen(false);
-              navigate("/login");
-            }}
-          >
-            로그아웃
-          </span>
+                setIsLogin(false);
+                setOpen(false);
+                navigate("/login");
+              }}
+            >
+              로그아웃
+            </span>
+          </>
         ) : (
           <span
             className="small"

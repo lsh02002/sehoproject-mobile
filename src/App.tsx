@@ -31,6 +31,7 @@ import { InvitationMessageBoxPage } from "./pages/accept-decline/InvitationMessa
 import { UserProjectIdSettingsPage } from "./pages/settings/UserProjectIdSettingsPage";
 import InboxPage from "./pages/inbox/InboxPage";
 import { BootstrapToastContainer } from "./components/layouts/Toast";
+import ChangePasswordPage from "./pages/user/ChangePasswordPage";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -51,6 +52,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<SignupPage />} />
+          <Route path="/change-password" element={<ChangePasswordPage />} />
 
           <Route
             path="/projects/spaces/:spaceId"

@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   AddMemberRequestType,
+  ChangePasswordRequestType,
   MilestoneRequestType,
   ProjectRequestType,
   SpaceRequestType,
@@ -85,6 +86,10 @@ const UserSignupApi = async (data: UserSignupType) => {
 const UserLogoutApi = async () => {
   return api.delete(`/user/logout`);
 };
+
+const UserChangePasswordApi = async (changeRequest: ChangePasswordRequestType) => {
+  return api.put(`/user/change-password`, changeRequest);
+}
 
 const getUserByUserApi = async () => {
   return api.get(`/user/user`);
@@ -297,6 +302,7 @@ export {
   UserLoginApi,
   UserSignupApi,
   UserLogoutApi,
+  UserChangePasswordApi,
   setUserIdsInfoApi,
   getUserByUserApi,
   setUserWorkspaceId,
