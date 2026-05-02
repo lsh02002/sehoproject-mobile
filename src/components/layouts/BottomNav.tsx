@@ -6,6 +6,7 @@ import { ReactComponent as InboxIcon } from "../../assets/inbox.svg";
 import { ReactComponent as TaskListIcon } from "../../assets/task-list.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/dashboard.svg";
 import { useModalManager } from "../../context/ModalManager";
+import { useLogin } from "../../context/LoginContext";
 
 const iconStyle: React.CSSProperties = {
   width: "2rem",
@@ -35,6 +36,7 @@ const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
   `${navLinkBaseClass} ${isActive ? "text-primary fw-semibold" : "text-secondary"}`;
 
 const BottomNav = () => {
+  const { setIsSideOpen } = useLogin();
   const { closeAllModals } = useModalManager();
 
   return (
@@ -47,6 +49,7 @@ const BottomNav = () => {
           <NavLink
             key={to}
             to={to}
+            end
             className={getNavLinkClass}
             onClick={(e) => {
               e.stopPropagation(); // 필요하면 유지
@@ -54,6 +57,10 @@ const BottomNav = () => {
                 document.activeElement.blur();
               }
               closeAllModals();
+
+              if (to === "/") {
+                setIsSideOpen(true);
+              }
             }}
           >
             {icon}
