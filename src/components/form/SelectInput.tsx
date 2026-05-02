@@ -79,7 +79,7 @@ const SelectInput = ({
         className="w-100 start-0 position-fixed bg-white shadow d-flex flex-column"
         style={{
           bottom: 55,
-          zIndex: 201,
+          zIndex: 200,
           height: "70%",
           borderRadius: "20px 20px 0 0",
           transform: isSelectOpen ? "translateY(0)" : "translateY(100%)",
