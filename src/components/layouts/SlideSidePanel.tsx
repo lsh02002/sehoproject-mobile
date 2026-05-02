@@ -46,7 +46,7 @@ const SlideSidePanel = ({
         top: 55,
         zIndex,
         width: isRight ? "100%" : "300px",
-        borderRadius: isRight ? 0 : "20px 20px 0 0",
+        borderRadius: 0,
         transform: isRight
           ? isOpen
             ? "translateX(0)"
