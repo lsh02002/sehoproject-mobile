@@ -312,6 +312,12 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   const isSelected = selectedId === node.id;
   const isDisabled = node.disabled === true;
 
+  const go = (path: string) => {
+    setTimeout(() => {
+      navigate(path);
+    }, 0);
+  };
+
   const handleToggle = () => {
     if (isDisabled) return;
 
@@ -329,19 +335,13 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
     } else {
       switch (node.type) {
         case "WORKSPACE":
-          setTimeout(() => {
-            navigate(`/settings/workspace/${node.id}/spaces`);
-          }, 0);
+          go(`/settings/workspace/${node.id}/spaces`);
           break;
         case "SPACE":
-          setTimeout(() => {
-            navigate(`/projects/spaces/${node.id}`);
-          }, 0);
+          go(`/projects/spaces/${node.id}`);
           break;
         case "PROJECT":
-          setTimeout(() => {
-            navigate(`/boards/projects/${node.id}`);
-          }, 0);
+          go(`/boards/projects/${node.id}`);
           break;
       }
     }
