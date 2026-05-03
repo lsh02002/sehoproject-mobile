@@ -37,7 +37,7 @@ const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
 
 const BottomNav = () => {
   const { setIsSideOpen } = useLogin();
-  const { closeAllModals } = useModalManager();
+  const { hasOpenModal, closeTopModal } = useModalManager();
 
   return (
     <nav
@@ -53,10 +53,12 @@ const BottomNav = () => {
             className={getNavLinkClass}
             onClick={(e) => {
               e.stopPropagation(); // 필요하면 유지
-              if (document.activeElement instanceof HTMLElement) {
-                document.activeElement.blur();
+
+              if (hasOpenModal) {
+                e.preventDefault();
+                closeTopModal();                
+                return;
               }
-              closeAllModals();
 
               if (to === "/") {
                 setIsSideOpen(true);

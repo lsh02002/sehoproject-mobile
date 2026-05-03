@@ -14,8 +14,11 @@ type ModalManagerContextValue = {
   openModals: ModalName[];
   topModal: ModalName | null;
   isOpen: (name: ModalName) => boolean;
+
+  hasOpenModal: boolean; // ✅ 추가
+
   openModal: (name: ModalName) => void;
-  closeTopModal: () => void;  
+  closeTopModal: () => void;
   closeModal: (name: ModalName) => void;
   closeAllModals: () => void;
 };
@@ -46,12 +49,13 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
   const closeTopModal = useCallback(() => {
     if (stackRef.current.length === 0) return;
 
+    if (window.history.state?.modal) {
+      window.history.back();
+      return;
+    }
+
     const nextStack = stackRef.current.slice(0, -1);
     syncStack(nextStack);
-
-    if (!isHandlingPopRef.current && window.history.state?.modal) {
-      window.history.back();
-    }
   }, [syncStack]);
 
   const closeModal = useCallback((name: ModalName) => {
@@ -98,6 +102,9 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
       openModals,
       topModal,
       isOpen: (name) => openModals.includes(name),
+
+      hasOpenModal: openModals.length > 0,
+
       openModal,
       closeTopModal,
       closeModal,
