@@ -93,7 +93,7 @@ const MilestoneCreatePage = () => {
       .then((res) => {
         toast.success("생성을 성공했습니다!");
 
-        queryClient.invalidateQueries({
+        queryClient.removeQueries({
           queryKey: ["milestones", String(projectId)],
         });
 

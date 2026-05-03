@@ -97,7 +97,7 @@ const SprintEditPage = ({
       .then((res) => {
         toast.success("수정을 성공했습니다!");
 
-        queryClient.invalidateQueries({
+        queryClient.removeQueries({
           queryKey: ["sprints", projectId],
         });
       })
