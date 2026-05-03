@@ -10,6 +10,7 @@ import { SpaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 import SpaceMemberPage from "./SpaceConfirmBox";
 import { FaSpaceAwesome } from "react-icons/fa6";
+import { useQueryClient } from "@tanstack/react-query";
 
 type TabKey = "info" | "members";
 
@@ -21,6 +22,8 @@ const SpaceEditPage = () => {
     workspaceId?.toString() ?? "",
   );
   const [currentTab, setCurrentTab] = useState<TabKey>("info");
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     getOneSpaceByWorkspaceAndSpaceApi(Number(workspaceId), Number(spaceId))
@@ -44,6 +47,10 @@ const SpaceEditPage = () => {
     )
       .then((res) => {
         toast.success("생성을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+        queryKey: ["spaces"],
+      });
       })
       .catch(() => {});
   };

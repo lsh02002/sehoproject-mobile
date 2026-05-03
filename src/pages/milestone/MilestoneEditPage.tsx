@@ -15,6 +15,7 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { LuMilestone } from "react-icons/lu";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 const MilestoneEditPage = ({
   windowOpenMilestoneId,
@@ -31,6 +32,8 @@ const MilestoneEditPage = ({
   const [dueDate, setDueDate] = useState<Date>();
   const [taskIds, setTaskIds] = useState<TaskResponseType[]>([]);
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
+
+  const queryClient = useQueryClient();
 
   const milestoneStatusOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
@@ -74,6 +77,7 @@ const MilestoneEditPage = ({
         projectId: Number(projectId), // 실제로는 서버 id 또는 uuid로 대체
         name,
         description,
+        imageResponses: [],
       }));
 
       setTaskIds(newTaskOptions);
@@ -97,6 +101,10 @@ const MilestoneEditPage = ({
     putOneMilestoneApi(Number(id), data)
       .then((res) => {
         toast.success("수정을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+        queryKey: ["milestones"],
+      });
       })
       .catch(() => {});
   };

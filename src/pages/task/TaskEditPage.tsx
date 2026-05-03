@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import { MdAddTask } from "react-icons/md";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import ImageInput from "../../components/form/ImageInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const { taskId } = useParams();
@@ -46,6 +47,8 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const [images, setImages] = useState<File[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setImageResponses] = useState<ImageResponseType[]>([]);
+
+  const queryClient = useQueryClient();
 
   const stateOptions: Option[] = [
     { label: "TODO", value: "TODO" },
@@ -173,6 +176,10 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
     putOneTaskApi(Number(windowOpenTaskId ?? taskId), formDataToSend)
       .then((res) => {
         toast.success("수정을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+          queryKey: ["tasks"],
+        });
       })
       .catch(() => {});
   };

@@ -6,11 +6,14 @@ import { SpaceRequestType } from "../../types/type";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaSpaceAwesome } from "react-icons/fa6";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SpaceCreatePage = () => {
   const { workspaceId } = useParams();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
+
+  const queryClient = useQueryClient();
 
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -23,6 +26,10 @@ const SpaceCreatePage = () => {
     createSpaceApi(Number(workspaceId), data)
       .then((res) => {
         toast.success("생성을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+        queryKey: ["spaces"],
+      });
       })
       .catch(() => {});
   };

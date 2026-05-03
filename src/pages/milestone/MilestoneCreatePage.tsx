@@ -14,6 +14,7 @@ import SelectInput, { Option } from "../../components/form/SelectInput";
 import { LuMilestone } from "react-icons/lu";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useLogin } from "../../context/LoginContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 const MilestoneCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -25,6 +26,8 @@ const MilestoneCreatePage = () => {
   const [dueDate, setDueDate] = useState<Date>();
   const [taskIds, setTaskIds] = useState<TaskResponseType[]>([]);
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
+
+  const queryClient = useQueryClient();
 
   const milestoneStatusOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
@@ -57,6 +60,7 @@ const MilestoneCreatePage = () => {
         projectId: Number(projectId),
         name,
         description: "",
+        imageResponses: [],
       }));
 
       setTaskIds(newTaskOptions);
@@ -80,6 +84,10 @@ const MilestoneCreatePage = () => {
     createMilestoneApi(data)
       .then((res) => {
         toast.success("생성을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+        queryKey: ["milestones"],
+      });
       })
       .catch(() => {});
   };

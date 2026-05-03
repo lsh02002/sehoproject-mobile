@@ -11,6 +11,7 @@ import {
 import InviteBox from "./WorkspaceInviteBox";
 import { MdWorkspaces } from "react-icons/md";
 import { layout } from "../../theme/Theme";
+import { useQueryClient } from "@tanstack/react-query";
 
 type TabKey = "info" | "members";
 
@@ -19,6 +20,8 @@ const WorkspaceEditPage = () => {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [currentTab, setCurrentTab] = useState<TabKey>("info");
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     getOneWorkspaceApi(Number(id))
@@ -36,6 +39,10 @@ const WorkspaceEditPage = () => {
     putOneWorkspaceApi(Number(id), data)
       .then(() => {
         toast.success("수정을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+          queryKey: ["workspaces"],
+        });
       })
       .catch(() => {});
   };

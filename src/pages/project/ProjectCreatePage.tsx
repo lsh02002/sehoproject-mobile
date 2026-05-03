@@ -9,6 +9,7 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import { SiPolymerproject } from "react-icons/si";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ProjectCreatePage = () => {
   const { spaceIdParam } = useParams();
@@ -18,6 +19,8 @@ const ProjectCreatePage = () => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState<Date>();
   const [dueDate, setDueDate] = useState<Date>();
+
+  const queryClient = useQueryClient();
 
   const OnCreateSubmit = () => {
     const data: ProjectRequestType = {
@@ -32,6 +35,10 @@ const ProjectCreatePage = () => {
     createProjectApi(data)
       .then((res) => {
         toast.success("생성을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+        queryKey: ["projects"],
+      });
       })
       .catch(() => {});
   };

@@ -6,10 +6,13 @@ import { WorkspaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 import { MdWorkspaces } from "react-icons/md";
 import { layout } from "../../theme/Theme";
+import { useQueryClient } from "@tanstack/react-query";
 
 const WorkspaceCreatePage = () => {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
+
+  const queryClient = useQueryClient();
 
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -32,6 +35,10 @@ const WorkspaceCreatePage = () => {
         }
 
         toast.success("생성을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+          queryKey: ["workspaces"],
+        });
       })
       .catch(() => {});
   };

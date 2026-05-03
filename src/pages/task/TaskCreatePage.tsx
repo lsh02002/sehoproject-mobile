@@ -21,6 +21,7 @@ import { MdAddTask } from "react-icons/md";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useLogin } from "../../context/LoginContext";
 import ImageInput from "../../components/form/ImageInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 const TaskCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -38,6 +39,8 @@ const TaskCreatePage = () => {
   const [dueDate, setDueDate] = useState<Date>();
   const [images, setImages] = useState<File[] | null>(null);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+
+  const queryClient = useQueryClient();
 
   const stateOptions: Option[] = [
     { label: "TODO", value: "TODO" },
@@ -144,6 +147,10 @@ const TaskCreatePage = () => {
     createTaskApi(formDataToSend)
       .then((res) => {
         toast.success("생성을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+        queryKey: ["tasks"],
+      });
       })
       .catch(() => {});
   };

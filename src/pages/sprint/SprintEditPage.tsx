@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { GiSprint } from "react-icons/gi";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SprintEditPage = ({
   windowOpenSprintId,
@@ -30,6 +31,8 @@ const SprintEditPage = ({
   const [taskIds, setTaskIds] = useState<TaskResponseType[]>([]);
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
 
+  const queryClient = useQueryClient();
+
   const sprintStateOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
     { label: "ACTIVE", value: "ACTIVE" },
@@ -40,7 +43,6 @@ const SprintEditPage = ({
     if (windowOpenSprintId || sprintId) {
       getOneSprintApi(Number(windowOpenSprintId ?? sprintId))
         .then((res) => {
-
           setId(res.data.id);
           setProjectId(res.data.projectId);
           setName(res.data.name);
@@ -71,6 +73,7 @@ const SprintEditPage = ({
         projectId: Number(projectId), // 실제로는 서버 id 또는 uuid로 대체
         name,
         description: "",
+        imageResponses: [],
       }));
 
       setTaskIds(newTaskOptions);
@@ -93,6 +96,10 @@ const SprintEditPage = ({
     putOneSprintApi(Number(id), data)
       .then((res) => {
         toast.success("수정을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+          queryKey: ["sprints"],
+        });
       })
       .catch(() => {});
   };

@@ -10,6 +10,7 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import { SiPolymerproject } from "react-icons/si";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ProjectEditPage = () => {
   const { projectId } = useParams();
@@ -25,6 +26,8 @@ const ProjectEditPage = () => {
   const [creatorName, setCreatorName] = useState("");
 
   const [tags, setTags] = useState<string[]>([]);
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     getOneProjectApi(Number(projectId))
@@ -98,6 +101,10 @@ const ProjectEditPage = () => {
     putOneProjectApi(Number(projectId), data)
       .then((res) => {
         toast.success("수정을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+        queryKey: ["projects"],
+      });
       })
       .catch(() => {});
   };

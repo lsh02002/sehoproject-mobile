@@ -13,6 +13,7 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { GiSprint } from "react-icons/gi";
 import { useLogin } from "../../context/LoginContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SprintCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -23,6 +24,8 @@ const SprintCreatePage = () => {
   const [endDate, setEndDate] = useState<Date>();
   const [taskIds, setTaskIds] = useState<TaskResponseType[]>([]);
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
+
+  const queryClient = useQueryClient();
 
   const sprintStateOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
@@ -54,6 +57,7 @@ const SprintCreatePage = () => {
         projectId: Number(projectId), // 실제로는 서버 id 또는 uuid로 대체
         name,
         description: "",
+        imageResponses: [],
       }));
 
       setTaskIds(newTaskOptions);
@@ -76,6 +80,10 @@ const SprintCreatePage = () => {
     createSprintApi(data)
       .then((res) => {
         toast.success("생성을 성공했습니다!");
+
+        queryClient.invalidateQueries({
+        queryKey: ["sprints"],
+      });
       })
       .catch(() => {});
   };
