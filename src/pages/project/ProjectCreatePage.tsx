@@ -43,7 +43,7 @@ const ProjectCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-          queryKey: ["projects", spaceId],
+          queryKey: ["projects", Number(spaceId)],
           refetchType: "active",
         });
 

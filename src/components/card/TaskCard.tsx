@@ -6,7 +6,7 @@ import { useLogin } from "../../context/LoginContext";
 import { useModalManager } from "../../context/ModalManager";
 import ImageCard from "./ImageCard";
 
-const TaskCard = ({ task }: { task: TaskResponseType }) => {
+const TaskCard = ({ task }: { task: TaskResponseType }) => {  
   const { setTask } = useLogin();
   const { openModal } = useModalManager();
 

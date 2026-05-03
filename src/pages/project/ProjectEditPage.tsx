@@ -104,7 +104,7 @@ const ProjectEditPage = () => {
         toast.success("수정을 성공했습니다!");
 
         queryClient.invalidateQueries({
-          queryKey: ["projects", spaceId],
+          queryKey: ["projects", Number(spaceId)],
           refetchType: "active",
         });
 

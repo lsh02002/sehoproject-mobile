@@ -14,7 +14,7 @@ const SprintListPage = () => {
     isLoading,
     isError,
   } = useQuery<SprintResponseType[]>({
-    queryKey: ["sprints", String(projectId)],
+    queryKey: ["sprints", projectId],
     queryFn: async () => {
       const res = await getSprintsByProjectApi(Number(projectId));
       return res.data;

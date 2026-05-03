@@ -13,7 +13,7 @@ const MilestoneListPage = () => {
     isLoading,
     isError,
   } = useQuery<MilestoneResponseType[]>({
-    queryKey: ["milestones", String(projectId)],
+    queryKey: ["milestones", projectId],
     queryFn: async () => {
       const res = await getMilestonesByProjectApi(Number(projectId));
       return res.data;

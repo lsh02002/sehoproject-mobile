@@ -105,7 +105,7 @@ const MilestoneEditPage = ({
         toast.success("수정을 성공했습니다!");
 
         queryClient.invalidateQueries({
-          queryKey: ["milestones", projectId],
+          queryKey: ["milestones", Number(projectId)],
           refetchType: "active",
         });
 

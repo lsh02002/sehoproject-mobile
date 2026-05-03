@@ -13,7 +13,7 @@ const ProjectListPage = () => {
     isLoading,
     isError,
   } = useQuery<ProjectResponseType[]>({
-    queryKey: ["projects", spaceId],
+    queryKey: ["projects", Number(spaceId)],
     queryFn: async () => {
       const res = await getProjectsBySpaceApi(Number(spaceId));
       return res.data;
