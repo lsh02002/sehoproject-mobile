@@ -488,7 +488,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
                 }
 
                 onCloseSide();
-                navigate(`/sprints/projects/${node.id}/calendar`);
+                go(`/sprints/projects/${node.id}/calendar`);
               }}
               style={{
                 color: node.disabled ? "#aaa" : "inherit",
