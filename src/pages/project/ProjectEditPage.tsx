@@ -105,6 +105,7 @@ const ProjectEditPage = () => {
 
         queryClient.invalidateQueries({
           queryKey: ["projects", spaceId],
+          refetchType: "active",
         });
 
         navigate(-1);

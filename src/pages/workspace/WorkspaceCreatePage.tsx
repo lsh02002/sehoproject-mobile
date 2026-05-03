@@ -46,6 +46,7 @@ const WorkspaceCreatePage = () => {
 
         queryClient.invalidateQueries({
           queryKey: ["workspaces"],
+          refetchType: "active",
         });
 
         navigate(-1);

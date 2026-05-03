@@ -106,6 +106,7 @@ const MilestoneEditPage = ({
 
         queryClient.invalidateQueries({
           queryKey: ["milestones", projectId],
+          refetchType: "active",
         });
 
         navigate(-1);

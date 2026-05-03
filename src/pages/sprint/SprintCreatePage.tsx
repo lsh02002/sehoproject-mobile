@@ -91,6 +91,7 @@ const SprintCreatePage = () => {
 
         queryClient.invalidateQueries({
           queryKey: ["sprints", String(projectId)],
+          refetchType: "active",
         });
 
         navigate(-1);

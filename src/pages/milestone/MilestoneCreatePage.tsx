@@ -95,6 +95,7 @@ const MilestoneCreatePage = () => {
 
         queryClient.invalidateQueries({
           queryKey: ["milestones", String(projectId)],
+          refetchType: "active",
         });
 
         navigate(-1);

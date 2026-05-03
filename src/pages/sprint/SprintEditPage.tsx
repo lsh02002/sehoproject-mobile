@@ -101,6 +101,7 @@ const SprintEditPage = ({
 
         queryClient.invalidateQueries({
           queryKey: ["sprints", projectId],
+          refetchType: "active",
         });
 
         navigate(-1);

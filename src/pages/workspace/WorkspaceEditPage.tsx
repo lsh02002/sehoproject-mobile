@@ -42,6 +42,7 @@ const WorkspaceEditPage = () => {
 
         queryClient.invalidateQueries({
           queryKey: ["workspaces"],
+          refetchType: "active",
         });
       })
       .catch(() => {});

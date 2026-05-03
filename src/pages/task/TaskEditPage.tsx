@@ -181,6 +181,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
 
         queryClient.invalidateQueries({
           queryKey: ["tasks", projectId],
+          refetchType: "active",
         });
 
         navigate(-1);

@@ -52,6 +52,7 @@ const SpaceEditPage = () => {
 
         queryClient.invalidateQueries({
           queryKey: ["spaces", workspaceId],
+          refetchType: "active",
         });
 
         navigate(-1);

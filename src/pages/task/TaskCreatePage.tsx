@@ -158,6 +158,7 @@ const TaskCreatePage = () => {
 
         queryClient.invalidateQueries({
           queryKey: ["tasks", String(projectId)],
+          refetchType: "active",
         });
 
         navigate(-1);
