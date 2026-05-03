@@ -18,6 +18,7 @@ export default function SidebarMenu({
   onCloseSide: () => void;
 }) {
   const { isLogin, setIsLogin } = useLogin();
+  const nickname = localStorage.getItem("nickname");
   const navigate = useNavigate();
   const location = useLocation();
   const { workspaceId } = useParams();
@@ -197,7 +198,10 @@ export default function SidebarMenu({
                 navigate("/login");
               }}
             >
-              로그아웃
+              <div className="d-flex flex-column">
+                {nickname}
+                로그아웃
+              </div>
             </span>
           </>
         ) : (
