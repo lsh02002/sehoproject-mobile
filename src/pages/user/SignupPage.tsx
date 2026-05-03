@@ -6,6 +6,7 @@ import TextInput from "../../components/form/TextInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { FaRegistered } from "react-icons/fa6";
 import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
+import { layout } from "../../theme/Theme";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const SignupPage = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100">
-      <div className="w-100">
+      <div className="w-100" style={{ maxWidth: layout.maxWidth }}>
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h3 className="fw-normal mb-0">
             <FaRegistered /> 회원가입

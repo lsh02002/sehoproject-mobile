@@ -3,6 +3,7 @@ import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { ChangePasswordRequestType } from "../../types/type";
 import { showToast, UserChangePasswordApi } from "../../api/sehomanagerapi";
+import { layout } from "../../theme/Theme";
 
 const ChangePasswordPage = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -25,7 +26,7 @@ const ChangePasswordPage = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100">
-      <div className="w-100">
+      <div className="w-100" style={{ maxWidth: layout.maxWidth }}>
         
         <PasswordVisibleInput
           name="oldpassword"

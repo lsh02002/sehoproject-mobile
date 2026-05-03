@@ -15,6 +15,7 @@ import {
 } from "../../api/sehomanagerapi";
 import { toast } from "react-toastify";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
+import { layout } from "../../theme/Theme";
 
 type ProjectLite = { id: number | string; name: string };
 
@@ -139,7 +140,7 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
 
   return (
     <div className="container-fluid p-3 d-flex justify-content-center">
-      <div className="w-100" style={{ maxWidth: 920 }}>
+      <div className="w-100" style={{ maxWidth: layout.maxWidth }}>
         {/* Title */}
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h3 className="fw-bold m-0">스페이스 권한 설정</h3>

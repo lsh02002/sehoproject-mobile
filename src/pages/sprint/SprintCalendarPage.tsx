@@ -178,7 +178,7 @@ const SprintCalendarPage = () => {
 `}</style>
       <div
         className="sprint-page bootstrap-calendar"
-        style={{ padding: "20px", boxSizing: "border-box" }}
+        style={{boxSizing: "border-box" }}
       >
         <div className="container-fluid p-3 sprint-page">
           {/* 헤더 */}

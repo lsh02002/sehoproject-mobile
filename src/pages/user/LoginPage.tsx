@@ -6,6 +6,7 @@ import TextInput from "../../components/form/TextInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { SlLogin } from "react-icons/sl";
 import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
+import { layout } from "../../theme/Theme";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -16,7 +17,6 @@ const LoginPage = () => {
   const OnLoginSubmit = () => {
     UserLoginApi(email, password)
       .then((res) => {
-
         localStorage.setItem("userId", res.data.data.userId);
         localStorage.setItem("nickname", res.data.data.nickname);
         localStorage.setItem("workspaceId", res.data.data.workspaceId);
@@ -33,7 +33,7 @@ const LoginPage = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100">
-      <div className="w-100">
+      <div className="w-100" style={{ maxWidth: layout.maxWidth }}>
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h3 className="fw-normal mb-0">
             <SlLogin /> 로그인

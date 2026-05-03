@@ -5,6 +5,7 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { WorkspaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 import { MdWorkspaces } from "react-icons/md";
+import { layout } from "../../theme/Theme";
 
 const WorkspaceCreatePage = () => {
   const [name, setName] = useState("");
@@ -38,7 +39,7 @@ const WorkspaceCreatePage = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100 vh-100">
-      <div className="w-100" style={{ maxWidth: "400px", padding: "20px" }}>
+      <div className="w-100" style={{ maxWidth: layout.maxWidth }}>
         <div className="d-flex justify-content-between align-items-center mb-3">
           <div className="d-flex align-items-center gap-2">
             <span className="d-flex align-items-center">
