@@ -33,7 +33,10 @@ const LoginPage = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100">
-      <div className="w-100" style={{ maxWidth: layout.maxWidth }}>
+      <div
+        className="w-100"
+        style={{ maxWidth: layout.maxWidth, padding: "20px" }}
+      >
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h3 className="fw-normal mb-0">
             <SlLogin /> 로그인

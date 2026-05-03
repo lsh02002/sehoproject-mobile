@@ -21,7 +21,6 @@ const WorkspaceCreatePage = () => {
 
     createWorkspaceApi(data)
       .then((res) => {
-
         const workspaceId = res?.data?.id;
         const storedWorkspaceId = localStorage.getItem("workspaceId");
 
@@ -39,7 +38,10 @@ const WorkspaceCreatePage = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100 vh-100">
-      <div className="w-100" style={{ maxWidth: layout.maxWidth }}>
+      <div
+        className="w-100"
+        style={{ maxWidth: layout.maxWidth, padding: "20px" }}
+      >
         <div className="d-flex justify-content-between align-items-center mb-3">
           <div className="d-flex align-items-center gap-2">
             <span className="d-flex align-items-center">
