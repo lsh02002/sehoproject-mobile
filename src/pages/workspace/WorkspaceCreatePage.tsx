@@ -14,8 +14,13 @@ const WorkspaceCreatePage = () => {
 
   const queryClient = useQueryClient();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
     const data: WorkspaceRequestType = {
       name,
@@ -40,7 +45,10 @@ const WorkspaceCreatePage = () => {
           queryKey: ["workspaces"],
         });
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -70,7 +78,11 @@ const WorkspaceCreatePage = () => {
         <TextInput name="slug" title="슬러그" data={slug} setData={setSlug} />
 
         <div className="mt-3">
-          <ConfirmButton title="생성" onClick={OnCreateSubmit} />
+          <ConfirmButton
+            title="생성"
+            onClick={OnCreateSubmit}
+            disabled={isSubmitting}
+          />
         </div>
       </div>
     </div>

@@ -21,7 +21,12 @@ const ProjectCreatePage = () => {
 
   const queryClient = useQueryClient();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const OnCreateSubmit = () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     const data: ProjectRequestType = {
       spaceId: Number(spaceId),
       name,
@@ -39,7 +44,10 @@ const ProjectCreatePage = () => {
           queryKey: ["projects", spaceId],
         });
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -107,7 +115,11 @@ const ProjectCreatePage = () => {
         hydrateSelected={hydrateSelected}
       /> */}
 
-        <ConfirmButton title="생성" onClick={OnCreateSubmit} />
+        <ConfirmButton
+          title="생성"
+          onClick={OnCreateSubmit}
+          disabled={isSubmitting}
+        />
       </div>
     </div>
   );

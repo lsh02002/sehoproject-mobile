@@ -42,6 +42,8 @@ const TaskCreatePage = () => {
 
   const queryClient = useQueryClient();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const stateOptions: Option[] = [
     { label: "TODO", value: "TODO" },
     { label: "IN_PROGRESS", value: "IN_PROGRESS" },
@@ -115,6 +117,9 @@ const TaskCreatePage = () => {
   // };
 
   const OnCreateSubmit = () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     const data: TaskRequestType = {
       projectId: Number(projectId),
       name,
@@ -149,10 +154,13 @@ const TaskCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["tasks", String(projectId)],
-      });
+          queryKey: ["tasks", String(projectId)],
+        });
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -253,7 +261,11 @@ const TaskCreatePage = () => {
           setPreviewUrls={setImageUrls}
         />
 
-        <ConfirmButton title="생성" onClick={OnCreateSubmit} />
+        <ConfirmButton
+          title="생성"
+          onClick={OnCreateSubmit}
+          disabled={isSubmitting}
+        />
       </div>
     </div>
   );

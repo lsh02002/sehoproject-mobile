@@ -27,6 +27,8 @@ const SprintCreatePage = () => {
 
   const queryClient = useQueryClient();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const sprintStateOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
     { label: "ACTIVE", value: "ACTIVE" },
@@ -66,6 +68,9 @@ const SprintCreatePage = () => {
   );
 
   const OnCreateSubmit = () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     const data: SprintRequestType = {
       projectId: Number(projectId),
       name,
@@ -82,10 +87,13 @@ const SprintCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["sprints", String(projectId)],
-      });
+          queryKey: ["sprints", String(projectId)],
+        });
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -144,7 +152,11 @@ const SprintCreatePage = () => {
           }
         />
 
-        <ConfirmButton title="생성" onClick={OnCreateSubmit} />
+        <ConfirmButton
+          title="생성"
+          onClick={OnCreateSubmit}
+          disabled={isSubmitting}
+        />
       </div>
     </div>
   );

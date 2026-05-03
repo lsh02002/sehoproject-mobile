@@ -29,6 +29,8 @@ const MilestoneCreatePage = () => {
 
   const queryClient = useQueryClient();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const milestoneStatusOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
     { label: "IN_PROGRESS", value: "IN_PROGRESS" },
@@ -69,6 +71,9 @@ const MilestoneCreatePage = () => {
   );
 
   const OnCreateSubmit = () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     const data: MilestoneRequestType = {
       projectId: Number(projectId),
       name,
@@ -86,10 +91,13 @@ const MilestoneCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["milestones", String(projectId)],
-      });
+          queryKey: ["milestones", String(projectId)],
+        });
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -147,7 +155,11 @@ const MilestoneCreatePage = () => {
             })) ?? []
           }
         />
-        <ConfirmButton title="생성" onClick={OnCreateSubmit} />
+        <ConfirmButton
+          title="생성"
+          onClick={OnCreateSubmit}
+          disabled={isSubmitting}
+        />
       </div>
     </div>
   );

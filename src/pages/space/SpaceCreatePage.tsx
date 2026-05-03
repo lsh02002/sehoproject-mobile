@@ -15,8 +15,13 @@ const SpaceCreatePage = () => {
 
   const queryClient = useQueryClient();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
     const data: SpaceRequestType = {
       name,
@@ -28,10 +33,13 @@ const SpaceCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["spaces", workspaceId],
-      });
+          queryKey: ["spaces", workspaceId],
+        });
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -53,7 +61,11 @@ const SpaceCreatePage = () => {
 
         <TextInput name="slug" title="슬러그" data={slug} setData={setSlug} />
 
-        <ConfirmButton title="생성" onClick={OnCreateSubmit} />
+        <ConfirmButton
+          title="생성"
+          onClick={OnCreateSubmit}
+          disabled={isSubmitting}
+        />
       </div>
     </div>
   );
