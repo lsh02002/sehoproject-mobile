@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useLogin } from "./LoginContext";
 
 type ModalName = string;
 
@@ -28,6 +29,7 @@ const ModalManagerContext = createContext<ModalManagerContextValue | null>(
 );
 
 export function ModalManager({ children }: { children: React.ReactNode }) {
+  const { setIsSideOpen } = useLogin();
   const [openModals, setOpenModals] = useState<ModalName[]>([]);
   const stackRef = useRef<ModalName[]>([]);
   const isHandlingPopRef = useRef(false);
@@ -78,7 +80,13 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const handlePopState = () => {
+      const closedModal = stackRef.current.at(-1);
+
       isHandlingPopRef.current = true;
+
+      if (closedModal === "side") {
+        setIsSideOpen(false);
+      }
 
       const nextStack = stackRef.current.slice(0, -1);
       syncStack(nextStack);
@@ -93,7 +101,7 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [syncStack]);
+  }, [setIsSideOpen, syncStack]);
 
   const value = useMemo<ModalManagerContextValue>(() => {
     const topModal = openModals.at(-1) ?? null;

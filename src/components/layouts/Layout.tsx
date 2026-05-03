@@ -42,7 +42,7 @@ export default function Layout({
     setIsSideOpen,
   } = useLogin();
 
-  const { hasOpenModal } = useModalManager();
+  const { openModal, closeModal, hasOpenModal } = useModalManager();
 
   useEffect(() => {
     if (isSideOpen) setIsMenuRefresh(!isMemuRefresh);
@@ -71,7 +71,10 @@ export default function Layout({
         aria-label="메뉴 열기"
         aria-expanded={isSideOpen}
         aria-controls="side-nav"
-        onClick={() => setIsSideOpen(true)}
+        onClick={() => {
+          openModal("side");
+          setIsSideOpen(true);
+        }}
       >
         <Menu style={{ width: 20, height: 20 }} />
       </button>
@@ -86,12 +89,15 @@ export default function Layout({
           pointerEvents: isSideOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
         }}
-        onClick={() => setIsSideOpen(false)}
+        onClick={() => {
+          closeModal("side");
+          setIsSideOpen(false);
+        }}
         aria-hidden={!isSideOpen}
       />
       <SlideSidePanel
-        isOpen={isSideOpen}
-        setIsOpen={setIsSideOpen}
+        isSideOpen={isSideOpen}
+        setIsSideOpen={setIsSideOpen}
         title="사이드 창"
         zIndex={200}
         direction="left"

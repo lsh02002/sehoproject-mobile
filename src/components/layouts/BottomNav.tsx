@@ -36,8 +36,8 @@ const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
   `${navLinkBaseClass} ${isActive ? "text-primary fw-semibold" : "text-secondary"}`;
 
 const BottomNav = () => {
-  const { setIsSideOpen } = useLogin();
-  const { hasOpenModal, closeTopModal } = useModalManager();
+  const { isSideOpen, setIsSideOpen } = useLogin();
+  const { openModal, hasOpenModal, closeTopModal } = useModalManager();
 
   return (
     <nav
@@ -55,12 +55,16 @@ const BottomNav = () => {
               e.stopPropagation(); // 필요하면 유지
 
               if (hasOpenModal) {
+                if (isSideOpen) {
+                  setIsSideOpen(false);
+                }
                 e.preventDefault();
-                closeTopModal();                
+                closeTopModal();
                 return;
               }
 
               if (to === "/") {
+                openModal("side");
                 setIsSideOpen(true);
               }
             }}

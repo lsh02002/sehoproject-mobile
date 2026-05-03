@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { layout } from "../../theme/Theme";
+import { useModalManager } from "../../context/ModalManager";
 
 type SlideSidePanelProps = {
   title: string;
@@ -7,8 +8,8 @@ type SlideSidePanelProps = {
   direction?: "left" | "right" | "bottom";
   zIndex?: number;
   name: string;
-  isOpen: boolean;
-  setIsOpen: (v: boolean) => void;
+  isSideOpen: boolean;
+  setIsSideOpen: (v: boolean) => void;
 };
 
 const SlideSidePanel = ({
@@ -17,9 +18,12 @@ const SlideSidePanel = ({
   direction = "right",
   zIndex = 50,
   name,
-  isOpen,
-  setIsOpen,
+  isSideOpen,
+  setIsSideOpen,
 }: SlideSidePanelProps) => {
+  const { closeModal, isOpen } = useModalManager();
+
+  const isOpenPanel = isOpen(name);
   const isRight = direction === "right";
 
   const sidebarRef = useRef<HTMLElement | null>(null);
@@ -34,7 +38,8 @@ const SlideSidePanel = ({
       activeElement.blur();
     }
 
-    setIsOpen(false);
+    setIsSideOpen(false);
+    closeModal(name);
   };
 
   return (
@@ -48,10 +53,10 @@ const SlideSidePanel = ({
         width: isRight ? "100%" : "300px",
         borderRadius: 0,
         transform: isRight
-          ? isOpen
+          ? isSideOpen && isOpenPanel
             ? "translateX(0)"
             : "translateX(100%)"
-          : isOpen
+          : isSideOpen && isOpenPanel
             ? "translateX(0)"
             : "translateX(-100%)",
         transition: "transform 220ms ease",
