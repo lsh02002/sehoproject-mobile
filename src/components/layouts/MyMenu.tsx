@@ -198,9 +198,9 @@ export default function SidebarMenu({
                 navigate("/login");
               }}
             >
-              <div className="d-flex flex-column">
-                {nickname}
+              <div className="d-flex">
                 로그아웃
+                ({nickname})
               </div>
             </span>
           </>
