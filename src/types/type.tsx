@@ -149,8 +149,20 @@ export type TaskResponseType = {
   tags?: any[];
   dependencyIds?: number[];
   dueDate?: string; // or Date/LocalDate 포맷에 맞게
+  imageResponses: ImageResponseType[];
   createdAt?: string; // or Date/LocalDateTime 포맷에 맞게
   updatedAt?: string;
+};
+
+export type ImageResponseType = {
+  id: number;
+  diaryId: number;
+  uploaderId: number;
+  fileName: string;
+  fileUrl: string;
+  mimeType: string;
+  sizeBytes: number;
+  deleted: boolean;
 };
 
 export type SprintRequestType = {

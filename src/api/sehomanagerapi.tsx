@@ -5,9 +5,7 @@ import {
   MilestoneRequestType,
   ProjectRequestType,
   SpaceRequestType,
-  SprintRequestType,
-  TaskRequestType,
-  TaskUpdateRequestType,
+  SprintRequestType,  
   UserSignupType,
   WorkspaceInviteType,
   WorkspaceRequestType,
@@ -227,7 +225,7 @@ const getTasksByAssigneeApi = async (projectId: number) => {
   return api.get(`/tasks/assignee/project/${projectId}`);
 };
 
-const putOneTaskApi = async (taskId: number, data: TaskUpdateRequestType) => {
+const putOneTaskApi = async (taskId: number, data: FormData) => {
   return api.post(`/tasks/${taskId}/edit`, data);
 };
 
@@ -282,7 +280,7 @@ const createProjectMemberApi = async (
   return api.post(`/projects/${projectId}/members`, data);
 };
 
-const createTaskApi = async (data: TaskRequestType) => {
+const createTaskApi = async (data: FormData) => {
   return api.post(`/tasks/create`, data);
 };
 

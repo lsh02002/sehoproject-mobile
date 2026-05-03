@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import { MdAddTask } from "react-icons/md";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useLogin } from "../../context/LoginContext";
+import ImageInput from "../../components/form/ImageInput";
 
 const TaskCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -35,6 +36,8 @@ const TaskCreatePage = () => {
   const [tags, setTags] = useState<TagResponseType[]>([]);
   const [tagOptions, setTagOptions] = useState<TagResponseType[]>([]);
   const [dueDate, setDueDate] = useState<Date>();
+  const [images, setImages] = useState<File[] | null>(null);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const stateOptions: Option[] = [
     { label: "TODO", value: "TODO" },
@@ -58,7 +61,7 @@ const TaskCreatePage = () => {
   ];
 
   useEffect(() => {
-    if (!projectId) {      
+    if (!projectId) {
       setProjectId(Number(projectIdLocal));
     }
   }, [projectId, projectIdLocal, setProjectId]);
@@ -127,7 +130,18 @@ const TaskCreatePage = () => {
       dueDate: dueDate,
     };
 
-    createTaskApi(data)
+    const formDataToSend = new FormData();
+
+    formDataToSend.append(
+      "request",
+      new Blob([JSON.stringify(data)], { type: "application/json" }),
+    );
+
+    (images ?? []).forEach((file) => {
+      formDataToSend.append("files", file);
+    });
+
+    createTaskApi(formDataToSend)
       .then((res) => {
         toast.success("생성을 성공했습니다!");
       })
@@ -222,6 +236,15 @@ const TaskCreatePage = () => {
         />
 
         <DateInput title="마감일" selected={dueDate} setSelected={setDueDate} />
+
+        <ImageInput
+          name="images"
+          title="이미지들"
+          data={images ?? []}
+          setData={setImages}
+          previewUrls={imageUrls}
+          setPreviewUrls={setImageUrls}
+        />
 
         <ConfirmButton title="생성" onClick={OnCreateSubmit} />
       </div>

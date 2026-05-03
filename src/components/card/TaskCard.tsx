@@ -4,6 +4,7 @@ import { SiGoogletasks } from "react-icons/si";
 import { GrInProgress } from "react-icons/gr";
 import { useLogin } from "../../context/LoginContext";
 import { useModalManager } from "../../context/ModalManager";
+import ImageCard from "./ImageCard";
 
 const TaskCard = ({ task }: { task: TaskResponseType }) => {
   const { setTask } = useLogin();
@@ -15,6 +16,8 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
     setTask(task);
     openModal("task"); // ✅ 변경
   };
+
+  console.log(task);
 
   return (
     <div className="card mb-3 shadow-sm" style={{ cursor: "pointer" }}>
@@ -61,8 +64,11 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
           >
             EDIT
           </span>
-        </div>
+        </div>        
       </div>
+      {task?.imageResponses?.map((image) => (
+          <ImageCard key={image?.id} imageUrl={image?.fileUrl} task={task} />
+        ))}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   AssigneeRequestType,
   AssignInfoType,
+  ImageResponseType,
   TagResponseType,
   TaskUpdateRequestType,
 } from "../../types/type";
@@ -20,6 +21,7 @@ import { TwoDiv } from "../../components/form/TwoDiv";
 import { toast } from "react-toastify";
 import { MdAddTask } from "react-icons/md";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
+import ImageInput from "../../components/form/ImageInput";
 
 const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const { taskId } = useParams();
@@ -40,6 +42,10 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const [tagOptions, setTagOptions] = useState<TagResponseType[]>([]);
   const [dependencyIds, setDependencyIds] = useState<number[]>([]);
   const [dueDate, setDueDate] = useState<Date>();
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setImageResponses] = useState<ImageResponseType[]>([]);
 
   const stateOptions: Option[] = [
     { label: "TODO", value: "TODO" },
@@ -91,6 +97,12 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
           setTags(res.data.tags);
           setDependencyIds(res.data.dependencyIds);
           setDueDate(res.data.dueDate);
+          setImageResponses(res.data.imageResponses);
+          setImageUrls(
+            res.data.imageResponses.map(
+              (image: ImageResponseType) => image.fileUrl,
+            ),
+          );
 
           getTagsByProjectApi(Number(res.data.projectId))
             .then((res) => {
@@ -148,7 +160,17 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
       dueDate: dueDate,
     };
 
-    putOneTaskApi(Number(windowOpenTaskId ?? taskId), data)
+    const formDataToSend = new FormData();
+    formDataToSend.append(
+      "request",
+      new Blob([JSON.stringify(data)], { type: "application/json" }),
+    );
+
+    (images ?? []).forEach((file) => {
+      formDataToSend.append("files", file);
+    });
+
+    putOneTaskApi(Number(windowOpenTaskId ?? taskId), formDataToSend)
       .then((res) => {
         toast.success("수정을 성공했습니다!");
       })
@@ -267,6 +289,15 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
               value: tag.name,
             })) ?? []
           }
+        />
+
+        <ImageInput
+          name="images"
+          title="이미지들"
+          data={images ?? []}
+          setData={setImages}
+          previewUrls={imageUrls}
+          setPreviewUrls={setImageUrls}
         />
 
         <ConfirmButton title="수정" onClick={OnEditSubmit} />
