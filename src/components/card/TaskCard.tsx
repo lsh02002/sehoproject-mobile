@@ -17,8 +17,6 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
     openModal("task"); // ✅ 변경
   };
 
-  console.log(task);
-
   return (
     <div className="card mb-3 shadow-sm" style={{ cursor: "pointer" }}>
       <div className="card-body d-flex justify-content-between align-items-center">

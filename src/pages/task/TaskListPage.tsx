@@ -1,24 +1,25 @@
-import { useParams } from "react-router-dom";
 import { getTasksByProjectApi } from "../../api/sehomanagerapi";
 import { TaskResponseType } from "../../types/type";
 import ListLayout from "../../components/layouts/ListLayout";
 import TaskCard from "../../components/card/TaskCard";
 import { MdAddTask } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
+import { useLogin } from "../../context/LoginContext";
 
 const TaskListPage = () => {
-  const { projectId } = useParams();
+  const { projectId } = useLogin();
 
   const {
     data: tasks = [],
     isLoading,
     isError,
   } = useQuery<TaskResponseType[]>({
-    queryKey: ["tasks"],
+    queryKey: ["tasks", projectId],
     queryFn: async () => {
       const res = await getTasksByProjectApi(Number(projectId));
       return res.data;
     },
+    enabled: projectId !== 0, // 👈 key fix
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });

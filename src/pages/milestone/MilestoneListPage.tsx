@@ -1,23 +1,24 @@
-import { useParams } from "react-router-dom";
 import { MilestoneResponseType } from "../../types/type";
 import { getMilestonesByProjectApi } from "../../api/sehomanagerapi";
 import ListLayout from "../../components/layouts/ListLayout";
 import MilestoneCard from "../../components/card/MilestoneCard";
 import { LuMilestone } from "react-icons/lu";
 import { useQuery } from "@tanstack/react-query";
+import { useLogin } from "../../context/LoginContext";
 
 const MilestoneListPage = () => {
-  const { projectId } = useParams();
+  const { projectId } = useLogin();
   const {
     data: milestones = [],
     isLoading,
     isError,
   } = useQuery<MilestoneResponseType[]>({
-    queryKey: ["milestones"],
+    queryKey: ["milestones", projectId],
     queryFn: async () => {
       const res = await getMilestonesByProjectApi(Number(projectId));
       return res.data;
     },
+    enabled: projectId !== 0, // 👈 key fix
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });

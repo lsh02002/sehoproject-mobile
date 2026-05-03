@@ -1,24 +1,25 @@
-import { useParams } from "react-router-dom";
 import { SprintResponseType } from "../../types/type";
 import { getSprintsByProjectApi } from "../../api/sehomanagerapi";
 import ListLayout from "../../components/layouts/ListLayout";
 import SprintCard from "../../components/card/SprintCard";
 import { GiSprint } from "react-icons/gi";
 import { useQuery } from "@tanstack/react-query";
+import { useLogin } from "../../context/LoginContext";
 
 const SprintListPage = () => {
-  const { projectId } = useParams();
+  const { projectId } = useLogin();
 
   const {
     data: sprints = [],
     isLoading,
     isError,
   } = useQuery<SprintResponseType[]>({
-    queryKey: ["sprints"],
+    queryKey: ["sprints", projectId],
     queryFn: async () => {
       const res = await getSprintsByProjectApi(Number(projectId));
       return res.data;
     },
+    enabled: projectId !== 0, // 👈 key fix
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });
