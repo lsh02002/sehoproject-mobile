@@ -96,11 +96,17 @@ export default function SidebarMenu({
     };
   }, [isMemuRefresh]);
 
+  const go = (path: string) => {
+    setTimeout(() => {
+      navigate(path);
+    }, 0);
+  };
+
   const handleSelect = (node: TreeNodeType) => {
     if (String(node.id).startsWith("p")) {
-      navigate(`/workspaces/${workspaceId}/projects/${node.id}`);
+      go(`/workspaces/${workspaceId}/projects/${node.id}`);
     } else if (String(node.id).startsWith("space-")) {
-      navigate(`/workspaces/${workspaceId}/spaces/${node.id}`);
+      go(`/workspaces/${workspaceId}/spaces/${node.id}`);
     }
   };
 
@@ -157,7 +163,7 @@ export default function SidebarMenu({
           }}
           onClick={() => {
             onCloseSide();
-            navigate("/settings/invitation-message");
+            go("/settings/invitation-message");
           }}
         >
           워크스페이스 초대함
@@ -174,7 +180,7 @@ export default function SidebarMenu({
               }}
               onClick={() => {
                 onCloseSide();
-                navigate("/change-password");
+                go("/change-password");
               }}
             >
               비밀번호 변경
@@ -187,6 +193,9 @@ export default function SidebarMenu({
                 borderRadius: 6,
               }}
               onClick={() => {
+                if (!window.confirm("로그아웃 하시겠습니까?")) {
+                  return;
+                }
                 localStorage.removeItem("userId");
                 localStorage.removeItem("name");
                 localStorage.removeItem("workspaceId");
@@ -195,13 +204,10 @@ export default function SidebarMenu({
 
                 setIsLogin(false);
                 onCloseSide();
-                navigate("/login");
+                go("/login");
               }}
             >
-              <div className="d-flex">
-                로그아웃
-                ({nickname})
-              </div>
+              <div className="d-flex">로그아웃 ({nickname})</div>
             </span>
           </>
         ) : (
@@ -214,7 +220,7 @@ export default function SidebarMenu({
             }}
             onClick={() => {
               onCloseSide();
-              navigate("/login");
+              go("/login");
             }}
           >
             로그인
