@@ -100,10 +100,14 @@ const SprintEditPage = ({
         toast.success("수정을 성공했습니다!");
 
         queryClient.invalidateQueries({
-          queryKey: ["sprints", Number(projectId)],
-          refetchType: "active",
+          predicate: (query) => {
+            const key = query.queryKey;
+            return (
+              key[1] === Number(projectId) &&
+              (key[0] === "sprints" || key[0] === "mySprints")
+            );
+          },
         });
-
         navigate(-1);
       })
       .catch(() => {});

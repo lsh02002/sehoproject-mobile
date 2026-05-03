@@ -5,7 +5,9 @@ import {
   MilestoneRequestType,
   ProjectRequestType,
   SpaceRequestType,
-  SprintRequestType,  
+  SprintRequestType,
+  SprintResponseType,
+  TaskResponseType,
   UserSignupType,
   WorkspaceInviteType,
   WorkspaceRequestType,
@@ -85,9 +87,11 @@ const UserLogoutApi = async () => {
   return api.delete(`/user/logout`);
 };
 
-const UserChangePasswordApi = async (changeRequest: ChangePasswordRequestType) => {
+const UserChangePasswordApi = async (
+  changeRequest: ChangePasswordRequestType,
+) => {
   return api.put(`/user/change-password`, changeRequest);
-}
+};
 
 const getUserByUserApi = async () => {
   return api.get(`/user/user`);
@@ -222,7 +226,7 @@ const getOneTaskApi = async (taskId: number) => {
 };
 
 const getTasksByAssigneeApi = async (projectId: number) => {
-  return api.get(`/tasks/assignee/project/${projectId}`);
+  return api.get<TaskResponseType[]>(`/tasks/assignee/project/${projectId}`);
 };
 
 const putOneTaskApi = async (taskId: number, data: FormData) => {
@@ -238,7 +242,9 @@ const getOneSprintApi = async (sprintId: number) => {
 };
 
 const getSprintsByAssigneeApi = async (projectId: number) => {
-  return api.get(`/sprints/assignee/project/${projectId}`);
+  return api.get<SprintResponseType[]>(
+    `/sprints/assignee/project/${projectId}`,
+  );
 };
 
 const getSprintsByProjectApi = async (projectId: number) => {

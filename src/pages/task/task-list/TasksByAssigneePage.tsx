@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { SprintResponseType, TaskResponseType } from "../../../types/type";
+import { useEffect, useRef } from "react";
 import {
   getSprintsByAssigneeApi,
   getTasksByAssigneeApi,
@@ -11,12 +10,9 @@ import { MdOutlineFileDownloadDone } from "react-icons/md";
 import { GiSprint } from "react-icons/gi";
 import SprintsByState from "../../../components/list/SprintsByState";
 import { useScroll } from "../../../context/ScrollContext";
+import { queryOptions, useQueries } from "@tanstack/react-query";
 
 const TaskByAssigneePage = () => {
-  const [myTasks, setMyTasks] = useState<TaskResponseType[]>([]);
-  const [mySprints, setMySprints] = useState<SprintResponseType[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const boardRef = useRef<HTMLDivElement | null>(null);
   const { scroll, setScroll } = useScroll();
 
@@ -27,6 +23,30 @@ const TaskByAssigneePage = () => {
   const startY = useRef(0);
   const startScrollLeft = useRef(0);
   const startScrollTop = useRef(0);
+
+  const projectId = Number(localStorage.getItem("projectId"));
+
+  const results = useQueries({
+    queries: [
+      queryOptions({
+        queryKey: ["myTasks", projectId],
+        queryFn: () => getTasksByAssigneeApi(projectId),
+        enabled: !!projectId,
+        select: (res) => res.data ?? [],
+      }),
+      queryOptions({
+        queryKey: ["mySprints", projectId],
+        queryFn: () => getSprintsByAssigneeApi(projectId),
+        enabled: !!projectId,
+        select: (res) => res.data ?? [],
+      }),
+    ],
+  });
+
+  const myTasks = results[0].data ?? [];
+  const mySprints = results[1].data ?? [];
+  const isLoading = results.some((result) => result.isLoading);
+  const isError = results.some((result) => result.isError);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = boardRef.current;
@@ -94,27 +114,6 @@ const TaskByAssigneePage = () => {
   }, []);
 
   useEffect(() => {
-    const projectId = Number(localStorage.getItem("projectId"));
-
-    const fetchData = async () => {
-      try {
-        const [tasksRes, sprintsRes] = await Promise.all([
-          getTasksByAssigneeApi(projectId),
-          getSprintsByAssigneeApi(projectId),
-        ]);
-
-        setMyTasks(tasksRes.data ?? []);
-        setMySprints(sprintsRes.data ?? []);
-      } catch {
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     if (isLoading) return;
 
     const el = boardRef.current;
@@ -148,6 +147,7 @@ const TaskByAssigneePage = () => {
 
   return (
     <>
+      {isError && <div>데이터를 불러오지 못했습니다.</div>}
       {!isLoading && (
         <div
           ref={boardRef}
