@@ -1,30 +1,35 @@
 import { useParams } from "react-router-dom";
 import { SprintResponseType } from "../../types/type";
-import { useEffect, useState } from "react";
 import { getSprintsByProjectApi } from "../../api/sehomanagerapi";
 import ListLayout from "../../components/layouts/ListLayout";
 import SprintCard from "../../components/card/SprintCard";
 import { GiSprint } from "react-icons/gi";
+import { useQuery } from "@tanstack/react-query";
 
 const SprintListPage = () => {
   const { projectId } = useParams();
-  const [sprints, setSprints] = useState<SprintResponseType[] | null>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    getSprintsByProjectApi(Number(projectId))
-      .then((res) => {
-        setSprints(res.data);
-      })
-      .catch(() => {})
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [projectId]);
+  const {
+    data: sprints = [],
+    isLoading,
+    isError,
+  } = useQuery<SprintResponseType[]>({
+    queryKey: ["sprints"],
+    queryFn: async () => {
+      const res = await getSprintsByProjectApi(Number(projectId));
+      return res.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
 
   return (
     <ListLayout title="스프린트" icon={<GiSprint />} componentType="sprint">
-      {!isLoading && sprints?.length === 0 ? (
+      {isLoading ? (
+        <div>불러오는 중...</div>
+      ) : isError ? (
+        <div>스프린트를 불러오지 못했습니다.</div>
+      ) : sprints.length === 0 ? (
         <div>해당 스프린트가 존재하지 않습니다.</div>
       ) : (
         sprints?.map((sprint) => <SprintCard key={sprint.id} sprint={sprint} />)

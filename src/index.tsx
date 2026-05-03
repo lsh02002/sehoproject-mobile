@@ -8,6 +8,9 @@ import { BrowserRouter } from "react-router-dom";
 import { LoginProvider } from "./context/LoginContext";
 import { ScrollProvider } from "./context/ScrollContext";
 import { ModalManager } from "./context/ModalManager";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -16,9 +19,11 @@ root.render(
   <LoginProvider>
     <ModalManager>
       <BrowserRouter>
-        <ScrollProvider>
-          <App />
-        </ScrollProvider>
+        <QueryClientProvider client={queryClient}>
+          <ScrollProvider>
+            <App />
+          </ScrollProvider>
+        </QueryClientProvider>
       </BrowserRouter>
     </ModalManager>
   </LoginProvider>,

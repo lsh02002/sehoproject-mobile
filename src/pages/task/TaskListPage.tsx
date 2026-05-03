@@ -1,30 +1,35 @@
 import { useParams } from "react-router-dom";
 import { getTasksByProjectApi } from "../../api/sehomanagerapi";
 import { TaskResponseType } from "../../types/type";
-import { useEffect, useState } from "react";
 import ListLayout from "../../components/layouts/ListLayout";
 import TaskCard from "../../components/card/TaskCard";
 import { MdAddTask } from "react-icons/md";
+import { useQuery } from "@tanstack/react-query";
 
 const TaskListPage = () => {
   const { projectId } = useParams();
-  const [tasks, setTasks] = useState<TaskResponseType[] | null>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    getTasksByProjectApi(Number(projectId))
-      .then((res) => {
-        setTasks(res.data);
-      })
-      .catch(() => {})
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [projectId]);
+  const {
+    data: tasks = [],
+    isLoading,
+    isError,
+  } = useQuery<TaskResponseType[]>({
+    queryKey: ["tasks"],
+    queryFn: async () => {
+      const res = await getTasksByProjectApi(Number(projectId));
+      return res.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
 
   return (
     <ListLayout title="태스크" icon={<MdAddTask />} componentType="task">
-      {!isLoading && tasks?.length === 0 ? (
+      {isLoading ? (
+        <div>불러오는 중...</div>
+      ) : isError ? (
+        <div>태스크를 불러오지 못했습니다.</div>
+      ) : tasks.length === 0 ? (
         <div>해당 태스크가 존재하지 않습니다.</div>
       ) : (
         tasks?.map((task) => <TaskCard key={task.id} task={task} />)

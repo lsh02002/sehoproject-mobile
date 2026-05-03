@@ -1,26 +1,26 @@
 import { useParams } from "react-router-dom";
 import { ProjectResponseType } from "../../types/type";
-import { useEffect, useState } from "react";
 import { getProjectsBySpaceApi } from "../../api/sehomanagerapi";
 import ProjectCard from "../../components/card/ProjectCard";
 import ListLayout from "../../components/layouts/ListLayout";
 import { SiPolymerproject } from "react-icons/si";
+import { useQuery } from "@tanstack/react-query";
 
 const ProjectListPage = () => {
   const { spaceId } = useParams();
-  const [projects, setProjects] = useState<ProjectResponseType[] | null>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getProjectsBySpaceApi(Number(spaceId))
-      .then((res) => {
-        setProjects(res.data);
-      })
-      .catch(() => {})
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [spaceId]);
+  const {
+    data: projects = [],
+    isLoading,
+    isError,
+  } = useQuery<ProjectResponseType[]>({
+    queryKey: ["projects"],
+    queryFn: async () => {
+      const res = await getProjectsBySpaceApi(Number(spaceId));
+      return res.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
 
   return (
     <ListLayout
@@ -28,7 +28,11 @@ const ProjectListPage = () => {
       to={`/projects/spaces/${spaceId}/create`}
       icon={<SiPolymerproject />}
     >
-      {!isLoading && projects?.length === 0 ? (
+      {isLoading ? (
+        <div>불러오는 중...</div>
+      ) : isError ? (
+        <div>프로젝트를 불러오지 못했습니다.</div>
+      ) : projects.length === 0 ? (
         <div>해당 프로젝트가 존재하지 않습니다.</div>
       ) : (
         projects?.map((project) => (
