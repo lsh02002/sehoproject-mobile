@@ -28,7 +28,7 @@ const SpaceCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["spaces"],
+        queryKey: ["spaces", workspaceId],
       });
       })
       .catch(() => {});

@@ -82,7 +82,7 @@ const SprintCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["sprints"],
+        queryKey: ["sprints", String(projectId)],
       });
       })
       .catch(() => {});

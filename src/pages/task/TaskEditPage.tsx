@@ -178,7 +178,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
         toast.success("수정을 성공했습니다!");
 
         queryClient.invalidateQueries({
-          queryKey: ["tasks"],
+          queryKey: ["tasks", projectId],
         });
       })
       .catch(() => {});

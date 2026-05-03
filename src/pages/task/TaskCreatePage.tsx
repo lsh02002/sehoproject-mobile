@@ -149,7 +149,7 @@ const TaskCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["tasks"],
+        queryKey: ["tasks", String(projectId)],
       });
       })
       .catch(() => {});

@@ -12,8 +12,7 @@ import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useQueryClient } from "@tanstack/react-query";
 
 const ProjectCreatePage = () => {
-  const { spaceIdParam } = useParams();
-  const [spaceId, setSpaceId] = useState(spaceIdParam);
+  const { spaceId } = useParams();
   const [projectKey, setProjectKey] = useState("PROJECT");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -37,8 +36,8 @@ const ProjectCreatePage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["projects"],
-      });
+          queryKey: ["projects", spaceId],
+        });
       })
       .catch(() => {});
   };
@@ -59,7 +58,7 @@ const ProjectCreatePage = () => {
             title="스페이스 아이디"
             disabled
             data={spaceId ?? ""}
-            setData={setSpaceId}
+            setData={() => {}}
           />
         </TwoDiv>
 

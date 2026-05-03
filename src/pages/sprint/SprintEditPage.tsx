@@ -98,7 +98,7 @@ const SprintEditPage = ({
         toast.success("수정을 성공했습니다!");
 
         queryClient.invalidateQueries({
-          queryKey: ["sprints"],
+          queryKey: ["sprints", projectId],
         });
       })
       .catch(() => {});

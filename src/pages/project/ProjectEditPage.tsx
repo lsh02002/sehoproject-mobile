@@ -15,7 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 const ProjectEditPage = () => {
   const { projectId } = useParams();
   const [id, setId] = useState(projectId);
-  const [spaceId, setSpaceId] = useState();
+  const [spaceId, setSpaceId] = useState("");
   const [spaceName, setSpaceName] = useState("");
   const [projectKey, setProjectKey] = useState("");
   const [name, setName] = useState("");
@@ -103,7 +103,7 @@ const ProjectEditPage = () => {
         toast.success("수정을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["projects"],
+        queryKey: ["projects", spaceId],
       });
       })
       .catch(() => {});
