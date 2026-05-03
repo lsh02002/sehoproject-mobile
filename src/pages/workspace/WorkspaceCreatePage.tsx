@@ -44,7 +44,7 @@ const WorkspaceCreatePage = () => {
 
         toast.success("생성을 성공했습니다!");
 
-        queryClient.removeQueries({
+        queryClient.invalidateQueries({
           queryKey: ["workspaces"],
         });
 

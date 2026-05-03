@@ -14,7 +14,7 @@ const TaskListPage = () => {
     isLoading,
     isError,
   } = useQuery<TaskResponseType[]>({
-    queryKey: ["tasks", projectId],
+    queryKey: ["tasks", String(projectId)],
     queryFn: async () => {
       const res = await getTasksByProjectApi(Number(projectId));
       return res.data;
