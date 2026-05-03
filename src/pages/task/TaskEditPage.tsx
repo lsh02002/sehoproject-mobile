@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   AssigneeRequestType,
   AssignInfoType,
@@ -49,6 +49,8 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const [_, setImageResponses] = useState<ImageResponseType[]>([]);
 
   const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
 
   const stateOptions: Option[] = [
     { label: "TODO", value: "TODO" },
@@ -180,6 +182,8 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
         queryClient.invalidateQueries({
           queryKey: ["tasks", projectId],
         });
+
+        navigate(-1);
       })
       .catch(() => {});
   };

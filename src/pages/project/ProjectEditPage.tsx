@@ -1,5 +1,5 @@
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getOneProjectApi, putOneProjectApi } from "../../api/sehomanagerapi";
 import { ProjectRequestType, TagResponseType } from "../../types/type";
@@ -29,10 +29,11 @@ const ProjectEditPage = () => {
 
   const queryClient = useQueryClient();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     getOneProjectApi(Number(projectId))
       .then((res) => {
-
         setId(res.data.id);
         setSpaceId(res.data.spaceId);
         setSpaceName(res.data.spaceName);
@@ -44,7 +45,7 @@ const ProjectEditPage = () => {
         setCreatorId(res.data.creatorId);
         setCreatorName(res.data.creatorName);
         setTags(
-          res.data.tagResponses?.map((tag: TagResponseType) => tag?.name)
+          res.data.tagResponses?.map((tag: TagResponseType) => tag?.name),
         );
       })
       .catch(() => {});
@@ -103,92 +104,94 @@ const ProjectEditPage = () => {
         toast.success("수정을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["projects", spaceId],
-      });
+          queryKey: ["projects", spaceId],
+        });
+
+        navigate(-1);
       })
       .catch(() => {});
   };
 
-return (
-  <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
-    <div className="w-100 d-flex flex-column align-items-center">
-      <div className="w-100 d-flex justify-content-between align-items-center mb-3">
-        <div className="d-flex align-items-center gap-2">
-          <SiPolymerproject />
-          <h3 className="m-0 fw-medium">프로젝트 수정</h3>
+  return (
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div className="w-100 d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <SiPolymerproject />
+            <h3 className="m-0 fw-medium">프로젝트 수정</h3>
+          </div>
         </div>
+
+        <TwoDiv>
+          <TextInput
+            name="id"
+            title="프로젝트 아이디"
+            disabled
+            data={id ?? "0"}
+            setData={setId}
+          />
+          <TextInput
+            name="spaceName"
+            title="스페이스 이름"
+            disabled
+            data={spaceName}
+            setData={setSpaceName}
+          />
+        </TwoDiv>
+
+        <TextInput
+          name="projectKey"
+          title="프로젝트 키"
+          disabled
+          data={projectKey}
+          setData={setProjectKey}
+        />
+
+        <TextInput name="name" title="이름" data={name} setData={setName} />
+
+        <QuillEditorInput
+          name="description"
+          title="상세설명"
+          data={description}
+          setData={setDescription}
+        />
+
+        <TwoDiv>
+          <DateInput
+            title="시작일"
+            selected={startDate}
+            setSelected={setStartDate}
+          />
+          <DateInput
+            title="마감일"
+            selected={dueDate}
+            setSelected={setDueDate}
+          />
+        </TwoDiv>
+
+        <TextInput
+          name="creatorName"
+          title="생성자 이름"
+          disabled
+          data={creatorName}
+          setData={setCreatorName}
+        />
+
+        <CompleteArrayInput
+          name="tags"
+          title="태그들"
+          values={tags}
+          setValues={setTags}
+          fetchOptions={fetchOptions}
+          createOption={createOption}
+          deleteOption={deleteOption}
+          hydrateSelected={hydrateSelected}
+        />
+
+        <ConfirmButton title="수정" onClick={OnEditSubmit} />
       </div>
-
-      <TwoDiv>
-        <TextInput
-          name="id"
-          title="프로젝트 아이디"
-          disabled
-          data={id ?? "0"}
-          setData={setId}
-        />
-        <TextInput
-          name="spaceName"
-          title="스페이스 이름"
-          disabled
-          data={spaceName}
-          setData={setSpaceName}
-        />
-      </TwoDiv>
-
-      <TextInput
-        name="projectKey"
-        title="프로젝트 키"
-        disabled
-        data={projectKey}
-        setData={setProjectKey}
-      />
-
-      <TextInput name="name" title="이름" data={name} setData={setName} />
-
-      <QuillEditorInput
-        name="description"
-        title="상세설명"
-        data={description}
-        setData={setDescription}
-      />
-
-      <TwoDiv>
-        <DateInput
-          title="시작일"
-          selected={startDate}
-          setSelected={setStartDate}
-        />
-        <DateInput
-          title="마감일"
-          selected={dueDate}
-          setSelected={setDueDate}
-        />
-      </TwoDiv>
-
-      <TextInput
-        name="creatorName"
-        title="생성자 이름"
-        disabled
-        data={creatorName}
-        setData={setCreatorName}
-      />
-
-      <CompleteArrayInput
-        name="tags"
-        title="태그들"
-        values={tags}
-        setValues={setTags}
-        fetchOptions={fetchOptions}
-        createOption={createOption}
-        deleteOption={deleteOption}
-        hydrateSelected={hydrateSelected}
-      />
-
-      <ConfirmButton title="수정" onClick={OnEditSubmit} />
     </div>
-  </div>
-);
+  );
 };
 
 export default ProjectEditPage;

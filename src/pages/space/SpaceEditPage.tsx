@@ -5,7 +5,7 @@ import {
   putOneSpaceByWorkspaceAndSpaceApi,
 } from "../../api/sehomanagerapi";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SpaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 import SpaceMemberPage from "./SpaceConfirmBox";
@@ -24,6 +24,8 @@ const SpaceEditPage = () => {
   const [currentTab, setCurrentTab] = useState<TabKey>("info");
 
   const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getOneSpaceByWorkspaceAndSpaceApi(Number(workspaceId), Number(spaceId))
@@ -49,8 +51,10 @@ const SpaceEditPage = () => {
         toast.success("생성을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["spaces", workspaceId],
-      });
+          queryKey: ["spaces", workspaceId],
+        });
+
+        navigate(-1);
       })
       .catch(() => {});
   };

@@ -1,5 +1,5 @@
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import {
   getOneSprintApi,
@@ -32,6 +32,8 @@ const SprintEditPage = ({
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
 
   const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
 
   const sprintStateOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
@@ -100,6 +102,8 @@ const SprintEditPage = ({
         queryClient.invalidateQueries({
           queryKey: ["sprints", projectId],
         });
+
+        navigate(-1);
       })
       .catch(() => {});
   };

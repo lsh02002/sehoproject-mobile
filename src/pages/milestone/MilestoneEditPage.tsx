@@ -1,5 +1,5 @@
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import {
   getOneMilestoneApi,
@@ -34,6 +34,8 @@ const MilestoneEditPage = ({
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
 
   const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
 
   const milestoneStatusOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
@@ -103,8 +105,10 @@ const MilestoneEditPage = ({
         toast.success("수정을 성공했습니다!");
 
         queryClient.invalidateQueries({
-        queryKey: ["milestones", projectId],
-      });
+          queryKey: ["milestones", projectId],
+        });
+
+        navigate(-1);
       })
       .catch(() => {});
   };
@@ -137,7 +141,7 @@ const MilestoneEditPage = ({
         </TwoDiv>
 
         <TextInput name="name" title="이름" data={name} setData={setName} />
-        
+
         <QuillEditorInput
           name="description"
           title="상세설명"
