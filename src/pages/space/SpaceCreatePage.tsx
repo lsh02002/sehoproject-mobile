@@ -3,7 +3,7 @@ import TextInput from "../../components/form/TextInput";
 import { createSpaceApi } from "../../api/sehomanagerapi";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { SpaceRequestType } from "../../types/type";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaSpaceAwesome } from "react-icons/fa6";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,6 +16,8 @@ const SpaceCreatePage = () => {
   const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -35,6 +37,8 @@ const SpaceCreatePage = () => {
         queryClient.invalidateQueries({
           queryKey: ["spaces", workspaceId],
         });
+
+        navigate(-1);
       })
       .catch(() => {})
       .finally(() => {

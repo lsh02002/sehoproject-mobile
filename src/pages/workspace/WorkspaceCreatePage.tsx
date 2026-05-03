@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { MdWorkspaces } from "react-icons/md";
 import { layout } from "../../theme/Theme";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const WorkspaceCreatePage = () => {
   const [name, setName] = useState("");
@@ -15,6 +16,8 @@ const WorkspaceCreatePage = () => {
   const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -44,6 +47,8 @@ const WorkspaceCreatePage = () => {
         queryClient.invalidateQueries({
           queryKey: ["workspaces"],
         });
+
+        navigate(-1);
       })
       .catch(() => {})
       .finally(() => {

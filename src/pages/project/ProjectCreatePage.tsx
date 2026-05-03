@@ -1,5 +1,5 @@
 import ConfirmButton from "../../components/form/ConfirmButton";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { createProjectApi } from "../../api/sehomanagerapi";
 import { ProjectRequestType } from "../../types/type";
@@ -23,6 +23,8 @@ const ProjectCreatePage = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const navigate = useNavigate();
+
   const OnCreateSubmit = () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
@@ -43,6 +45,8 @@ const ProjectCreatePage = () => {
         queryClient.invalidateQueries({
           queryKey: ["projects", spaceId],
         });
+
+        navigate(-1);
       })
       .catch(() => {})
       .finally(() => {

@@ -22,6 +22,7 @@ import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useLogin } from "../../context/LoginContext";
 import ImageInput from "../../components/form/ImageInput";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const TaskCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -43,6 +44,8 @@ const TaskCreatePage = () => {
   const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const stateOptions: Option[] = [
     { label: "TODO", value: "TODO" },
@@ -156,6 +159,8 @@ const TaskCreatePage = () => {
         queryClient.invalidateQueries({
           queryKey: ["tasks", String(projectId)],
         });
+
+        navigate(-1);
       })
       .catch(() => {})
       .finally(() => {

@@ -14,6 +14,7 @@ import SelectInput, { Option } from "../../components/form/SelectInput";
 import { GiSprint } from "react-icons/gi";
 import { useLogin } from "../../context/LoginContext";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const SprintCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -28,6 +29,8 @@ const SprintCreatePage = () => {
   const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const sprintStateOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
@@ -89,6 +92,8 @@ const SprintCreatePage = () => {
         queryClient.invalidateQueries({
           queryKey: ["sprints", String(projectId)],
         });
+
+        navigate(-1);
       })
       .catch(() => {})
       .finally(() => {

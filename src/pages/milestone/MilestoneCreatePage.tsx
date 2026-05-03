@@ -15,6 +15,7 @@ import { LuMilestone } from "react-icons/lu";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useLogin } from "../../context/LoginContext";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const MilestoneCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -30,6 +31,8 @@ const MilestoneCreatePage = () => {
   const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const milestoneStatusOptions: Option[] = [
     { label: "PLANNED", value: "PLANNED" },
@@ -93,6 +96,8 @@ const MilestoneCreatePage = () => {
         queryClient.invalidateQueries({
           queryKey: ["milestones", String(projectId)],
         });
+
+        navigate(-1);
       })
       .catch(() => {})
       .finally(() => {
