@@ -11,7 +11,6 @@ import {
 } from "../../types/type";
 import { LockIcon, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useModalManager } from "../../context/ModalManager";
 
 /* ========= 정렬 유틸 ========= */
 const byPosThenId =
@@ -308,8 +307,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   fontSize,
 }) {
   const navigate = useNavigate();
-  const { closeModal } = useModalManager();
-
+  
   const hasChildren = Boolean(node.children?.length);
   const isSelected = selectedId === node.id;
   const isDisabled = node.disabled === true;
@@ -325,8 +323,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
       document.activeElement.blur();
     }
 
-    setOpen(false); // ⭐ panel 닫기
-    closeModal("side");
+    setOpen(false); // ⭐ panel 닫기    
 
     if (node.id === "root") {
       navigate("/settings/workspaces");
