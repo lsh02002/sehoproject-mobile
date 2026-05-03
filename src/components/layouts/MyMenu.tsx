@@ -12,10 +12,10 @@ import { useLogin } from "../../context/LoginContext";
 
 export default function SidebarMenu({
   open,
-  setOpen,
+  onCloseSide,
 }: {
   open: boolean;
-  setOpen: (v: boolean) => void;
+  onCloseSide: () => void;
 }) {
   const { isLogin, setIsLogin } = useLogin();
   const navigate = useNavigate();
@@ -129,7 +129,7 @@ export default function SidebarMenu({
       <ul className="list-unstyled m-0 p-0">
         <TreeNode
           open={open}
-          setOpen={setOpen}
+          onCloseSide={onCloseSide}
           node={root}
           selectedId={selectedId}
           onSelect={handleSelect}
@@ -155,7 +155,7 @@ export default function SidebarMenu({
             borderRadius: 6,
           }}
           onClick={() => {
-            setOpen(false);
+            onCloseSide();
             navigate("/settings/invitation-message");
           }}
         >
@@ -172,7 +172,7 @@ export default function SidebarMenu({
                 border: 6,
               }}
               onClick={() => {
-                setOpen(false);
+                onCloseSide();
                 navigate("/change-password");
               }}
             >
@@ -193,7 +193,7 @@ export default function SidebarMenu({
                 localStorage.removeItem("refreshToken");
 
                 setIsLogin(false);
-                setOpen(false);
+                onCloseSide();
                 navigate("/login");
               }}
             >
@@ -209,7 +209,7 @@ export default function SidebarMenu({
               borderRadius: 6,
             }}
             onClick={() => {
-              setOpen(false);
+              onCloseSide();
               navigate("/login");
             }}
           >

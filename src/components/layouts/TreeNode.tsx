@@ -289,7 +289,7 @@ export function convertToRootTreeNode(
 
 type Props = {
   open: boolean;
-  setOpen: (v: any) => void;
+  onCloseSide: () => void;
   node: TreeNodeType;
   depth?: number;
   selectedId?: string | number;
@@ -299,7 +299,7 @@ type Props = {
 
 export const TreeNode: React.FC<Props> = memo(function TreeNode({
   open,
-  setOpen,
+  onCloseSide,
   node,
   depth = 0,
   selectedId,
@@ -307,15 +307,12 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   fontSize,
 }) {
   const navigate = useNavigate();
-  
+
   const hasChildren = Boolean(node.children?.length);
   const isSelected = selectedId === node.id;
   const isDisabled = node.disabled === true;
 
   const handleToggle = () => {
-    if (hasChildren) setOpen((v: any) => !v);
-    onSelect?.(node);
-
     if (isDisabled) return;
 
     // ⭐ 핵심 추가
@@ -323,24 +320,33 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
       document.activeElement.blur();
     }
 
-    setOpen(false); // ⭐ panel 닫기    
+    onCloseSide(); // ⭐ panel 닫기
 
     if (node.id === "root") {
-      navigate("/settings/workspaces");
-      return;
+      setTimeout(() => {
+        navigate("/settings/workspaces");
+      }, 0);
+    } else {
+      switch (node.type) {
+        case "WORKSPACE":
+          setTimeout(() => {
+            navigate(`/settings/workspace/${node.id}/spaces`);
+          }, 0);
+          break;
+        case "SPACE":
+          setTimeout(() => {
+            navigate(`/projects/spaces/${node.id}`);
+          }, 0);
+          break;
+        case "PROJECT":
+          setTimeout(() => {
+            navigate(`/boards/projects/${node.id}`);
+          }, 0);
+          break;
+      }
     }
 
-    switch (node.type) {
-      case "WORKSPACE":
-        navigate(`/settings/workspace/${node.id}/spaces`);
-        break;
-      case "SPACE":
-        navigate(`/projects/spaces/${node.id}`);
-        break;
-      case "PROJECT":
-        navigate(`/boards/projects/${node.id}`);
-        break;
-    }
+    onCloseSide();
   };
 
   return (
@@ -481,7 +487,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
                   document.activeElement.blur();
                 }
 
-                setOpen(false);
+                onCloseSide();
                 navigate(`/sprints/projects/${node.id}/calendar`);
               }}
               style={{
@@ -531,7 +537,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
                 child.id ?? idx,
               )}-${idx}`}
               open={open}
-              setOpen={setOpen}
+              onCloseSide={onCloseSide}
               node={child}
               depth={depth + 1}
               selectedId={selectedId}

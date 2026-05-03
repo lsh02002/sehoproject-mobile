@@ -42,7 +42,7 @@ export default function Layout({
     setIsSideOpen,
   } = useLogin();
 
-  const { openModal, closeModal, hasOpenModal } = useModalManager();
+  const { isOpen, openModal, closeModal, hasOpenModal } = useModalManager();
 
   useEffect(() => {
     if (isSideOpen) setIsMenuRefresh(!isMemuRefresh);
@@ -103,7 +103,15 @@ export default function Layout({
         direction="left"
         name="side"
       >
-        <SidebarMenu open={isSideOpen} setOpen={setIsSideOpen} />
+        <SidebarMenu
+          open={isSideOpen}
+          onCloseSide={() => {
+            setIsSideOpen(false);
+            if (isOpen("side")) {
+              closeModal("side");
+            }
+          }}
+        />
       </SlideSidePanel>
 
       <SlidePanel title="태스크 창" zIndex={100} name="task">
