@@ -2,7 +2,6 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useLogin } from "../../context/LoginContext";
 import { Calendar } from "lucide-react";
-import ScrollToTopButton from "../form/ScrollToTopButton";
 import { useModalManager } from "../../context/ModalManager";
 
 type ListLayoutProps = {
@@ -138,10 +137,7 @@ const ListLayout = ({
               {emptyMessage}
             </div>
           ) : (
-            <>
-              <ScrollToTopButton />
-              {children}
-            </>
+            children
           )}
 
           <div className="d-flex align-items-center w-100" style={{ gap: 10 }}>

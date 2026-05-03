@@ -12,6 +12,8 @@ import { layout } from "../../theme/Theme";
 import MilestoneEditPage from "../../pages/milestone/MilestoneEditPage";
 import MilestoneCreatePage from "../../pages/milestone/MilestoneCreatePage";
 import SlideSidePanel from "./SlideSidePanel";
+import { useModalManager } from "../../context/ModalManager";
+import ScrollToTopButton from "../form/ScrollToTopButton";
 
 export type NavItem = {
   label: string;
@@ -39,6 +41,8 @@ export default function Layout({
     isSideOpen,
     setIsSideOpen,
   } = useLogin();
+
+  const { hasOpenModal } = useModalManager();
 
   useEffect(() => {
     if (isSideOpen) setIsMenuRefresh(!isMemuRefresh);
@@ -145,6 +149,7 @@ export default function Layout({
         }}
       >
         <BackwardButton />
+        {!hasOpenModal && <ScrollToTopButton />}
         {children}
       </main>
     </div>
