@@ -14,7 +14,7 @@ const SpaceListPage = () => {
     isLoading,
     isError,
   } = useQuery<SpaceResponseType[]>({
-    queryKey: ["spaces"],
+    queryKey: ["spaces", workspaceId],
     queryFn: async () => {
       const res = await getSpacesByWorkspaceApi(Number(workspaceId));
       return res.data;
