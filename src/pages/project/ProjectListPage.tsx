@@ -18,6 +18,7 @@ const ProjectListPage = () => {
       const res = await getProjectsBySpaceApi(Number(spaceId));
       return res.data;
     },
+    retry: false,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });

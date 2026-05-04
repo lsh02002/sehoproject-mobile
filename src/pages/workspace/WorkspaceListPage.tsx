@@ -16,6 +16,7 @@ const WorkspaceListPage = () => {
       const res = await getWorkspacesApi();
       return res.data;
     },
+    retry: false,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });

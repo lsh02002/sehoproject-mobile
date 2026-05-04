@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { ChangePasswordRequestType } from "../../types/type";
-import { showToast, UserChangePasswordApi } from "../../api/sehomanagerapi";
+import { UserChangePasswordApi } from "../../api/sehomanagerapi";
 import { layout } from "../../theme/Theme";
+import { toast } from "react-toastify";
 
 const ChangePasswordPage = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -19,7 +20,7 @@ const ChangePasswordPage = () => {
 
     UserChangePasswordApi(changePasswordRequest)
       .then(() => {
-        showToast("비밀번호 변경에 성공했습니다.", "success");
+        toast.success("비밀번호 변경에 성공했습니다.");
       })
       .catch(() => {});
   };

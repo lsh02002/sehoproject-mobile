@@ -19,6 +19,7 @@ const SprintListPage = () => {
       const res = await getSprintsByProjectApi(Number(projectId));
       return res.data;
     },
+    retry: false,
     enabled: projectId !== 0, // 👈 key fix
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,

@@ -289,7 +289,7 @@ export function convertToRootTreeNode(
 }
 
 type Props = {
-  open: boolean;  
+  open: boolean;
   node: TreeNodeType;
   depth?: number;
   selectedId?: string | number;
@@ -297,7 +297,7 @@ type Props = {
 };
 
 export const TreeNode: React.FC<Props> = memo(function TreeNode({
-  open,  
+  open,
   node,
   depth = 0,
   selectedId,
@@ -344,7 +344,13 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
     >
       <Link
         to={targetPath}
-        onClick={(e) => go(e, targetPath)}
+        onClick={(e) => {
+          if (isDisabled) {
+            e.preventDefault();
+            return;
+          }
+          go(e, targetPath);
+        }}
         aria-expanded={hasChildren ? open : undefined}
         aria-label={node.name}
         aria-disabled={isDisabled || undefined}
@@ -514,7 +520,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
               key={`${depth + 1}-${child.type ?? "NODE"}-${String(
                 child.id ?? idx,
               )}-${idx}`}
-              open={open}              
+              open={open}
               node={child}
               depth={depth + 1}
               selectedId={selectedId}
