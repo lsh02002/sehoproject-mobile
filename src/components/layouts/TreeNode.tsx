@@ -345,8 +345,6 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
           break;
       }
     }
-
-    onCloseSide();
   };
 
   return (
