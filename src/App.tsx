@@ -63,7 +63,7 @@ function App() {
             element={<ProjectEditPage />}
           />
           <Route
-            path="/projects/spaces/:spaceIdParam/create"
+            path="/projects/spaces/:spaceId/create"
             element={<ProjectCreatePage />}
           />
 
