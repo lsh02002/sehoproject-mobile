@@ -9,6 +9,7 @@ import {
 import type { TreeNodeType } from "../../types/type";
 import { getWorkspacesTreeApi } from "../../api/sehomanagerapi";
 import { useLogin } from "../../context/LoginContext";
+import { useModalManager } from "../../context/ModalManager";
 
 export default function SidebarMenu({
   open,
@@ -23,6 +24,7 @@ export default function SidebarMenu({
   const location = useLocation();
   const { workspaceId } = useParams();
   const { isMemuRefresh } = useLogin();
+  const { closeAllModals } = useModalManager();
 
   const [root, setRoot] = React.useState<TreeNodeType | null>(null);
 
@@ -204,6 +206,7 @@ export default function SidebarMenu({
 
                 setIsLogin(false);
                 onCloseSide();
+                closeAllModals();
                 go("/login");
               }}
             >
@@ -220,6 +223,7 @@ export default function SidebarMenu({
             }}
             onClick={() => {
               onCloseSide();
+              closeAllModals();
               go("/login");
             }}
           >
