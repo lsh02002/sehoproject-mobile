@@ -69,7 +69,7 @@ const QuillEditorInput = ({
           overflow: "hidden",
         }}
       >
-        {data && data !== "<p><br></p>" && (
+        {!isEmpty ? (
           <div
             dangerouslySetInnerHTML={{ __html: data }}
             style={{
@@ -78,8 +78,9 @@ const QuillEditorInput = ({
               textOverflow: "ellipsis",
             }}
           />
+        ) : (
+          `${title}을(를) 입력하세요`
         )}
-        {isEmpty && `${title}을(를) 입력하세요`}
       </div>
 
       <div
