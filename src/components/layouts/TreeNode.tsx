@@ -1,5 +1,5 @@
 // TreeNode.tsx
-import React, { memo } from "react";
+import { memo } from "react";
 import {
   BackendRowType,
   MilestoneNodeType,
@@ -10,7 +10,8 @@ import {
   WorkspaceTreeResponseType,
 } from "../../types/type";
 import { LockIcon, Calendar } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useModalManager } from "../../context/ModalManager";
 
 /* ========= 정렬 유틸 ========= */
 const byPosThenId =
@@ -288,63 +289,50 @@ export function convertToRootTreeNode(
 }
 
 type Props = {
-  open: boolean;
-  onCloseSide: () => void;
+  open: boolean;  
   node: TreeNodeType;
   depth?: number;
   selectedId?: string | number;
-  onSelect?: (node: TreeNodeType) => void;
   fontSize?: number;
 };
 
 export const TreeNode: React.FC<Props> = memo(function TreeNode({
-  open,
-  onCloseSide,
+  open,  
   node,
   depth = 0,
   selectedId,
-  onSelect,
   fontSize,
 }) {
   const navigate = useNavigate();
-
+  const { closeAllModals } = useModalManager();
   const hasChildren = Boolean(node.children?.length);
   const isSelected = selectedId === node.id;
   const isDisabled = node.disabled === true;
 
-  const go = (path: string) => {
-    setTimeout(() => {
-      navigate(path);
-    }, 0);
-  };
+  const targetPath =
+    node.id === "root"
+      ? "/settings/workspaces"
+      : node.type === "WORKSPACE"
+        ? `/settings/workspace/${node.id}/spaces`
+        : node.type === "SPACE"
+          ? `/projects/spaces/${node.id}`
+          : node.type === "PROJECT"
+            ? `/boards/projects/${node.id}`
+            : "#";
 
-  const handleToggle = () => {
-    if (isDisabled) return;
+  const go = (e: React.MouseEvent, path: string) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-    // ⭐ 핵심 추가
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
 
-    onCloseSide(); // ⭐ panel 닫기
+    closeAllModals();
 
-    if (node.id === "root") {
-      setTimeout(() => {
-        navigate("/settings/workspaces");
-      }, 0);
-    } else {
-      switch (node.type) {
-        case "WORKSPACE":
-          go(`/settings/workspace/${node.id}/spaces`);
-          break;
-        case "SPACE":
-          go(`/projects/spaces/${node.id}`);
-          break;
-        case "PROJECT":
-          go(`/boards/projects/${node.id}`);
-          break;
-      }
-    }
+    setTimeout(() => {
+      navigate(path);
+    }, 0);
   };
 
   return (
@@ -354,9 +342,9 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         position: "relative",
       }}
     >
-      <button
-        type="button"
-        onClick={handleToggle}
+      <Link
+        to={targetPath}
+        onClick={(e) => go(e, targetPath)}
         aria-expanded={hasChildren ? open : undefined}
         aria-label={node.name}
         aria-disabled={isDisabled || undefined}
@@ -375,6 +363,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
           opacity: hasChildren ? 1 : 0.96,
           transition:
             "background 160ms ease, box-shadow 160ms ease, transform 120ms ease",
+          textDecoration: "none",
         }}
       >
         <span
@@ -477,23 +466,14 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
 
           {node.type === "PROJECT" && (
             <Calendar
-              onClick={(e) => {
-                if (isDisabled) return;
-                e.stopPropagation();
-
-                if (document.activeElement instanceof HTMLElement) {
-                  document.activeElement.blur();
-                }
-
-                onCloseSide();
-                go(`/sprints/projects/${node.id}/calendar`);
-              }}
+              onClick={(e) => go(e, `/sprints/projects/${node.id}/calendar`)}
               style={{
                 color: node.disabled ? "#aaa" : "inherit",
                 width: "1.15em",
                 height: "1.15em",
                 marginLeft: "0.25em",
                 flexShrink: 0,
+                cursor: "pointer",
               }}
             />
           )}
@@ -511,7 +491,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
             <title>"접근 권한이 없습니다"</title>
           </LockIcon>
         )}
-      </button>
+      </Link>
 
       <div
         style={{
@@ -534,12 +514,10 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
               key={`${depth + 1}-${child.type ?? "NODE"}-${String(
                 child.id ?? idx,
               )}-${idx}`}
-              open={open}
-              onCloseSide={onCloseSide}
+              open={open}              
               node={child}
               depth={depth + 1}
               selectedId={selectedId}
-              onSelect={onSelect}
               fontSize={fontSize}
             />
           ))}

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   TreeNode,
@@ -11,18 +11,11 @@ import { getWorkspacesTreeApi } from "../../api/sehomanagerapi";
 import { useLogin } from "../../context/LoginContext";
 import { useModalManager } from "../../context/ModalManager";
 
-export default function SidebarMenu({
-  open,
-  onCloseSide,
-}: {
-  open: boolean;
-  onCloseSide: () => void;
-}) {
+export default function SidebarMenu({ open }: { open: boolean }) {
   const { isLogin, setIsLogin } = useLogin();
   const nickname = localStorage.getItem("nickname");
   const navigate = useNavigate();
   const location = useLocation();
-  const { workspaceId } = useParams();
   const { isMemuRefresh } = useLogin();
   const { closeAllModals } = useModalManager();
 
@@ -98,18 +91,19 @@ export default function SidebarMenu({
     };
   }, [isMemuRefresh]);
 
-  const go = (path: string) => {
+  const go = (e: React.MouseEvent, path: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
+    closeAllModals();
+
     setTimeout(() => {
       navigate(path);
     }, 0);
-  };
-
-  const handleSelect = (node: TreeNodeType) => {
-    if (String(node.id).startsWith("p")) {
-      go(`/workspaces/${workspaceId}/projects/${node.id}`);
-    } else if (String(node.id).startsWith("space-")) {
-      go(`/workspaces/${workspaceId}/spaces/${node.id}`);
-    }
   };
 
   if (!root)
@@ -138,10 +132,8 @@ export default function SidebarMenu({
       <ul className="list-unstyled m-0 p-0">
         <TreeNode
           open={open}
-          onCloseSide={onCloseSide}
           node={root}
           selectedId={selectedId}
-          onSelect={handleSelect}
           fontSize={16}
         />
       </ul>
@@ -163,9 +155,8 @@ export default function SidebarMenu({
             padding: "6px 10px",
             borderRadius: 6,
           }}
-          onClick={() => {
-            onCloseSide();
-            go("/settings/invitation-message");
+          onClick={(e) => {            
+            go(e, "/settings/invitation-message");
           }}
         >
           워크스페이스 초대함
@@ -180,9 +171,8 @@ export default function SidebarMenu({
                 padding: "6x 10px",
                 border: 6,
               }}
-              onClick={() => {
-                onCloseSide();
-                go("/change-password");
+              onClick={(e) => {                
+                go(e, "/change-password");
               }}
             >
               비밀번호 변경
@@ -194,7 +184,7 @@ export default function SidebarMenu({
                 padding: "6px 10px",
                 borderRadius: 6,
               }}
-              onClick={() => {
+              onClick={(e) => {
                 if (!window.confirm("로그아웃 하시겠습니까?")) {
                   return;
                 }
@@ -204,10 +194,8 @@ export default function SidebarMenu({
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
 
-                setIsLogin(false);
-                onCloseSide();
-                closeAllModals();
-                go("/login");
+                setIsLogin(false);                
+                go(e, "/login");
               }}
             >
               <div className="d-flex">로그아웃 ({nickname})</div>
@@ -221,10 +209,8 @@ export default function SidebarMenu({
               padding: "6px 10px",
               borderRadius: 6,
             }}
-            onClick={() => {
-              onCloseSide();
-              closeAllModals();
-              go("/login");
+            onClick={(e) => {              
+              go(e, "/login");
             }}
           >
             로그인

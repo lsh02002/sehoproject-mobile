@@ -29,7 +29,7 @@ const ModalManagerContext = createContext<ModalManagerContextValue | null>(
 );
 
 export function ModalManager({ children }: { children: React.ReactNode }) {
-  const { setIsSideOpen } = useLogin();
+  const { isSideOpen, setIsSideOpen } = useLogin();
   const [openModals, setOpenModals] = useState<ModalName[]>([]);
   const stackRef = useRef<ModalName[]>([]);
   const isHandlingPopRef = useRef(false);
@@ -69,6 +69,10 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
   }, []);
 
   const closeAllModals = useCallback(() => {
+    if (isSideOpen) {
+      setIsSideOpen(false);
+    }
+
     const count = stackRef.current.length;
     if (count === 0) return;
 
@@ -76,7 +80,7 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
 
     // history도 쌓인 만큼 뒤로 이동
     window.history.go(-count);
-  }, [syncStack]);
+  }, [isSideOpen, setIsSideOpen, syncStack]);
 
   useEffect(() => {
     const handlePopState = () => {
