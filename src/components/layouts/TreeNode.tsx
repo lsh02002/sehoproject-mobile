@@ -472,7 +472,13 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
 
           {node.type === "PROJECT" && (
             <Calendar
-              onClick={(e) => go(e, `/sprints/projects/${node.id}/calendar`)}
+              onClick={(e) => {
+                if (isDisabled) {
+                  e.preventDefault();
+                  return;
+                }
+                go(e, `/sprints/projects/${node.id}/calendar`);
+              }}
               style={{
                 color: node.disabled ? "#aaa" : "inherit",
                 width: "1.15em",
