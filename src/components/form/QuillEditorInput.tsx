@@ -83,7 +83,7 @@ const QuillEditorInput = ({
             }}
           />
         ) : (
-          (isDataEmpty || isEmpty) && `${title}을(를) 입력하세요`
+          `${title}을(를) 입력하세요`
         )}
       </div>
 
