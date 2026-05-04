@@ -48,6 +48,12 @@ const QuillEditorInput = ({
     };
   }, [isEditorOpen]);
 
+  const isDataEmpty =
+    !data ||
+    data === "<p><br></p>" ||
+    data === "<p></p>" ||
+    data.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+
   return (
     <div className="w-100 mb-3">
       <style>{quillStyles}</style>
@@ -60,16 +66,14 @@ const QuillEditorInput = ({
         onClick={() => {
           if (!disabled) openModal(name);
         }}
-        className={`form-control ${
-          !data || data === "<p><br></p>" ? "text-secondary" : ""
-        }`}
+        className={`form-control ${isDataEmpty ? "text-secondary" : ""}`}
         style={{
           minHeight: 3 * 24 + 32,
           cursor: disabled ? "not-allowed" : "pointer",
           overflow: "hidden",
         }}
       >
-        {!isEmpty ? (
+        {!isDataEmpty ? (
           <div
             dangerouslySetInnerHTML={{ __html: data }}
             style={{
@@ -79,7 +83,7 @@ const QuillEditorInput = ({
             }}
           />
         ) : (
-          `${title}을(를) 입력하세요`
+          (isDataEmpty || isEmpty) && `${title}을(를) 입력하세요`
         )}
       </div>
 
