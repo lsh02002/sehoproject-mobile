@@ -143,8 +143,14 @@ const QuillEditorInput = ({
               theme="snow"
               value={data}
               onChange={(value, _delta, _source, editor) => {
+                const text = editor.getText().trim();
+                const isReallyEmpty =
+                  text.length === 0 ||
+                  value === "<p><br></p>" ||
+                  value === "<p></p>";
+
                 setData(value);
-                setIsEmpty(editor.getText().trim().length === 0);
+                setIsEmpty(isReallyEmpty);
               }}
               readOnly={disabled}
               placeholder={isEmpty ? `${title}을(를) 입력하세요` : ""}
