@@ -50,7 +50,7 @@ export default function Layout({
   }, [isSideOpen]);
 
   return (
-    <div className="min-vh-100 bg-white text-dark">
+    <div className="min-vh-100 text-dark">
       <a
         href="#main"
         className="position-absolute"
