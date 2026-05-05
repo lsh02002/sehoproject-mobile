@@ -18,7 +18,7 @@ import { DEBUG } from "./DEBUG";
 
 type ToastType = "success" | "error" | "info" | "warning";
 
-export const showToast = (
+const showToast = (
   message: string,
   type: ToastType = "error",
   toastId: string,
