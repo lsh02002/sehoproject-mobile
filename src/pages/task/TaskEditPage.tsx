@@ -84,6 +84,16 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   }, [projectId]);
 
   useEffect(() => {
+    if (projectId) {
+      getTagsByProjectApi(Number(projectId))
+        .then((res) => {
+          setTagOptions(res.data);
+        })
+        .catch(() => {});
+    }
+  }, [projectId]);
+
+  useEffect(() => {
     if (windowOpenTaskId || taskId) {
       getOneTaskApi(Number(windowOpenTaskId ?? taskId))
         .then((res) => {
@@ -108,12 +118,6 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
               (image: ImageResponseType) => image.fileUrl,
             ),
           );
-
-          getTagsByProjectApi(Number(res.data.projectId))
-            .then((res) => {
-              setTagOptions(res.data);
-            })
-            .catch(() => {});
         })
         .catch(() => {});
     }
