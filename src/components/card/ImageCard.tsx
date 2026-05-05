@@ -9,14 +9,47 @@ const ImageCard = ({
   imageUrl: string;
 }) => {
   return (
-    <div className="d-flex justify-content-center box-sizing-border-box py-2">
+    <div
+      className="overflow-hidden rounded-3"
+      style={{
+        width: "120px",
+        height: "90px",
+        cursor: "pointer",
+        position: "relative",
+        backgroundColor: "#f8f9fa",
+      }}
+    >
       <img
-        style={{ objectFit: "fill", cursor: "pointer" }}
-        width="100%"
-        height="100%"
         src={imageUrl}
-        alt="그림"
-        className="rounded"
+        alt="task"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transition: "transform 0.2s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+        }}
+      />
+
+      {/* hover overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0,0,0,0)",
+          transition: "background 0.2s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = "rgba(0,0,0,0.08)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = "rgba(0,0,0,0)";
+        }}
       />
     </div>
   );
