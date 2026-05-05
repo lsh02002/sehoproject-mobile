@@ -49,10 +49,10 @@ const WorkspaceEditPage = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-start w-100 p-3">
+    <div className="d-flex justify-content-center align-items-start w-100">
       <div
-        className="w-100 d-flex flex-column"
-        style={{ maxWidth: layout.maxWidth, padding: "20px" }}
+        className="w-100 d-flex flex-column p-3"
+        style={{ maxWidth: layout.maxWidth }}
       >
         <div
           className="d-flex justify-content-between align-items-center w-100 mb-3 border-bottom"

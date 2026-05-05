@@ -15,7 +15,6 @@ import {
 } from "../../api/sehomanagerapi";
 import { toast } from "react-toastify";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
-import { layout } from "../../theme/Theme";
 
 type ProjectLite = { id: number | string; name: string };
 
@@ -139,119 +138,99 @@ const SpaceConfirmBox: React.FC<SpacePrivilegePageProps> = ({
   };
 
   return (
-    <div className="container-fluid p-3 d-flex justify-content-center">
-      <div className="w-100" style={{ maxWidth: layout.maxWidth }}>
-        {/* Title */}
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <h3 className="fw-bold m-0">스페이스 권한 설정</h3>
-        </div>
+    <div className="w-100">
+      {/* Title */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h3 className="fw-bold m-0">스페이스 권한 설정</h3>
+      </div>
 
-        {/* Section 1 */}
-        <div className="border rounded-4 bg-white p-3 mb-3 shadow-sm">
-          <div className="row g-3">
-            <div className="col-md-6">
-              <TextInput
-                name="workspaceId"
-                title="워크스페이스"
-                data={String(workspaceId)}
-                setData={() => {}}
-                disabled
-              />
-            </div>
+      {/* Section 1 */}
+      <div className="mb-3">
+        <TextInput
+          name="workspaceId"
+          title="워크스페이스"
+          data={String(workspaceId)}
+          setData={() => {}}
+          disabled
+        />
 
-            <div className="col-md-6">
-              <TextInput
-                name="spaceId"
-                title="스페이스"
-                data={String(spaceId)}
-                setData={() => {}}
-                disabled
-              />
-            </div>
+        <TextInput
+          name="spaceId"
+          title="스페이스"
+          data={String(spaceId)}
+          setData={() => {}}
+          disabled
+        />
 
-            <div className="col-md-6">
-              <SelectArrayInput
-                name="invitedUserEmail"
-                title="대상 유저(이메일)"
-                values={invitedUserEmails}
-                setValues={setInvitedUserEmails}
-                options={acceptedUsers?.map((user) => ({
-                  label: user.email,
-                  value: user.email,
-                }))}
-              />
-            </div>
+        <SelectArrayInput
+          name="invitedUserEmail"
+          title="대상 유저(이메일)"
+          values={invitedUserEmails}
+          setValues={setInvitedUserEmails}
+          options={acceptedUsers?.map((user) => ({
+            label: user.email,
+            value: user.email,
+          }))}
+        />
 
-            <div className="col-md-6">
-              <SelectInput
-                name="requestRole"
-                title="스페이스 역할"
-                value={requestRole}
-                setValue={(v: string) => {
-                  if (isRequestRoleType(v)) setRequestRole(v);
-                }}
-                options={SPACE_ROLE_CHOICES.map((role) => ({
-                  label: role.name,
-                  value: role.name,
-                }))}
-              />
-            </div>
+        <SelectInput
+          name="requestRole"
+          title="스페이스 역할"
+          value={requestRole}
+          setValue={(v: string) => {
+            if (isRequestRoleType(v)) setRequestRole(v);
+          }}
+          options={SPACE_ROLE_CHOICES.map((role) => ({
+            label: role.name,
+            value: role.name,
+          }))}
+        />
+      </div>
+      {/* Section 2 */}
+      <div className="mb-3">
+        <h4 className="fw-bold mb-3">프로젝트 권한 (선택)</h4>
+        <SelectInput
+          name="roleProject"
+          title="프로젝트 역할"
+          value={roleProject}
+          setValue={(v: string) => {
+            if (isRoleProjectType(v)) setRoleProject(v);
+          }}
+          options={ROLE_PROJECT_CHOICES.map((role) => ({
+            label: role.name,
+            value: role.name,
+          }))}
+        />
+
+        <SelectArrayInput
+          name="projectIds"
+          title="프로젝트 선택"
+          values={projectIds}
+          setValues={setProjectIds}
+          options={projectOptions}
+        />
+        {loading && (
+          <div className="text-secondary small mt-1">
+            프로젝트 목록을 불러오는 중…
           </div>
-        </div>
+        )}
+      </div>
 
-        {/* Section 2 */}
-        <div className="border rounded-4 bg-white p-3 mb-3 shadow-sm">
-          <h4 className="fw-bold mb-3">프로젝트 권한 (선택)</h4>
+      {/* Section 3 */}
+      <div className="border rounded-4 bg-white p-3 mb-3 shadow-sm">
+        <h4 className="fw-bold mb-3">메모 (선택)</h4>
 
-          <div className="row g-3">
-            <div className="col-md-6">
-              <SelectInput
-                name="roleProject"
-                title="프로젝트 역할"
-                value={roleProject}
-                setValue={(v: string) => {
-                  if (isRoleProjectType(v)) setRoleProject(v);
-                }}
-                options={ROLE_PROJECT_CHOICES.map((role) => ({
-                  label: role.name,
-                  value: role.name,
-                }))}
-              />
-            </div>
+        <QuillEditorInput
+          name="note"
+          title="메모"
+          data={note}
+          setData={setNote}
+        />
+      </div>
 
-            <div className="col-md-6">
-              <SelectArrayInput
-                name="projectIds"
-                title="프로젝트 선택"
-                values={projectIds}
-                setValues={setProjectIds}
-                options={projectOptions}
-              />
-              {loading && (
-                <div className="text-secondary small mt-1">
-                  프로젝트 목록을 불러오는 중…
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Section 3 */}
-        <div className="border rounded-4 bg-white p-3 mb-3 shadow-sm">
-          <h4 className="fw-bold mb-3">메모 (선택)</h4>
-
-          <QuillEditorInput
-            name="note"
-            title="메모"
-            data={note}
-            setData={setNote}
-          />
-        </div>
-
-        {/* Footer */}
-        <div className="d-flex justify-content-end">
-          <ConfirmButton title="저장하기" onClick={handleClickSave} />
-        </div>
+      {/* Footer */}
+      <div className="d-flex justify-content-end">
+        <ConfirmButton title="저장하기" onClick={handleClickSave} />
       </div>
     </div>
   );
