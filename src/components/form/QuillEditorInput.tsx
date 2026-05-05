@@ -126,7 +126,7 @@ const QuillEditorInput = ({
           </button>
         </div>
 
-        <div className="w-100 p-2 d-flex justify-content-center overflow-auto">
+        <div className="w-100 p-4 d-flex justify-content-center overflow-auto">
           <div
             className={`w-100 quill-editor-bootstrap ${
               disabled ? "is-disabled" : ""
