@@ -61,7 +61,7 @@ const SpaceEditPage = () => {
   };
 
   return (
-    <div className="container-fluid p-4 d-flex justify-content-center align-items-center">
+    <div className="container-fluid p-3 d-flex justify-content-center align-items-center">
       <div className="w-100 d-flex flex-column align-items-center">
         <div
           className="w-100 d-flex justify-content-between align-items-center border-bottom mb-3"

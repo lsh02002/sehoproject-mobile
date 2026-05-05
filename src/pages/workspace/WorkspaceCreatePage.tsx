@@ -60,7 +60,7 @@ const WorkspaceCreatePage = () => {
   return (
     <div className="d-flex justify-content-center align-items-center w-100 vh-100">
       <div
-        className="w-100 p-4"
+        className="w-100 p-3"
         style={{ maxWidth: layout.maxWidth }}
       >
         <div className="d-flex justify-content-between align-items-center mb-3">
