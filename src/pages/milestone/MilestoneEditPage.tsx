@@ -16,6 +16,7 @@ import SelectInput, { Option } from "../../components/form/SelectInput";
 import { LuMilestone } from "react-icons/lu";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useQueryClient } from "@tanstack/react-query";
+import { useModalManager } from "../../context/ModalManager";
 
 const MilestoneEditPage = ({
   windowOpenMilestoneId,
@@ -34,6 +35,9 @@ const MilestoneEditPage = ({
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
 
   const queryClient = useQueryClient();
+
+  const { isOpen } = useModalManager();
+  const isMilestoneOpen = isOpen("milestone");
 
   const navigate = useNavigate();
 
@@ -62,14 +66,13 @@ const MilestoneEditPage = ({
   }, [milestoneId, windowOpenMilestoneId]);
 
   useEffect(() => {
-    if (projectId) {
-      getTasksByProjectApi(Number(projectId))
-        .then((res) => {
-          setTaskOptions(res.data);
-        })
-        .catch(() => {});
-    }
-  }, [projectId]);
+    if (!isMilestoneOpen || !projectId) return;
+    getTasksByProjectApi(Number(projectId))
+      .then((res) => {
+        setTaskOptions(res.data);
+      })
+      .catch(() => {});
+  }, [isMilestoneOpen, projectId]);
 
   const handleSetTasks = useCallback(
     (names: string[]) => {

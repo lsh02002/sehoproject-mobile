@@ -16,6 +16,7 @@ import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useLogin } from "../../context/LoginContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useModalManager } from "../../context/ModalManager";
 
 const MilestoneCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -31,6 +32,9 @@ const MilestoneCreatePage = () => {
   const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { isOpen } = useModalManager();
+  const isMilestoneOpen = isOpen("milestone");
 
   const navigate = useNavigate();
 
@@ -48,14 +52,13 @@ const MilestoneCreatePage = () => {
   }, [projectId, projectIdLocal, setProjectId]);
 
   useEffect(() => {
-    if (projectId) {
-      getTasksByProjectApi(Number(projectId))
-        .then((res) => {
-          setTaskOptions(res.data);
-        })
-        .catch(() => {});
-    }
-  }, [projectId]);
+    if (!isMilestoneOpen || !projectId) return;
+    getTasksByProjectApi(Number(projectId))
+      .then((res) => {
+        setTaskOptions(res.data);
+      })
+      .catch(() => {});
+  }, [isMilestoneOpen, projectId]);
 
   const handleSetTasks = useCallback(
     (names: string[]) => {

@@ -23,6 +23,7 @@ import { MdAddTask } from "react-icons/md";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import ImageInput from "../../components/form/ImageInput";
 import { useQueryClient } from "@tanstack/react-query";
+import { useModalManager } from "../../context/ModalManager";
 
 const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const { taskId } = useParams();
@@ -52,6 +53,9 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
 
   const navigate = useNavigate();
 
+  const { isOpen } = useModalManager();
+  const isTaskOpen = isOpen("task");
+
   const stateOptions: Option[] = [
     { label: "TODO", value: "TODO" },
     { label: "IN_PROGRESS", value: "IN_PROGRESS" },
@@ -74,24 +78,24 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   ];
 
   useEffect(() => {
-    if (projectId) {
-      getProjectMembersApi(Number(projectId))
-        .then((res) => {
-          setAssigneeOptions(res.data);
-        })
-        .catch(() => {});
-    }
-  }, [projectId]);
+    if (!isTaskOpen || !projectId) return;
+
+    getProjectMembersApi(Number(projectId))
+      .then((res) => {
+        setAssigneeOptions(res.data);
+      })
+      .catch(() => {});
+  }, [isTaskOpen, projectId]);
 
   useEffect(() => {
-    if (projectId) {
-      getTagsByProjectApi(Number(projectId))
-        .then((res) => {
-          setTagOptions(res.data);
-        })
-        .catch(() => {});
-    }
-  }, [projectId]);
+    if (!isTaskOpen || !projectId) return;
+
+    getTagsByProjectApi(Number(projectId))
+      .then((res) => {
+        setTagOptions(res.data);
+      })
+      .catch(() => {});
+  }, [isTaskOpen, projectId]);
 
   useEffect(() => {
     if (windowOpenTaskId || taskId) {
@@ -121,7 +125,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
         })
         .catch(() => {});
     }
-  }, [projectId, taskId, windowOpenTaskId]);
+  }, [taskId, windowOpenTaskId]);
 
   const handleSetAssignees = (emails: string[]) => {
     const newAssignees: AssigneeRequestType[] = emails.map((email, index) => ({

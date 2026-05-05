@@ -7,8 +7,8 @@ import {
 } from "../../types/type";
 import {
   createTaskApi,
-  getTagsByProjectApi,
-  getUserInfosApi,
+  getProjectMembersApi,
+  getTagsByProjectApi,  
 } from "../../api/sehomanagerapi";
 import TextInput from "../../components/form/TextInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
@@ -23,6 +23,7 @@ import { useLogin } from "../../context/LoginContext";
 import ImageInput from "../../components/form/ImageInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useModalManager } from "../../context/ModalManager";
 
 const TaskCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -44,6 +45,9 @@ const TaskCreatePage = () => {
   const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isOpen } = useModalManager();
+
+  const isTaskOpen = isOpen("task");
 
   const navigate = useNavigate();
 
@@ -75,22 +79,22 @@ const TaskCreatePage = () => {
   }, [projectId, projectIdLocal, setProjectId]);
 
   useEffect(() => {
-    getUserInfosApi()
+    if (!isTaskOpen || !projectId) return;
+    getProjectMembersApi(Number(projectId))
       .then((res) => {
         setAssigneeOptions(res.data);
       })
       .catch(() => {});
-  }, []);
+  }, [isTaskOpen, projectId]);
 
   useEffect(() => {
-    if (projectId) {
-      getTagsByProjectApi(projectId)
-        .then((res) => {
-          setTagOptions(res.data);
-        })
-        .catch(() => {});
-    }
-  }, [projectId]);
+    if (!isTaskOpen || !projectId) return;
+    getTagsByProjectApi(projectId)
+      .then((res) => {
+        setTagOptions(res.data);
+      })
+      .catch(() => {});
+  }, [isTaskOpen, projectId]);
 
   const handleSetAssignees = (emails: string[]) => {
     const newAssignees: AssigneeRequestType[] = emails.map((email, index) => ({

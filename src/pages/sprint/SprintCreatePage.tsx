@@ -15,6 +15,7 @@ import { GiSprint } from "react-icons/gi";
 import { useLogin } from "../../context/LoginContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useModalManager } from "../../context/ModalManager";
 
 const SprintCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
@@ -29,6 +30,9 @@ const SprintCreatePage = () => {
   const queryClient = useQueryClient();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { isOpen } = useModalManager();
+  const isSprintOpen = isOpen("sprint");
 
   const navigate = useNavigate();
 
@@ -45,14 +49,13 @@ const SprintCreatePage = () => {
   }, [projectId, projectIdLocal, setProjectId]);
 
   useEffect(() => {
-    if (projectId) {
-      getTasksByProjectApi(Number(projectId))
-        .then((res) => {
-          setTaskOptions(res.data);
-        })
-        .catch(() => {});
-    }
-  }, [projectId]);
+    if (!isSprintOpen || !projectId) return;
+    getTasksByProjectApi(Number(projectId))
+      .then((res) => {
+        setTaskOptions(res.data);
+      })
+      .catch(() => {});
+  }, [isSprintOpen, projectId]);
 
   const handleSetTasks = useCallback(
     (names: string[]) => {

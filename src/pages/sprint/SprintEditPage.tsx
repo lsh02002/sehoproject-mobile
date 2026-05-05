@@ -15,6 +15,7 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { GiSprint } from "react-icons/gi";
 import { useQueryClient } from "@tanstack/react-query";
+import { useModalManager } from "../../context/ModalManager";
 
 const SprintEditPage = ({
   windowOpenSprintId,
@@ -32,6 +33,9 @@ const SprintEditPage = ({
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
 
   const queryClient = useQueryClient();
+
+  const { isOpen } = useModalManager();
+  const isSprintOpen = isOpen("sprint");
 
   const navigate = useNavigate();
 
@@ -58,14 +62,13 @@ const SprintEditPage = ({
   }, [sprintId, windowOpenSprintId]);
 
   useEffect(() => {
-    if (projectId) {
-      getTasksByProjectApi(Number(projectId))
-        .then((res) => {
-          setTaskOptions(res.data);
-        })
-        .catch(() => {});
-    }
-  }, [projectId]);
+    if (!isSprintOpen || !projectId) return;
+    getTasksByProjectApi(Number(projectId))
+      .then((res) => {
+        setTaskOptions(res.data);
+      })
+      .catch(() => {});
+  }, [isSprintOpen, projectId]);
 
   const handleSetTasks = useCallback(
     (names: string[]) => {
