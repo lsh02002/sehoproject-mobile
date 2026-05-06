@@ -10,7 +10,7 @@ import {
 } from "../../api/sehomanagerapi";
 import InviteBox from "./WorkspaceInviteBox";
 import { MdWorkspaces } from "react-icons/md";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 import { useQueryClient } from "@tanstack/react-query";
 
 type TabKey = "info" | "members";

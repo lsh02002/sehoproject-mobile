@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 import { useModalManager } from "../../context/ModalManager";
 
 type Option = { label: string; value: string; disabled?: boolean };

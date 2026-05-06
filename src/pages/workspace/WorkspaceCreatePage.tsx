@@ -5,7 +5,7 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { WorkspaceRequestType } from "../../types/type";
 import { toast } from "react-toastify";
 import { MdWorkspaces } from "react-icons/md";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 

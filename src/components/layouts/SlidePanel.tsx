@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useModalManager } from "../../context/ModalManager";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 
 type SlidePanelProps = {
   title: string;
@@ -40,7 +40,7 @@ const SlidePanel = ({
   return (
     <aside
       ref={sidebarRef}
-      // aria-hidden={!isOpenPanel}      
+      // aria-hidden={!isOpenPanel}
       className="position-fixed bg-white d-flex flex-column start-0"
       style={{
         top: 55,

@@ -7,7 +7,7 @@ import SprintEditPage from "../../pages/sprint/SprintEditPage";
 import SprintCreatePage from "../../pages/sprint/SprintCreatePage";
 import { BackwardButton } from "../form/BackwardButton";
 import SlidePanel from "./SlidePanel";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 import MilestoneEditPage from "../../pages/milestone/MilestoneEditPage";
 import MilestoneCreatePage from "../../pages/milestone/MilestoneCreatePage";
 import SlideSidePanel from "./SlideSidePanel";
@@ -48,7 +48,7 @@ export default function Layout({
   }, [isSideOpen, setIsMenuRefresh]);
 
   return (
-    <div className="min-vh-100 text-dark">      
+    <div className="min-vh-100 text-dark">
       <SideMenuButton
         isSideOpen={isSideOpen}
         onOpen={() => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 import { useModalManager } from "../../context/ModalManager";
 // 경로는 프로젝트에 맞게 수정
 

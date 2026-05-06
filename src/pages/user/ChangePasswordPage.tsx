@@ -3,7 +3,7 @@ import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { ChangePasswordRequestType } from "../../types/type";
 import { UserChangePasswordApi } from "../../api/sehomanagerapi";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 import { toast } from "react-toastify";
 
 const ChangePasswordPage = () => {
@@ -53,7 +53,10 @@ const ChangePasswordPage = () => {
         />
 
         <div className="mt-3">
-          <ConfirmButton title="비밀번호 변경" onClick={OnChangePasswordSubmit} />
+          <ConfirmButton
+            title="비밀번호 변경"
+            onClick={OnChangePasswordSubmit}
+          />
         </div>
       </div>
     </div>

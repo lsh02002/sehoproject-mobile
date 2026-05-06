@@ -6,7 +6,7 @@ import TextInput from "../../components/form/TextInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { SlLogin } from "react-icons/sl";
 import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 
 const LoginPage = () => {
   const navigate = useNavigate();

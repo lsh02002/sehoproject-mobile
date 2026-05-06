@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { layout } from "../../theme/Theme";
+import { layout } from "../../theme/theme";
 import { useModalManager } from "../../context/ModalManager";
 
 const QuillEditorInput = ({
