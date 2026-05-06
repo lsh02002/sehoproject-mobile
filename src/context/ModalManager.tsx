@@ -89,7 +89,9 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
       isHandlingPopRef.current = true;
 
       if (closedModal === "side") {
-        setIsSideOpen(false);
+        if (isSideOpen) {
+          setIsSideOpen(false);
+        }
       }
 
       const nextStack = stackRef.current.slice(0, -1);
@@ -105,7 +107,7 @@ export function ModalManager({ children }: { children: React.ReactNode }) {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [setIsSideOpen, syncStack]);
+  }, [isSideOpen, setIsSideOpen, syncStack]);
 
   const value = useMemo<ModalManagerContextValue>(() => {
     const topModal = openModals.at(-1) ?? null;
