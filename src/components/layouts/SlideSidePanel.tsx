@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { layout } from "../../theme/theme";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 type SlideSidePanelProps = {
   title: string;

@@ -3,7 +3,7 @@ import { SprintResponseType } from "../../types/type";
 import { GiSprint } from "react-icons/gi";
 import { FiEdit3, FiCalendar } from "react-icons/fi";
 import { useLogin } from "../../context/LoginContext";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 const SprintCard = ({ sprint }: { sprint: SprintResponseType }) => {
   const { setSprint } = useLogin();

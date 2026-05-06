@@ -8,7 +8,7 @@ import {
 import {
   createTaskApi,
   getProjectMembersApi,
-  getTagsByProjectApi,  
+  getTagsByProjectApi,
 } from "../../api/sehomanagerapi";
 import TextInput from "../../components/form/TextInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
@@ -23,7 +23,7 @@ import { useLogin } from "../../context/LoginContext";
 import ImageInput from "../../components/form/ImageInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 const TaskCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");

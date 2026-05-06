@@ -15,7 +15,7 @@ import { GiSprint } from "react-icons/gi";
 import { useLogin } from "../../context/LoginContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 const SprintCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");

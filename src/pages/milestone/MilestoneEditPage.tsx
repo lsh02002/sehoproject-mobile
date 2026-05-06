@@ -16,7 +16,7 @@ import SelectInput, { Option } from "../../components/form/SelectInput";
 import { LuMilestone } from "react-icons/lu";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useQueryClient } from "@tanstack/react-query";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 const MilestoneEditPage = ({
   windowOpenMilestoneId,

@@ -7,7 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { LoginProvider } from "./context/LoginContext";
 import { ScrollProvider } from "./context/ScrollContext";
-import { ModalManager } from "./context/ModalManager";
+import { ModalProvider } from "./context/ModalContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <LoginProvider>
-    <ModalManager>
+    <ModalProvider>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <ScrollProvider>
@@ -25,7 +25,7 @@ root.render(
           </ScrollProvider>
         </QueryClientProvider>
       </BrowserRouter>
-    </ModalManager>
+    </ModalProvider>
   </LoginProvider>,
 );
 

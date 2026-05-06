@@ -9,7 +9,7 @@ import {
 import type { TreeNodeType } from "../../types/type";
 import { getWorkspacesTreeApi } from "../../api/sehomanagerapi";
 import { useLogin } from "../../context/LoginContext";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 export default function SidebarMenu({ open }: { open: boolean }) {
   const { isLogin, setIsLogin } = useLogin();
@@ -155,7 +155,7 @@ export default function SidebarMenu({ open }: { open: boolean }) {
             padding: "6px 10px",
             borderRadius: 6,
           }}
-          onClick={(e) => {            
+          onClick={(e) => {
             go(e, "/settings/invitation-message");
           }}
         >
@@ -171,7 +171,7 @@ export default function SidebarMenu({ open }: { open: boolean }) {
                 padding: "6x 10px",
                 border: 6,
               }}
-              onClick={(e) => {                
+              onClick={(e) => {
                 go(e, "/change-password");
               }}
             >
@@ -194,7 +194,7 @@ export default function SidebarMenu({ open }: { open: boolean }) {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
 
-                setIsLogin(false);                
+                setIsLogin(false);
                 go(e, "/login");
               }}
             >
@@ -209,7 +209,7 @@ export default function SidebarMenu({ open }: { open: boolean }) {
               padding: "6px 10px",
               borderRadius: 6,
             }}
-            onClick={(e) => {              
+            onClick={(e) => {
               go(e, "/login");
             }}
           >

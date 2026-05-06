@@ -28,7 +28,7 @@ const ModalManagerContext = createContext<ModalManagerContextValue | null>(
   null,
 );
 
-export function ModalManager({ children }: { children: React.ReactNode }) {
+export function ModalProvider({ children }: { children: React.ReactNode }) {
   const { isSideOpen, setIsSideOpen } = useLogin();
   const [openModals, setOpenModals] = useState<ModalName[]>([]);
   const stackRef = useRef<ModalName[]>([]);

@@ -11,7 +11,7 @@ import {
 } from "../../types/type";
 import { LockIcon, Calendar } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 /* ========= 정렬 유틸 ========= */
 const byPosThenId =

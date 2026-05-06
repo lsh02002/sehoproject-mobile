@@ -16,7 +16,7 @@ import QuillEditorInput from "../../components/form/QuillEditorInput";
 import { useLogin } from "../../context/LoginContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 const MilestoneCreatePage = () => {
   const projectIdLocal = localStorage.getItem("projectId");

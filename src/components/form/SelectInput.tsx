@@ -1,6 +1,6 @@
 import React from "react";
 import { layout } from "../../theme/theme";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 // 경로는 프로젝트에 맞게 수정
 
 export type Option = {

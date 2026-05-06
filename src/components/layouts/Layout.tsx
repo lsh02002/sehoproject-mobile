@@ -11,7 +11,7 @@ import { layout } from "../../theme/theme";
 import MilestoneEditPage from "../../pages/milestone/MilestoneEditPage";
 import MilestoneCreatePage from "../../pages/milestone/MilestoneCreatePage";
 import SlideSidePanel from "./SlideSidePanel";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 import ScrollToTopButton from "../form/ScrollToTopButton";
 import { SideMenuButton } from "./SideMenuButton";
 

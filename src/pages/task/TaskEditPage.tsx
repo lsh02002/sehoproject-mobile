@@ -23,7 +23,7 @@ import { MdAddTask } from "react-icons/md";
 import QuillEditorInput from "../../components/form/QuillEditorInput";
 import ImageInput from "../../components/form/ImageInput";
 import { useQueryClient } from "@tanstack/react-query";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const { taskId } = useParams();

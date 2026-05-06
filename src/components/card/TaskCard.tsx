@@ -4,7 +4,7 @@ import { SiGoogletasks } from "react-icons/si";
 import { GrInProgress } from "react-icons/gr";
 import { FiEdit3, FiCalendar, FiFolder } from "react-icons/fi";
 import { useLogin } from "../../context/LoginContext";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 import ImageCard from "./ImageCard";
 
 const TaskCard = ({ task }: { task: TaskResponseType }) => {

@@ -15,7 +15,7 @@ import SelectArrayInput from "../../components/form/SelectArrayInput";
 import SelectInput, { Option } from "../../components/form/SelectInput";
 import { GiSprint } from "react-icons/gi";
 import { useQueryClient } from "@tanstack/react-query";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 const SprintEditPage = ({
   windowOpenSprintId,

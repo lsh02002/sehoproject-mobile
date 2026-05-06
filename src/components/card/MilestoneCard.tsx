@@ -3,7 +3,7 @@ import { MilestoneResponseType } from "../../types/type";
 import { LuMilestone } from "react-icons/lu";
 import { FiEdit3, FiCalendar } from "react-icons/fi";
 import { useLogin } from "../../context/LoginContext";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 
 const MilestoneCard = ({ milestone }: { milestone: MilestoneResponseType }) => {
   const { setMilestone } = useLogin();

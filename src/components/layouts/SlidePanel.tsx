@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 import { layout } from "../../theme/theme";
 
 type SlidePanelProps = {

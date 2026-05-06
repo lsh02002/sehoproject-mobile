@@ -5,7 +5,7 @@ import { ReactComponent as HomeIcon } from "../../assets/home.svg";
 import { ReactComponent as InboxIcon } from "../../assets/inbox.svg";
 import { ReactComponent as TaskListIcon } from "../../assets/task-list.svg";
 import { ReactComponent as SettingsIcon } from "../../assets/dashboard.svg";
-import { useModalManager } from "../../context/ModalManager";
+import { useModalManager } from "../../context/ModalContext";
 import { useLogin } from "../../context/LoginContext";
 
 const iconStyle: React.CSSProperties = {
