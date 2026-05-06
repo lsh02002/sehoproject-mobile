@@ -20,7 +20,7 @@ type ToastType = "success" | "error" | "info" | "warning";
 
 const showToast = (
   message: string,
-  type: ToastType = "error",
+  type: ToastType,
   toastId: string,
 ) => {
   if (!toast.isActive(toastId)) {
@@ -64,7 +64,13 @@ api.interceptors.response.use(
     // ✅ detailMessage가 있으면 가장 먼저 콘솔에 출력
     if (error.response?.data?.detailMessage) {
       const toastId = `api-error-${error.response?.status}`;
-      showToast(error.response.data.detailMessage, "error", toastId);
+      let type: ToastType = "warning";
+
+      if(error.response?.state === 500) {
+        type = "error";
+      }
+
+      showToast(error.response.data.detailMessage, type, toastId);
     }
 
     if (DEBUG) {
