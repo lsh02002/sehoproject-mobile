@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Menu } from "lucide-react";
 import SidebarMenu from "./MyMenu";
 import { useLogin } from "../../context/LoginContext";
 import TaskEditPage from "../../pages/task/TaskEditPage";
@@ -14,6 +13,7 @@ import MilestoneCreatePage from "../../pages/milestone/MilestoneCreatePage";
 import SlideSidePanel from "./SlideSidePanel";
 import { useModalManager } from "../../context/ModalManager";
 import ScrollToTopButton from "../form/ScrollToTopButton";
+import { SideMenuButton } from "./SideMenuButton";
 
 export type NavItem = {
   label: string;
@@ -33,7 +33,6 @@ export default function Layout({
   children,
 }: Props) {
   const {
-    isMemuRefresh,
     setIsMenuRefresh,
     task,
     sprint,
@@ -45,39 +44,18 @@ export default function Layout({
   const { openModal, closeModal, hasOpenModal } = useModalManager();
 
   useEffect(() => {
-    if (isSideOpen) setIsMenuRefresh(!isMemuRefresh);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSideOpen]);
+    if (isSideOpen) setIsMenuRefresh((prev) => !prev);
+  }, [isSideOpen, setIsMenuRefresh]);
 
   return (
-    <div className="min-vh-100 text-dark">
-      <a
-        href="#main"
-        className="position-absolute"
-        style={{ left: "-9999px", top: "-9999px" }}
-      >
-        본문으로 건너뛰기
-      </a>
-      <button
-        className="btn bg-white shadow-sm position-fixed d-inline-flex align-items-center justify-content-center p-0"
-        style={{
-          top: 12,
-          left: 12,
-          zIndex: 500,
-          width: 40,
-          height: 40,
-          borderRadius: 16,
-        }}
-        aria-label="메뉴 열기"
-        aria-expanded={isSideOpen}
-        aria-controls="side-nav"
-        onClick={() => {
+    <div className="min-vh-100 text-dark">      
+      <SideMenuButton
+        isSideOpen={isSideOpen}
+        onOpen={() => {
           openModal("side");
           setIsSideOpen(true);
         }}
-      >
-        <Menu style={{ width: 20, height: 20 }} />
-      </button>
+      />
       <div
         role="presentation"
         className="position-fixed start-0 w-100 h-100"
