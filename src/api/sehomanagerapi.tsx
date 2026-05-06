@@ -66,7 +66,7 @@ api.interceptors.response.use(
       const toastId = `api-error-${error.response?.status}`;
       let type: ToastType = "warning";
 
-      if(error.response?.state === 500) {
+      if(error.response?.status === 500) {
         type = "error";
       }
 
