@@ -19,7 +19,7 @@ const MilestoneListPage = () => {
       return res.data;
     },
     retry: false,
-    enabled: projectId !== 0, // 👈 key fix
+    enabled: !!projectId, // 👈 key fix
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });
