@@ -285,18 +285,21 @@ export function convertToTreeNode(
               id: m.id,
               name: m.name,
               type: "TASK" as const,
+              projectId: project.id,
               disabled: m.canEnter === false,
             })),
             ...milestones.map((m) => ({
               id: m.id,
               name: m.name,
               type: "MILESTONE" as const,
+              projectId: project.id,
               disabled: m.canEnter === false,
             })),
             ...sprints.map((t) => ({
               id: t.id,
               name: t.name,
               type: "SPRINT" as const,
+              projectId: project.id,
               disabled: t.canEnter === false,
             })),
           ];
@@ -462,7 +465,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         ) : node.type === "TASK" ? (
           <span
             style={{
-              color: node.disabled ? "#aaa" : "inherit",
+              color: node.disabled || isModalNode ? "#aaa" : "inherit",
               fontSize: "0.95em",
               flexShrink: 0,
             }}
@@ -472,7 +475,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         ) : node.type === "MILESTONE" ? (
           <span
             style={{
-              color: node.disabled ? "#aaa" : "inherit",
+              color: node.disabled || isModalNode ? "#aaa" : "inherit",
               fontSize: "0.95em",
               flexShrink: 0,
             }}
@@ -482,7 +485,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         ) : node.type === "SPRINT" ? (
           <span
             style={{
-              color: node.disabled ? "#aaa" : "inherit",
+              color: node.disabled || isModalNode ? "#aaa" : "inherit",
               fontSize: "0.95em",
               flexShrink: 0,
             }}
