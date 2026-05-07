@@ -6,12 +6,14 @@ import {
   ProjectNodeType,
   SpaceNodeType,
   SprintNodeType,
+  TaskNodeType,
   TreeNodeType,
   WorkspaceTreeResponseType,
 } from "../../types/type";
 import { LockIcon, Calendar } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useModalManager } from "../../context/ModalContext";
+import { Link } from "react-router-dom";
 
 /* ========= 정렬 유틸 ========= */
 const byPosThenId =
@@ -218,6 +220,14 @@ export function rowsToWorkspaceTreeResponse(
               name: p.name,
               type: "PROJECT",
               canEnter: p.canEnter,
+              taskNodes: Array.from(p.tasks.values())
+                .sort(byPosThenId<TaskAgg>())
+                .map<TaskNodeType>((m) => ({
+                  id: m.id,
+                  name: m.name,
+                  type: "TASK",
+                  canEnter: m.canEnter,
+                })),
               milestoneNodes: Array.from(p.milestones.values())
                 .sort(byPosThenId<MilestoneAgg>())
                 .map<MilestoneNodeType>((m) => ({
@@ -247,7 +257,8 @@ export function convertToTreeNode(
   return {
     id: data.workspaceId,
     name: data.name,
-    type: data.type,
+    type: data.type, // "WORKSPACE"
+    // 필요시: disabled: data.canEnter === false,
     children: spaces.map((space) => {
       const projects = Array.isArray(space.projectNodes)
         ? space.projectNodes
@@ -256,15 +267,44 @@ export function convertToTreeNode(
       return {
         id: space.id,
         name: space.name,
-        type: space.type,
+        type: space.type, // "SPACE"
         disabled: space.canEnter === false,
         children: projects.map((project) => {
-          const children: TreeNodeType[] = [];
+          const tasks = Array.isArray(project.taskNodes)
+            ? project.taskNodes
+            : [];
+          const milestones = Array.isArray(project.milestoneNodes)
+            ? project.milestoneNodes
+            : [];
+          const sprints = Array.isArray(project.sprintNodes)
+            ? project.sprintNodes
+            : [];
+
+          const children: TreeNodeType[] = [
+            ...tasks.map((m) => ({
+              id: m.id,
+              name: m.name,
+              type: "TASK" as const,
+              disabled: m.canEnter === false,
+            })),
+            ...milestones.map((m) => ({
+              id: m.id,
+              name: m.name,
+              type: "MILESTONE" as const,
+              disabled: m.canEnter === false,
+            })),
+            ...sprints.map((t) => ({
+              id: t.id,
+              name: t.name,
+              type: "SPRINT" as const,
+              disabled: t.canEnter === false,
+            })),
+          ];
 
           return {
             id: project.id,
             name: project.name,
-            type: project.type,
+            type: project.type, // "PROJECT"
             disabled: project.canEnter === false,
             children,
           };
@@ -309,6 +349,9 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
   const isSelected = selectedId === node.id;
   const isDisabled = node.disabled === true;
 
+  const isModalNode =
+    node.type === "TASK" || node.type === "SPRINT" || node.type === "MILESTONE";
+
   const targetPath =
     node.id === "root"
       ? "/settings/workspaces"
@@ -349,6 +392,11 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
             e.preventDefault();
             return;
           }
+
+          if (isModalNode) {
+            e.preventDefault();
+            return;
+          }
           go(e, targetPath);
         }}
         aria-expanded={hasChildren ? open : undefined}
@@ -361,7 +409,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
           padding: "8px 10px",
           paddingLeft: 10 + depth * 9,
           borderRadius: 10,
-          cursor: "pointer",
+          cursor: isModalNode ? "default" : "pointer",
           fontSize: `clamp(12px, ${fontSize ?? 14}px, 20px)`,
           lineHeight: 1.2,
           background: isSelected ? "rgba(99,102,241,0.14)" : "transparent",
@@ -411,6 +459,16 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
           >
             📁
           </span>
+        ) : node.type === "TASK" ? (
+          <span
+            style={{
+              color: node.disabled ? "#aaa" : "inherit",
+              fontSize: "0.95em",
+              flexShrink: 0,
+            }}
+          >
+            T
+          </span>
         ) : node.type === "MILESTONE" ? (
           <span
             style={{
@@ -431,16 +489,6 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
           >
             S
           </span>
-        ) : node.type === "TASK" ? (
-          <span
-            style={{
-              color: node.disabled ? "#aaa" : "inherit",
-              fontSize: "0.95em",
-              flexShrink: 0,
-            }}
-          >
-            T
-          </span>
         ) : (
           <span
             aria-hidden
@@ -459,7 +507,7 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
         <span
           style={{
             display: "flex",
-            color: isDisabled ? "#94a3b8" : "inherit",
+            color: isDisabled || isModalNode ? "#94a3b8" : "inherit",
             fontSize: "0.93em",
             lineHeight: 1.2,
             whiteSpace: "nowrap",
