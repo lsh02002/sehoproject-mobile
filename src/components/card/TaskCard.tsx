@@ -2,7 +2,7 @@ import React from "react";
 import { TaskResponseType } from "../../types/type";
 import { SiGoogletasks } from "react-icons/si";
 import { GrInProgress } from "react-icons/gr";
-import { IoMdDoneAll } from "react-icons/io";
+import { MdOutlineFileDownloadDone } from "react-icons/md";
 import { FiEdit3, FiCalendar, FiFolder } from "react-icons/fi";
 import { useLogin } from "../../context/LoginContext";
 import { useModalManager } from "../../context/ModalContext";
@@ -31,7 +31,7 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
     },
     DONE: {
       label: "DONE",
-      icon: <IoMdDoneAll />,
+      icon: <MdOutlineFileDownloadDone />,
       className: "bg-success-subtle text-success-emphasis",
     },
   } as const;
