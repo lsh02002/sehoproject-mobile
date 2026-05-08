@@ -24,6 +24,7 @@ import QuillEditorInput from "../../components/form/QuillEditorInput";
 import ImageInput from "../../components/form/ImageInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { useModalManager } from "../../context/ModalContext";
+import DateInput from "../../components/form/DateInput";
 
 const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const { taskId } = useParams();
@@ -315,6 +316,8 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
             })) ?? []
           }
         />
+
+        <DateInput title="마감일" selected={dueDate} setSelected={setDueDate} />
 
         <ImageInput
           name="images"
