@@ -5,7 +5,7 @@ interface DateInputProps {
   disabled?: boolean;
   title: string;
   selected: Date | number[] | undefined;
-  setSelected: Dispatch<SetStateAction<Date | undefined>>;
+  setSelected: Dispatch<SetStateAction<Date | number[] | undefined>>;
 }
 
 const normalizeDate = (value?: Date | number[]): Date | undefined => {
@@ -27,6 +27,12 @@ const normalizeDate = (value?: Date | number[]): Date | undefined => {
 
   return undefined;
 };
+
+const dateToArray = (date: Date): number[] => [
+  date.getFullYear(),
+  date.getMonth() + 1,
+  date.getDate(),
+];
 
 const formatDate = (date?: Date) => {  
   if (!(date instanceof Date) || isNaN(date.getTime())) return "";
@@ -82,7 +88,7 @@ const DateInput = ({
             setInputValue(parsed);
 
             if (parsed) {
-              setSelected(parsed);
+              setSelected(dateToArray(parsed));
             }
           }}
         />
@@ -104,7 +110,7 @@ const DateInput = ({
             <Calendar
               onChange={(value) => {
                 if (value instanceof Date) {
-                  setSelected(value);
+                  setSelected(dateToArray(value));
                   setInputValue(value);
                   setIsOpen(false);
                 }
