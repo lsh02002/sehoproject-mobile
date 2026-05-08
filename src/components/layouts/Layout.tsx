@@ -5,7 +5,6 @@ import TaskEditPage from "../../pages/task/TaskEditPage";
 import TaskCreatePage from "../../pages/task/TaskCreatePage";
 import SprintEditPage from "../../pages/sprint/SprintEditPage";
 import SprintCreatePage from "../../pages/sprint/SprintCreatePage";
-import { BackwardButton } from "../form/BackwardButton";
 import SlidePanel from "./SlidePanel";
 import { layout } from "../../theme/theme";
 import MilestoneEditPage from "../../pages/milestone/MilestoneEditPage";
@@ -132,7 +131,6 @@ export default function Layout({
           paddingBottom: 100,
         }}
       >
-        <BackwardButton />
         {!hasOpenModal && <ScrollToTopButton />}
         {children}
       </main>
