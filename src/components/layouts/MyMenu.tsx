@@ -10,6 +10,7 @@ import type { TreeNodeType } from "../../types/type";
 import { getWorkspacesTreeApi } from "../../api/sehomanagerapi";
 import { useLogin } from "../../context/LoginContext";
 import { useModalManager } from "../../context/ModalContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function SidebarMenu({ open }: { open: boolean }) {
   const { isLogin, setIsLogin } = useLogin();
@@ -20,6 +21,8 @@ export default function SidebarMenu({ open }: { open: boolean }) {
   const { closeAllModals } = useModalManager();
 
   const [root, setRoot] = React.useState<TreeNodeType | null>(null);
+
+  const queryClient = useQueryClient();
 
   const selectedId = React.useMemo(() => {
     const m =
@@ -193,6 +196,18 @@ export default function SidebarMenu({ open }: { open: boolean }) {
                 localStorage.removeItem("workspaceId");
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
+
+                queryClient.removeQueries({
+                  predicate: (query) =>
+                    [
+                      "workspaces",
+                      "spaces",
+                      "projects",
+                      "sprints",
+                      "milestones",
+                      "tasks",
+                    ].includes(query.queryKey[0] as string),
+                });
 
                 setIsLogin(false);
                 go(e, "/login");
