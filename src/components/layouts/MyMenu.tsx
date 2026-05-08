@@ -38,21 +38,28 @@ export default function SidebarMenu({ open }: { open: boolean }) {
 
       if (Number.isNaN(workspaceId)) {
         setRoot({
-          id: -1,
-          name: "Workspace(빈 트리)",
-          type: "WORKSPACE",
+          id: "root",
+          name: "Workspaces(전체비어있음)",
+          type: "ROOT",
           children: [
             {
               id: -1,
-              name: "Space A",
-              type: "SPACE",
-              children: [{ id: -1, name: "Project 1", type: "PROJECT" }],
-            },
-            {
-              id: -1,
-              name: "Space B",
-              type: "SPACE",
-              children: [{ id: -1, name: "Project 2", type: "PROJECT" }],
+              name: "Workspace",
+              type: "WORKSPACE",
+              children: [
+                {
+                  id: -1,
+                  name: "Space A",
+                  type: "SPACE",
+                  children: [{ id: -1, name: "Project 1", type: "PROJECT" }],
+                },
+                {
+                  id: -1,
+                  name: "Space B",
+                  type: "SPACE",
+                  children: [{ id: -1, name: "Project 2", type: "PROJECT" }],
+                },
+              ],
             },
           ],
         });
@@ -68,21 +75,32 @@ export default function SidebarMenu({ open }: { open: boolean }) {
         .catch(() => {
           if (!aborted) {
             setRoot({
-              id: -1,
-              name: "Workspace(빈 트리)",
-              type: "WORKSPACE",
+              id: "root",
+              name: "Workspaces(전체비어있음)",
+              type: "ROOT",
               children: [
                 {
                   id: -1,
-                  name: "Space A",
-                  type: "SPACE",
-                  children: [{ id: -1, name: "Project 1", type: "PROJECT" }],
-                },
-                {
-                  id: -1,
-                  name: "Space B",
-                  type: "SPACE",
-                  children: [{ id: -1, name: "Project 2", type: "PROJECT" }],
+                  name: "Workspace",
+                  type: "WORKSPACE",
+                  children: [
+                    {
+                      id: -1,
+                      name: "Space A",
+                      type: "SPACE",
+                      children: [
+                        { id: -1, name: "Project 1", type: "PROJECT" },
+                      ],
+                    },
+                    {
+                      id: -1,
+                      name: "Space B",
+                      type: "SPACE",
+                      children: [
+                        { id: -1, name: "Project 2", type: "PROJECT" },
+                      ],
+                    },
+                  ],
                 },
               ],
             });

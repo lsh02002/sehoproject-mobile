@@ -326,7 +326,7 @@ export type ProjectNodeType = {
 export type TreeNodeType = {
   id: string | number;
   name: string;
-  type: "WORKSPACE" | "SPACE" | "PROJECT" | "MILESTONE" | "SPRINT" | "TASK";
+  type: "ROOT" | "WORKSPACE" | "SPACE" | "PROJECT" | "MILESTONE" | "SPRINT" | "TASK";
   projectId?: number;
   disabled?: boolean; // canEnter의 반대
   children?: TreeNodeType[];
