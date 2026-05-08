@@ -402,10 +402,6 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
             return;
           }
 
-          if (isModalNode) {
-            e.preventDefault();
-            return;
-          }
           go(e, targetPath);
         }}
         aria-expanded={hasChildren ? open : undefined}
