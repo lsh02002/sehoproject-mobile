@@ -4,18 +4,49 @@ import Calendar from "react-calendar";
 interface DateInputProps {
   disabled?: boolean;
   title: string;
-  selected: Date | undefined;
+  selected: Date | number[] | undefined;
   setSelected: Dispatch<SetStateAction<Date | undefined>>;
 }
 
-const formatDate = (date?: Date) => {
-  if (!date) return "";
-  return new Date(date)?.toISOString().slice(0, 10);
+const normalizeDate = (value?: Date | number[]): Date | undefined => {
+  if (!value) return undefined;
+
+  // Date 객체인 경우
+  if (value instanceof Date) {
+    return isNaN(value.getTime()) ? undefined : value;
+  }
+
+  // [2026, 5, 7] 형태인 경우
+  if (Array.isArray(value) && value.length === 3) {
+    const [year, month, day] = value;
+
+    const parsed = new Date(year, month - 1, day);
+
+    return isNaN(parsed.getTime()) ? undefined : parsed;
+  }
+
+  return undefined;
+};
+
+const formatDate = (date?: Date) => {  
+  if (!(date instanceof Date) || isNaN(date.getTime())) return "";
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 };
 
 const parseDate = (value: string): Date | undefined => {
   if (!value) return undefined;
-  const parsed = new Date(value);
+
+  const [year, month, day] = value.split("-").map(Number);
+
+  if (!year || !month || !day) return undefined;
+
+  const parsed = new Date(year, month - 1, day);
+
   return isNaN(parsed.getTime()) ? undefined : parsed;
 };
 
@@ -26,10 +57,10 @@ const DateInput = ({
   setSelected,
 }: DateInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState<Date | undefined>(selected);
+  const [inputValue, setInputValue] = useState<Date | undefined>();
 
   useEffect(() => {
-    setInputValue(selected);
+    setInputValue(normalizeDate(selected));
   }, [selected]);
 
   return (
@@ -46,10 +77,10 @@ const DateInput = ({
           value={formatDate(inputValue)}
           disabled={disabled}
           onChange={(e) => {
-            const value = e.target.value;
-            setInputValue(parseDate(value));
+            const parsed = parseDate(e.target.value);
 
-            const parsed = parseDate(value);
+            setInputValue(parsed);
+
             if (parsed) {
               setSelected(parsed);
             }
@@ -78,7 +109,7 @@ const DateInput = ({
                   setIsOpen(false);
                 }
               }}
-              value={selected}
+              value={inputValue}
               locale="ko-KR"
               className="pretty-calendar"
               prev2Label={null}
