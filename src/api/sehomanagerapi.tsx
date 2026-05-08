@@ -66,9 +66,14 @@ api.interceptors.response.use(
         type = "error";
       }
 
+      const request = error.response.data.request;
+
       const requestMessage =
-        error.response.data.request !== null
-          ? " id: " + error.response.data.request
+        request !== null &&
+        request !== undefined &&
+        String(request).trim() !== "" &&
+        !isNaN(Number(request))
+          ? " id: " + request
           : "";
 
       showToast(
