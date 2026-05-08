@@ -364,7 +364,13 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
           ? `/projects/spaces/${node.id}`
           : node.type === "PROJECT"
             ? `/boards/projects/${node.id}`
-            : "#";
+            : node.type === "TASK"
+              ? `/boards/projects/${node.projectId}`
+              : node.type === "SPRINT"
+                ? `/boards/projects/${node.projectId}`
+                : node.type === "MILESTONE"
+                  ? `/boards/projects/${node.projectId}`
+                  : "#";
 
   const go = (e: React.MouseEvent, path: string) => {
     e.preventDefault();
