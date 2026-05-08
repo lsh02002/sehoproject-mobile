@@ -77,9 +77,11 @@ const QuillEditorInput = ({
           <div
             dangerouslySetInnerHTML={{ __html: data }}
             style={{
-              whiteSpace: "nowrap",
               overflow: "hidden",
-              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: 2, // 원하는 줄 수
+              WebkitBoxOrient: "vertical",
+              wordBreak: "break-word",
             }}
           />
         ) : (
