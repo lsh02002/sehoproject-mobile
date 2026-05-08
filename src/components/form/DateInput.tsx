@@ -34,7 +34,7 @@ const dateToArray = (date: Date): number[] => [
   date.getDate(),
 ];
 
-const formatDate = (date?: Date) => {  
+const formatDate = (date?: Date) => {
   if (!(date instanceof Date) || isNaN(date.getTime())) return "";
 
   const year = date.getFullYear();
@@ -88,7 +88,11 @@ const DateInput = ({
             setInputValue(parsed);
 
             if (parsed) {
-              setSelected(dateToArray(parsed));
+              if (Array.isArray(selected)) {
+                setSelected(dateToArray(parsed));
+              } else {
+                setSelected(parsed);
+              }
             }
           }}
         />
@@ -110,7 +114,12 @@ const DateInput = ({
             <Calendar
               onChange={(value) => {
                 if (value instanceof Date) {
-                  setSelected(dateToArray(value));
+                  if (Array.isArray(selected)) {
+                    setSelected(dateToArray(value));
+                  } else {
+                    setSelected(value);
+                  }
+                  
                   setInputValue(value);
                   setIsOpen(false);
                 }
