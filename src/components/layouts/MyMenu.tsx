@@ -127,7 +127,7 @@ export default function SidebarMenu({ open }: { open: boolean }) {
       className="p-2 d-flex flex-column"
       style={{
         minWidth: open ? 240 : 64,
-        height: "calc(100vh - 250px)",
+        height: "100%",
         boxSizing: "border-box",
       }}
       aria-label="Workspace Tree Navigation"

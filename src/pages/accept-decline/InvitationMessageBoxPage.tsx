@@ -12,7 +12,7 @@ type Invite = {
   inviterEmail?: string;
   message?: string | null;
   requestedRole?: "ADMIN" | "MAINTAINER" | "MEMBER" | null;
-  createdAt?: string;
+  createdAt?: number[];
   status?: "PENDING" | "ACCEPTED" | "DECLINED";
 };
 
@@ -20,9 +20,19 @@ export const InvitationMessageBoxPage: React.FC = () => {
   const [items, setItems] = useState<Invite[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const formatCreatedAt = (createdAt?: number[]) => {
+    if (!createdAt) return "-";
+
+    const [year, month, day, hour, minute, second] = createdAt;
+
+    return new Date(year, month - 1, day, hour, minute, second).toLocaleString(
+      "ko-KR",
+    );
+  };
+
   useEffect(() => {
     getInvitationMessageApi()
-      .then((res) => {        
+      .then((res) => {
         setItems(res.data);
       })
       .catch(() => {});
@@ -30,7 +40,7 @@ export const InvitationMessageBoxPage: React.FC = () => {
 
   const accept = async (record: Invite) => {
     postInvitationAcceptApi(record.workspaceId, record.id)
-      .then((res) => {        
+      .then((res) => {
         setIsLoading((prev) => !prev);
       })
       .catch(() => {});
@@ -38,7 +48,7 @@ export const InvitationMessageBoxPage: React.FC = () => {
 
   const decline = async (record: Invite) => {
     postInvitationDeclineApi(record.workspaceId, record.id)
-      .then((res) => {        
+      .then((res) => {
         setIsLoading((prev) => !prev);
       })
       .catch(() => {});
@@ -112,9 +122,7 @@ export const InvitationMessageBoxPage: React.FC = () => {
 
                   <InfoRow
                     label="받은 시각"
-                    value={
-                      r.createdAt ? new Date(r.createdAt).toLocaleString() : "-"
-                    }
+                    value={formatCreatedAt(r.createdAt)}
                   />
                 </div>
 
