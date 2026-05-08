@@ -41,7 +41,7 @@ const formatDate = (date?: Date) => {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
+  return `${year}년 ${month}월 ${day}일`;
 };
 
 const parseDate = (value: string): Date | undefined => {
@@ -79,7 +79,7 @@ const DateInput = ({
         <input
           type="text"
           className="form-control date-input-field"
-          placeholder="yyyy-MM-dd"
+          placeholder="yyyy년 MM월 dd일"
           value={formatDate(inputValue)}
           disabled={disabled}
           onChange={(e) => {
