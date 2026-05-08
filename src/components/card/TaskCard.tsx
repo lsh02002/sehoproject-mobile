@@ -3,6 +3,7 @@ import { TaskResponseType } from "../../types/type";
 import { SiGoogletasks } from "react-icons/si";
 import { GrInProgress } from "react-icons/gr";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
+import { ImBlocked } from "react-icons/im";
 import { FiEdit3, FiCalendar, FiFolder } from "react-icons/fi";
 import { useLogin } from "../../context/LoginContext";
 import { useModalManager } from "../../context/ModalContext";
@@ -28,6 +29,11 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
       label: "IN PROGRESS",
       icon: <GrInProgress />,
       className: "bg-warning-subtle text-warning-emphasis",
+    },
+    BLOCKED: {
+      label: "BLOCKED",
+      icon: <ImBlocked />,
+      className: "text-red-600 bg-red-100 border border-red-300",
     },
     DONE: {
       label: "DONE",
