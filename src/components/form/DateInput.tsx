@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Calendar from "react-calendar";
+import { useModalManager } from "../../context/ModalContext";
 
 interface DateInputProps {
   disabled?: boolean;
@@ -62,8 +63,20 @@ const DateInput = ({
   selected,
   setSelected,
 }: DateInputProps) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState<Date | undefined>();
+
+  const { openModal, closeModal, isOpen } = useModalManager();
+
+  const isDateOpen = isOpen("date");
+
+  const openDate = () => {
+    if (disabled) return;
+    openModal("date");
+  };
+
+  const closeDate = () => {
+    closeModal("date");
+  };
 
   useEffect(() => {
     setInputValue(normalizeDate(selected));
@@ -100,16 +113,16 @@ const DateInput = ({
         <button
           type="button"
           className="btn date-input-button"
-          onClick={() => setIsOpen(true)}
+          onClick={openDate}
           disabled={disabled}
         >
           📅
         </button>
       </div>
 
-      {isOpen && (
+      {isDateOpen && (
         <>
-          <div className="calendar-backdrop" onClick={() => setIsOpen(false)} />
+          <div className="calendar-backdrop" onClick={closeDate} />
           <div className="calendar-modal">
             <Calendar
               onChange={(value) => {
@@ -119,9 +132,9 @@ const DateInput = ({
                   } else {
                     setSelected(value);
                   }
-                  
+
                   setInputValue(value);
-                  setIsOpen(false);
+                  closeDate();
                 }
               }}
               value={inputValue}
