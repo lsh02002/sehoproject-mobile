@@ -27,8 +27,8 @@ const SprintEditPage = ({
   const [projectId, setProjectId] = useState("");
   const [name, setName] = useState("");
   const [state, setState] = useState("");
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const [startDate, setStartDate] = useState<Date | number[]>();
+  const [endDate, setEndDate] = useState<Date | number[]>();
   const [taskIds, setTaskIds] = useState<TaskResponseType[]>([]);
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
 

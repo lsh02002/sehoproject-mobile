@@ -38,7 +38,7 @@ const TaskCreatePage = () => {
   const [assigneeOptions, setAssigneeOptions] = useState<AssignInfoType[]>([]);
   const [tags, setTags] = useState<TagResponseType[]>([]);
   const [tagOptions, setTagOptions] = useState<TagResponseType[]>([]);
-  const [dueDate, setDueDate] = useState<Date>();
+  const [dueDate, setDueDate] = useState<Date | number[]>();
   const [images, setImages] = useState<File[] | null>(null);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 

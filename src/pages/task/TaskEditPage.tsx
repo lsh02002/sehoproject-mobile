@@ -44,7 +44,7 @@ const TaskEditPage = ({ windowOpenTaskId }: { windowOpenTaskId?: number }) => {
   const [tags, setTags] = useState<TagResponseType[]>([]);
   const [tagOptions, setTagOptions] = useState<TagResponseType[]>([]);
   const [dependencyIds, setDependencyIds] = useState<number[]>([]);
-  const [dueDate, setDueDate] = useState<Date>();
+  const [dueDate, setDueDate] = useState<Date | number[]>();
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

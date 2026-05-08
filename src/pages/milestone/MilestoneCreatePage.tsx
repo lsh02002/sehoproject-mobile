@@ -24,8 +24,8 @@ const MilestoneCreatePage = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("PLANNED");
-  const [startDate, setStartDate] = useState<Date>();
-  const [dueDate, setDueDate] = useState<Date>();
+  const [startDate, setStartDate] = useState<Date | number[]>();
+  const [dueDate, setDueDate] = useState<Date | number[]>();
   const [taskIds, setTaskIds] = useState<TaskResponseType[]>([]);
   const [taskOptions, setTaskOptions] = useState<TaskResponseType[]>([]);
 

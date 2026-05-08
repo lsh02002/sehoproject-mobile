@@ -78,8 +78,8 @@ export type ProjectRequestType = {
   projectKey?: string;
   name: string;
   description: string;
-  startDate?: Date;
-  dueDate?: Date;
+  startDate?: Date | number[];
+  dueDate?: Date | number[];
   creatorId?: number | null;
   tags?: string[];
 };
@@ -92,8 +92,8 @@ export type ProjectResponseType = {
   name: string;
   description: string;
   status: string;
-  startDate: Date;
-  dueDate: Date;
+  startDate: Date | number[];
+  dueDate: Date | number[];
   creatorId: number;
   creatorName: string;
   tagResponses: TagResponseType[];
@@ -114,7 +114,7 @@ export type TaskRequestType = {
   type: string;
   state: string;
   storyPoints: number | null;
-  dueDate: Date | undefined;
+  dueDate: Date | number[] | undefined;
 };
 
 export type TaskUpdateRequestType = {
@@ -125,7 +125,7 @@ export type TaskUpdateRequestType = {
   type: string; // 예: "BUG", "STORY", "TASK"
   state: string;
   storyPoints: number;
-  dueDate: Date | undefined;
+  dueDate: Date | number[] | undefined;
   sprintId: number; // null: 변경 없음, 0 이하: 스프린트 해제
   milestoneId: number; // null: 변경 없음, 0 이하: 마일스톤 해제
   tags: number[]; // null: 변경 없음, empty: 모두 제거
@@ -169,8 +169,8 @@ export type SprintRequestType = {
   projectId: number;
   name: string;
   state: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: Date | number[];
+  endDate?: Date | number[];
   taskIds: number[];
 };
 
@@ -179,8 +179,8 @@ export type SprintResponseType = {
   projectId: number;
   name: string;
   state: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | number[];
+  endDate: Date | number[];
   taskIds: TaskResponseType[];
   createdAt?: string;
   updatedAt?: string;
@@ -190,8 +190,8 @@ export type MilestoneRequestType = {
   projectId: number;
   name: string;
   description: string;
-  startDate?: Date;
-  dueDate?: Date;
+  startDate?: Date | number[];
+  dueDate?: Date | number[];
   status: string;
   taskIds: number[];
 };
@@ -201,8 +201,8 @@ export type MilestoneResponseType = {
   projectId: number;
   name: string;
   description: string;
-  startDate: Date;
-  dueDate: Date;
+  startDate: Date | number[];
+  dueDate: Date | number[];
   status: string;
   createdAt?: string;
   updatedAt?: string;  
@@ -337,8 +337,8 @@ export type WorkspaceRole = "OWNER" | "ADMIN" | "MEMBER" | "GUEST";
 export type SprintCalendarType = {
   id: string;
   name: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | number[];
+  endDate: Date | number[];
   display: string;
   color: string;
 };
@@ -359,7 +359,7 @@ export type WorkspaceInviteResponseType = {
   message: string;
   requestedRole: WorkspaceRole;
   status: string;
-  expiresAt: Date;
+  expiresAt: Date | number[];
   createdAt?: string;
   updatedAt?: string;
 };

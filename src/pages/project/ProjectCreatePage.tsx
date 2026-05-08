@@ -16,8 +16,8 @@ const ProjectCreatePage = () => {
   const [projectKey, setProjectKey] = useState("PROJECT");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState<Date>();
-  const [dueDate, setDueDate] = useState<Date>();
+  const [startDate, setStartDate] = useState<Date | number[]>();
+  const [dueDate, setDueDate] = useState<Date | number[]>();
 
   const queryClient = useQueryClient();
 
