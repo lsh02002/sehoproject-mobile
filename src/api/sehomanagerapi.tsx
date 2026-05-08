@@ -18,11 +18,7 @@ import { DEBUG } from "./DEBUG";
 
 type ToastType = "success" | "error" | "info" | "warning";
 
-const showToast = (
-  message: string,
-  type: ToastType,
-  toastId: string,
-) => {
+const showToast = (message: string, type: ToastType, toastId: string) => {
   if (!toast.isActive(toastId)) {
     toast[type](message, { toastId });
   }
@@ -66,11 +62,20 @@ api.interceptors.response.use(
       const toastId = `api-error-${error.response?.status}`;
       let type: ToastType = "warning";
 
-      if(error.response?.status === 500) {
+      if (error.response?.status === 500) {
         type = "error";
       }
 
-      showToast(error.response.data.detailMessage, type, toastId);
+      const requestMessage =
+        error.response.data.request !== null
+          ? " id: " + error.response.data.request
+          : "";
+
+      showToast(
+        error.response.data.detailMessage + requestMessage,
+        type,
+        toastId,
+      );
     }
 
     if (DEBUG) {
