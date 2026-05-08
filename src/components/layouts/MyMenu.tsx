@@ -35,21 +35,21 @@ export default function SidebarMenu({ open }: { open: boolean }) {
 
       if (Number.isNaN(workspaceId)) {
         setRoot({
-          id: "workspace",
-          name: "Workspace",
+          id: -1,
+          name: "Workspace(빈 트리)",
           type: "WORKSPACE",
           children: [
             {
-              id: "space-1",
+              id: -1,
               name: "Space A",
               type: "SPACE",
-              children: [{ id: "p1", name: "Project 1", type: "PROJECT" }],
+              children: [{ id: -1, name: "Project 1", type: "PROJECT" }],
             },
             {
-              id: "space-2",
+              id: -1,
               name: "Space B",
               type: "SPACE",
-              children: [{ id: "p2", name: "Project 2", type: "PROJECT" }],
+              children: [{ id: -1, name: "Project 2", type: "PROJECT" }],
             },
           ],
         });
@@ -65,21 +65,21 @@ export default function SidebarMenu({ open }: { open: boolean }) {
         .catch(() => {
           if (!aborted) {
             setRoot({
-              id: "workspace",
-              name: "Workspace",
+              id: -1,
+              name: "Workspace(빈 트리)",
               type: "WORKSPACE",
               children: [
                 {
-                  id: "space-1",
+                  id: -1,
                   name: "Space A",
                   type: "SPACE",
-                  children: [{ id: "p1", name: "Project 1", type: "PROJECT" }],
+                  children: [{ id: -1, name: "Project 1", type: "PROJECT" }],
                 },
                 {
-                  id: "space-2",
+                  id: -1,
                   name: "Space B",
                   type: "SPACE",
-                  children: [{ id: "p2", name: "Project 2", type: "PROJECT" }],
+                  children: [{ id: -1, name: "Project 2", type: "PROJECT" }],
                 },
               ],
             });
