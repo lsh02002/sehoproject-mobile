@@ -33,7 +33,7 @@ const TaskCard = ({ task }: { task: TaskResponseType }) => {
     BLOCKED: {
       label: "BLOCKED",
       icon: <ImBlocked />,
-      className: "text-red-600 bg-red-100 border border-red-300",
+      className: "bg-danger text-white",
     },
     DONE: {
       label: "DONE",
