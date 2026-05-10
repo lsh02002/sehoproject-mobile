@@ -156,13 +156,13 @@ const SprintEditPage = ({
         <TwoDiv>
           <DateInput
             title="시작일"
-            modalKey="startdate"
+            name="startdate"
             selected={startDate}
             setSelected={setStartDate}
           />
           <DateInput
             title="마감일"
-            modalKey="enddate"
+            name="enddate"
             selected={endDate}
             setSelected={setEndDate}
           />

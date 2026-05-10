@@ -50,6 +50,7 @@ export function ProfileSettingsPage() {
           <div className="col-12 col-md-6">
             <DateInput
               title="생년월일"
+              name="birthday"
               selected={birthday}
               setSelected={setBirthday}
             />

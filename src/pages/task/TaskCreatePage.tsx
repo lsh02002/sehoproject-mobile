@@ -265,7 +265,12 @@ const TaskCreatePage = () => {
           }
         />
 
-        <DateInput title="마감일" selected={dueDate} setSelected={setDueDate} />
+        <DateInput
+          title="마감일"
+          name="duedate"
+          selected={dueDate}
+          setSelected={setDueDate}
+        />
 
         <ImageInput
           name="images"

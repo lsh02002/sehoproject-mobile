@@ -99,13 +99,13 @@ const ProjectCreatePage = () => {
         <TwoDiv>
           <DateInput
             title="시작일"
-            modalKey="startdate"
+            name="startdate"
             selected={startDate}
             setSelected={setStartDate}
           />
           <DateInput
             title="마감일"
-            modalKey="duedate"
+            name="duedate"
             selected={dueDate}
             setSelected={setDueDate}
           />
