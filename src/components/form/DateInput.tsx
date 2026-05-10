@@ -5,6 +5,7 @@ import { useModalManager } from "../../context/ModalContext";
 interface DateInputProps {
   disabled?: boolean;
   title: string;
+  modalKey?: string;
   selected: Date | number[] | undefined;
   setSelected: Dispatch<SetStateAction<Date | number[] | undefined>>;
 }
@@ -60,6 +61,7 @@ const parseDate = (value: string): Date | undefined => {
 const DateInput = ({
   disabled,
   title,
+  modalKey,
   selected,
   setSelected,
 }: DateInputProps) => {
@@ -67,15 +69,15 @@ const DateInput = ({
 
   const { openModal, closeModal, isOpen } = useModalManager();
 
-  const isDateOpen = isOpen("date");
+  const isDateOpen = isOpen(modalKey ?? "date");
 
   const openDate = () => {
     if (disabled) return;
-    openModal("date");
+    openModal(modalKey ?? "date");
   };
 
   const closeDate = () => {
-    closeModal("date");
+    closeModal(modalKey ?? "date");
   };
 
   useEffect(() => {

@@ -11,7 +11,7 @@ export function ProfileSettingsPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [birthday, setBirthday] = useState<Date | undefined>(undefined);
+  const [birthday, setBirthday] = useState<Date | number[]>();
 
   const onSave = () => alert("프로필이 저장되었습니다.");
 
