@@ -324,7 +324,7 @@ export type ProjectNodeType = {
 
 // UI 트리 노드 (disabled로 렌더 제어)
 export type TreeNodeType = {
-  id: string | number;
+  id: string | number | null;
   name: string;
   type: "ROOT" | "WORKSPACE" | "SPACE" | "PROJECT" | "MILESTONE" | "SPRINT" | "TASK";
   projectId?: number;

@@ -43,21 +43,21 @@ export default function SidebarMenu({ open }: { open: boolean }) {
           type: "ROOT",
           children: [
             {
-              id: -1,
+              id: null,
               name: "Workspace",
               type: "WORKSPACE",
               children: [
                 {
-                  id: -1,
+                  id: null,
                   name: "Space A",
                   type: "SPACE",
-                  children: [{ id: -1, name: "Project 1", type: "PROJECT" }],
+                  children: [{ id: null, name: "Project 1", type: "PROJECT" }],
                 },
                 {
-                  id: -1,
+                  id: null,
                   name: "Space B",
                   type: "SPACE",
-                  children: [{ id: -1, name: "Project 2", type: "PROJECT" }],
+                  children: [{ id: null, name: "Project 2", type: "PROJECT" }],
                 },
               ],
             },
@@ -80,24 +80,24 @@ export default function SidebarMenu({ open }: { open: boolean }) {
               type: "ROOT",
               children: [
                 {
-                  id: -1,
+                  id: null,
                   name: "Workspace",
                   type: "WORKSPACE",
                   children: [
                     {
-                      id: -1,
+                      id: null,
                       name: "Space A",
                       type: "SPACE",
                       children: [
-                        { id: -1, name: "Project 1", type: "PROJECT" },
+                        { id: null, name: "Project 1", type: "PROJECT" },
                       ],
                     },
                     {
-                      id: -1,
+                      id: null,
                       name: "Space B",
                       type: "SPACE",
                       children: [
-                        { id: -1, name: "Project 2", type: "PROJECT" },
+                        { id: null, name: "Project 2", type: "PROJECT" },
                       ],
                     },
                   ],
