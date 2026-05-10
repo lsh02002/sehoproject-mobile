@@ -19,6 +19,7 @@ const ProjectListPage = () => {
       return res.data;
     },
     retry: false,
+    enabled: !!spaceId,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });
