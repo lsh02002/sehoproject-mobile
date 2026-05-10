@@ -7,12 +7,14 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { SlLogin } from "react-icons/sl";
 import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 import { layout } from "../../theme/theme";
+import { useQueryClient } from "@tanstack/react-query";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { setIsLogin } = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const queryClient = useQueryClient();
 
   const OnLoginSubmit = () => {
     UserLoginApi(email, password)
@@ -24,6 +26,18 @@ const LoginPage = () => {
         localStorage.setItem("projectId", res.data.data.projectId);
         localStorage.setItem("accessToken", res.headers.accesstoken);
         localStorage.setItem("refreshToken", res.headers.refreshtoken);
+
+        queryClient.removeQueries({
+          predicate: (query) =>
+            [
+              "workspaces",
+              "spaces",
+              "projects",
+              "sprints",
+              "milestones",
+              "tasks",
+            ].includes(query.queryKey[0] as string),
+        });
 
         setIsLogin(true);
         navigate("/");
