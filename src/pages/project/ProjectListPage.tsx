@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 
 const ProjectListPage = () => {
   const { spaceId } = useParams();
+
+  const isValidSpaceId = Number.isFinite(Number(spaceId));
   const {
     data: projects = [],
     isLoading,
@@ -19,7 +21,7 @@ const ProjectListPage = () => {
       return res.data;
     },
     retry: false,
-    enabled: !!spaceId,
+    enabled: isValidSpaceId,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
   });
