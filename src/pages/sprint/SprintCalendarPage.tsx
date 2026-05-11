@@ -1,10 +1,10 @@
 // src/pages/SprintPage.tsx
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { getSprintsByProjectApi } from "../../api/sehomanagerapi";
-import { SprintCalendarType } from "../../types/type";
+import { SprintResponseType } from "../../types/type";
 import { EventInput } from "@fullcalendar/core";
 import koLocale from "@fullcalendar/core/locales/ko";
 
@@ -14,6 +14,7 @@ import { A11y, Mousewheel } from "swiper/modules";
 import "swiper/css";
 import { GiSprint } from "react-icons/gi";
 import { useLogin } from "../../context/LoginContext";
+import { useQuery } from "@tanstack/react-query";
 
 const addDaysISO = (iso: string, days: number) => {
   const dt = new Date(iso);
@@ -66,8 +67,7 @@ const getStableColor = (seed: string | number) => {
 // ===== 메인 컴포넌트 =====
 const SprintCalendarPage = () => {
   const projectIdLocal = localStorage.getItem("projectId");
-  const { projectId, setProjectId } = useLogin();
-  const [sprints, setSprints] = useState<SprintCalendarType[]>([]);
+  const { projectId } = useLogin();
   const [baseDate, setBaseDate] = useState<Date>(() => {
     const d = new Date();
     d.setDate(0);
@@ -77,17 +77,17 @@ const SprintCalendarPage = () => {
   // ➕ 되감기(프로그램적 slide) 무시용 가드
   const snappingRef = useRef(false);
 
-  useEffect(() => {
-    if (!projectId) {
-      setProjectId(Number(projectIdLocal));
-    }
-  }, [projectId, projectIdLocal, setProjectId]);
+  const resolvedProjectId =
+    projectId ?? (projectIdLocal ? Number(projectIdLocal) : null);
 
-  useEffect(() => {    
-    getSprintsByProjectApi(Number(projectId))
-      .then((res) => setSprints(res.data))
-      .catch(() => {});
-  }, [projectId]);
+  const { data: sprints = [] } = useQuery<SprintResponseType[]>({
+    queryKey: ["sprints", resolvedProjectId],
+    queryFn: async () => {
+      const res = await getSprintsByProjectApi(Number(resolvedProjectId));
+      return res.data;
+    },
+    enabled: resolvedProjectId !== null,
+  });
 
   // 이벤트 변환
   const events: EventInput[] = useMemo(
