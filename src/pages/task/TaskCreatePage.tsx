@@ -24,9 +24,10 @@ import ImageInput from "../../components/form/ImageInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useModalManager } from "../../context/ModalContext";
+import { useProject } from "../../context/ProjectContext";
 
 const TaskCreatePage = () => {
-  const projectIdLocal = localStorage.getItem("projectId");
+  const { projectIdLocal } = useProject();
   const { projectId, setProjectId } = useLogin();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
