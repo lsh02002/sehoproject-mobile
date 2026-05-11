@@ -11,41 +11,60 @@ import {
 type ProjectContextType = {
   projectIdLocal: number | null;
   setProjectIdLocal: (id: number | null) => void;
+  clearProjectId: () => void;
 };
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export const ProjectProvider = ({ children }: { children: ReactNode }) => {
-  const [projectIdLocal, setProjectIdState] = useState<number | null>(() => {
-    const stored = localStorage.getItem("projectId");
-    return stored ? Number(stored) : null;
-  });
+  const [userId, setUserId] = useState<string | null>(() =>
+    localStorage.getItem("userId"),
+  );
+
+  const storageKey = userId ? `projectId:${userId}` : "projectId";  
+
+  const [projectIdLocal, setProjectIdState] = useState<number | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(storageKey);
+    setProjectIdState(stored ? Number(stored) : null);    
+  }, [storageKey]);
 
   const setProjectIdLocal = (id: number | null) => {
-    localStorage.setItem("projectId", String(id));
+    if (id === null) {
+      localStorage.removeItem(storageKey);
+    } else {
+      localStorage.setItem(storageKey, String(id));
+    }
+
     setProjectIdState(id);
   };
 
-  // 다른 탭 동기화
-  useEffect(() => {
-    const handleStorage = () => {
-      const stored = localStorage.getItem("projectId");
+  const clearProjectId = () => {
+    localStorage.removeItem(storageKey);
+    setProjectIdState(null);
+  };
 
-      setProjectIdState(stored ? Number(stored) : null);
+  useEffect(() => {
+    const handleUserIdChange = () => {
+      setUserId(localStorage.getItem("userId"));
     };
 
-    window.addEventListener("storage", handleStorage);
+    window.addEventListener("storage", handleUserIdChange);
+    window.addEventListener("userIdChanged", handleUserIdChange);
 
     return () => {
-      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("storage", handleUserIdChange);
+      window.removeEventListener("userIdChanged", handleUserIdChange);
     };
-  }, []);
+  }, [storageKey]);
 
   return (
     <ProjectContext.Provider
       value={{
         projectIdLocal,
         setProjectIdLocal,
+        clearProjectId,
       }}
     >
       {children}

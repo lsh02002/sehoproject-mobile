@@ -17,8 +17,8 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 root.render(
-  <ProjectProvider>
-    <LoginProvider>
+  <LoginProvider>
+    <ProjectProvider>
       <ModalProvider>
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
@@ -28,8 +28,8 @@ root.render(
           </QueryClientProvider>
         </BrowserRouter>
       </ModalProvider>
-    </LoginProvider>    
-  </ProjectProvider>,
+    </ProjectProvider>
+  </LoginProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

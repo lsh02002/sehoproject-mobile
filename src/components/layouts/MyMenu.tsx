@@ -209,11 +209,13 @@ export default function SidebarMenu({ open }: { open: boolean }) {
                 if (!window.confirm("로그아웃 하시겠습니까?")) {
                   return;
                 }
+                // const userId = localStorage.getItem("userId");
+
                 localStorage.removeItem("userId");
-                localStorage.removeItem("name");
+                localStorage.removeItem("nickname");
                 localStorage.removeItem("workspaceId");
                 localStorage.removeItem("spaceId");
-                localStorage.removeItem("projectId");
+                // localStorage.removeItem(`projectId:${userId}`);
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
 
@@ -230,6 +232,8 @@ export default function SidebarMenu({ open }: { open: boolean }) {
                 });
 
                 resetLoginContext();
+
+                window.dispatchEvent(new Event("userIdChanged"));
 
                 setIsLogin(false);
                 go(e, "/login");
