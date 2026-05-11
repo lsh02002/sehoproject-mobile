@@ -278,8 +278,8 @@ const createWorkspaceApi = async (data: WorkspaceRequestType) => {
   return api.post(`/workspaces/create`, data);
 };
 
-const createSpaceApi = async (workspaceId: number, data: SpaceRequestType) => {
-  return api.post(`/workspace/${workspaceId}/spaces/create`, data);
+const createSpaceApi = async (data: SpaceRequestType) => {
+  return api.post(`/workspace/spaces/create`, data);
 };
 
 const createSpaceAndProjectMembersApi = async (

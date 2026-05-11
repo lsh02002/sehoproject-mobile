@@ -20,17 +20,19 @@ const SpaceCreatePage = () => {
   const navigate = useNavigate();
 
   const OnCreateSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     e.stopPropagation();
 
     if (isSubmitting) return;
     setIsSubmitting(true);
 
     const data: SpaceRequestType = {
+      workspaceId: Number(workspaceId),
       name,
       slug,
     };
 
-    createSpaceApi(Number(workspaceId), data)
+    createSpaceApi(data)
       .then((res) => {
         toast.success("생성을 성공했습니다!");
 

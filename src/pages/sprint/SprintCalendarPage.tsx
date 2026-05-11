@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Mousewheel } from "swiper/modules";
 import "swiper/css";
 import { GiSprint } from "react-icons/gi";
+import { useLogin } from "../../context/LoginContext";
 
 const addDaysISO = (iso: string, days: number) => {
   const dt = new Date(iso);
@@ -65,7 +66,8 @@ const getStableColor = (seed: string | number) => {
 
 // ===== 메인 컴포넌트 =====
 const SprintCalendarPage = () => {
-  const { projectId } = useParams();
+  const projectIdLocal = localStorage.getItem("projectId");
+  const { projectId, setProjectId } = useLogin();
   const [sprints, setSprints] = useState<SprintCalendarType[]>([]);
   const [baseDate, setBaseDate] = useState<Date>(() => {
     const d = new Date();
@@ -77,7 +79,13 @@ const SprintCalendarPage = () => {
   const snappingRef = useRef(false);
 
   useEffect(() => {
-    getSprintsByProjectApi(parseInt(projectId ?? "0", 10))
+    if (!projectId) {
+      setProjectId(Number(projectIdLocal));
+    }
+  }, [projectId, projectIdLocal, setProjectId]);
+
+  useEffect(() => {    
+    getSprintsByProjectApi(Number(projectId))
       .then((res) => setSprints(res.data))
       .catch(() => {});
   }, [projectId]);

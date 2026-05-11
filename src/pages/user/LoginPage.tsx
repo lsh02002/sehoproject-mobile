@@ -11,7 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { setIsLogin } = useLogin();
+  const { setIsLogin, resetLoginContext } = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const queryClient = useQueryClient();
@@ -38,6 +38,8 @@ const LoginPage = () => {
               "tasks",
             ].includes(query.queryKey[0] as string),
         });
+
+        resetLoginContext();
 
         setIsLogin(true);
         navigate("/");

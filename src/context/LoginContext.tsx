@@ -25,8 +25,10 @@ type LoginContextValue = {
   setSprint: Dispatch<SetStateAction<SprintResponseType | undefined>>;
   milestone: MilestoneResponseType | undefined;
   setMilestone: Dispatch<SetStateAction<MilestoneResponseType | undefined>>;
-  projectId: number;
-  setProjectId: Dispatch<SetStateAction<number>>;
+  projectId: number | null;
+  setProjectId: Dispatch<SetStateAction<number | null>>;
+
+  resetLoginContext: () => void;
 };
 
 export const LoginContext = createContext<LoginContextValue | undefined>(
@@ -40,7 +42,17 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [task, setTask] = useState<TaskResponseType>();
   const [sprint, setSprint] = useState<SprintResponseType>();
   const [milestone, setMilestone] = useState<MilestoneResponseType>();
-  const [projectId, setProjectId] = useState(0);
+  const [projectId, setProjectId] = useState<number | null>(null);
+
+  const resetLoginContext = () => {
+    setIsLogin(false);
+    setIsMenuRefresh(false);
+    setIsSideOpen(false);
+    setTask(undefined);
+    setSprint(undefined);
+    setMilestone(undefined);
+    setProjectId(null);
+  };
 
   const value: LoginContextValue = {
     isLogin,
@@ -57,6 +69,7 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
     setMilestone,
     projectId,
     setProjectId,
+    resetLoginContext,
   };
 
   return (

@@ -13,7 +13,7 @@ import { useModalManager } from "../../context/ModalContext";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function SidebarMenu({ open }: { open: boolean }) {
-  const { isLogin, setIsLogin } = useLogin();
+  const { isLogin, setIsLogin, resetLoginContext } = useLogin();
   const nickname = localStorage.getItem("nickname");
   const navigate = useNavigate();
   const location = useLocation();
@@ -228,6 +228,8 @@ export default function SidebarMenu({ open }: { open: boolean }) {
                       "tasks",
                     ].includes(query.queryKey[0] as string),
                 });
+
+                resetLoginContext();
 
                 setIsLogin(false);
                 go(e, "/login");

@@ -10,10 +10,10 @@ const BoardList = () => {
   const { setProjectId } = useLogin();
 
   useEffect(() => {
-    setProjectId(Number(projectId) ?? 0);
+    setProjectId(Number(projectId) ?? null);
 
     return () => {
-      setProjectId(0);
+      setProjectId(null);
     };
   }, [projectId, setProjectId]);
 

@@ -60,6 +60,7 @@ export type WorkspaceResponseType = {
 };
 
 export type SpaceRequestType = {
+  workspaceId: number;
   name: string;
   slug: string;
 };
