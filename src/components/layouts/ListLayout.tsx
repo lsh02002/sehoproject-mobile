@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLogin } from "../../context/LoginContext";
 import { Calendar } from "lucide-react";
 import { useModalManager } from "../../context/ModalContext";
+import { useProject } from "../../context/ProjectContext";
 
 type ListLayoutProps = {
   title?: string;
@@ -31,18 +32,19 @@ const ListLayout = ({
   icon,
   componentType = "null",
 }: ListLayoutProps) => {
+  const location = useLocation();
   const hasCreate = Boolean(to);
   const navigator = useNavigate();
   const { setTask, setSprint, setMilestone } = useLogin();
   const { openModal } = useModalManager();
-  const projectIdLocal = localStorage.getItem("projectId");
+  const { projectIdLocal } = useProject();
   const { projectId, setProjectId } = useLogin();
 
   useEffect(() => {
-    if (!projectId) {
+    if (location.pathname.startsWith("/task-list")) {
       setProjectId(Number(projectIdLocal));
     }
-  }, [projectId, projectIdLocal, setProjectId]);
+  }, [location.pathname, projectId, projectIdLocal, setProjectId]);
 
   const handleOpen = () => {
     if (componentType === "task") {

@@ -13,8 +13,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Mousewheel } from "swiper/modules";
 import "swiper/css";
 import { GiSprint } from "react-icons/gi";
-import { useLogin } from "../../context/LoginContext";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 const addDaysISO = (iso: string, days: number) => {
   const dt = new Date(iso);
@@ -65,9 +65,8 @@ const getStableColor = (seed: string | number) => {
 };
 
 // ===== 메인 컴포넌트 =====
-const SprintCalendarPage = () => {
-  const projectIdLocal = localStorage.getItem("projectId");
-  const { projectId } = useLogin();
+const SprintCalendarPage = () => {  
+  const { projectId } = useParams();
   const [baseDate, setBaseDate] = useState<Date>(() => {
     const d = new Date();
     d.setDate(0);
@@ -77,15 +76,12 @@ const SprintCalendarPage = () => {
   // ➕ 되감기(프로그램적 slide) 무시용 가드
   const snappingRef = useRef(false);
 
-  const resolvedProjectId =
-    projectId ?? (projectIdLocal ? Number(projectIdLocal) : null);
-
-  const isValidProjectId = Number.isFinite(projectId);
+  const isValidProjectId = Number.isFinite(Number(projectId));
 
   const { data: sprints = [] } = useQuery<SprintResponseType[]>({
-    queryKey: ["sprints", resolvedProjectId],
+    queryKey: ["sprints", projectId],
     queryFn: async () => {
-      const res = await getSprintsByProjectApi(Number(resolvedProjectId));
+      const res = await getSprintsByProjectApi(Number(projectId));
       return res.data;
     },
     enabled: isValidProjectId,

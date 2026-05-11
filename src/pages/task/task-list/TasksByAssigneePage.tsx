@@ -11,6 +11,7 @@ import { GiSprint } from "react-icons/gi";
 import SprintsByState from "../../../components/list/SprintsByState";
 import { useScroll } from "../../../context/ScrollContext";
 import { queryOptions, useQueries } from "@tanstack/react-query";
+import { useProject } from "../../../context/ProjectContext";
 
 const TaskByAssigneePage = () => {
   const boardRef = useRef<HTMLDivElement | null>(null);
@@ -24,20 +25,20 @@ const TaskByAssigneePage = () => {
   const startScrollLeft = useRef(0);
   const startScrollTop = useRef(0);
 
-  const projectId = Number(localStorage.getItem("projectId"));
+  const { projectIdLocal } = useProject();
 
   const results = useQueries({
     queries: [
       queryOptions({
-        queryKey: ["myTasks", projectId],
-        queryFn: () => getTasksByAssigneeApi(projectId),
-        enabled: !!projectId,
+        queryKey: ["myTasks", projectIdLocal],
+        queryFn: () => getTasksByAssigneeApi(Number(projectIdLocal)),
+        enabled: !!projectIdLocal,
         select: (res) => res.data ?? [],
       }),
       queryOptions({
-        queryKey: ["mySprints", projectId],
-        queryFn: () => getSprintsByAssigneeApi(projectId),
-        enabled: !!projectId,
+        queryKey: ["mySprints", projectIdLocal],
+        queryFn: () => getSprintsByAssigneeApi(Number(projectIdLocal)),
+        enabled: !!projectIdLocal,
         select: (res) => res.data ?? [],
       }),
     ],

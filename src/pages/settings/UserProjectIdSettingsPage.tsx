@@ -15,6 +15,7 @@ import {
 import SelectInput from "../../components/form/SelectInput";
 import ConfirmButton from "../../components/form/ConfirmButton";
 import { toast } from "react-toastify";
+import { useProject } from "../../context/ProjectContext";
 
 export const UserProjectIdSettingsPage = () => {
   const [userInfo, setUserInfo] = useState<SignupResponseType>();
@@ -26,6 +27,8 @@ export const UserProjectIdSettingsPage = () => {
   const [selectWorkspaceId, setSelectWorkspaceId] = useState("");
   const [selectSpaceId, setSelectSpaceId] = useState("");
   const [selectProjectId, setSelectProjectId] = useState("");
+
+  const { setProjectIdLocal } = useProject();
 
   useEffect(() => {
     getUserByUserApi()
@@ -113,10 +116,9 @@ export const UserProjectIdSettingsPage = () => {
       Number(selectProjectId),
     )
       .then((res) => {
-
         localStorage.setItem("workspaceId", selectWorkspaceId);
-        localStorage.setItem("spaceId", selectSpaceId);
-        localStorage.setItem("projectId", selectProjectId);
+        localStorage.setItem("spaceId", selectSpaceId);        
+        setProjectIdLocal(Number(selectProjectId));
 
         toast.success("설정 변경에 성공했습니다!");
       })

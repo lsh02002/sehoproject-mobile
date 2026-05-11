@@ -9,6 +9,7 @@ import { LoginProvider } from "./context/LoginContext";
 import { ScrollProvider } from "./context/ScrollContext";
 import { ModalProvider } from "./context/ModalContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ProjectProvider } from "./context/ProjectContext";
 
 const queryClient = new QueryClient();
 
@@ -16,17 +17,19 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 root.render(
-  <LoginProvider>
-    <ModalProvider>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <ScrollProvider>
-            <App />
-          </ScrollProvider>
-        </QueryClientProvider>
-      </BrowserRouter>
-    </ModalProvider>
-  </LoginProvider>,
+  <ProjectProvider>
+    <LoginProvider>
+      <ModalProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <ScrollProvider>
+              <App />
+            </ScrollProvider>
+          </QueryClientProvider>
+        </BrowserRouter>
+      </ModalProvider>
+    </LoginProvider>    
+  </ProjectProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
