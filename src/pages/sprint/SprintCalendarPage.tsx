@@ -80,13 +80,15 @@ const SprintCalendarPage = () => {
   const resolvedProjectId =
     projectId ?? (projectIdLocal ? Number(projectIdLocal) : null);
 
+  const isValidProjectId = Number.isFinite(projectId);
+
   const { data: sprints = [] } = useQuery<SprintResponseType[]>({
     queryKey: ["sprints", resolvedProjectId],
     queryFn: async () => {
       const res = await getSprintsByProjectApi(Number(resolvedProjectId));
       return res.data;
     },
-    enabled: resolvedProjectId !== null,
+    enabled: isValidProjectId,
   });
 
   // 이벤트 변환
