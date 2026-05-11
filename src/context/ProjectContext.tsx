@@ -11,7 +11,7 @@ import {
 type ProjectContextType = {
   projectIdLocal: number | null;
   setProjectIdLocal: (id: number | null) => void;
-  clearProjectId: () => void;
+  clearProjectIdLocal: () => void;
 };
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -21,7 +21,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     localStorage.getItem("userId"),
   );
 
-  const storageKey = userId ? `projectId:${userId}` : "projectId";  
+  const storageKey = userId ? `projectIdLocal:${userId}` : "projectIdLocal";  
 
   const [projectIdLocal, setProjectIdState] = useState<number | null>(null);
 
@@ -40,7 +40,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     setProjectIdState(id);
   };
 
-  const clearProjectId = () => {
+  const clearProjectIdLocal = () => {
     localStorage.removeItem(storageKey);
     setProjectIdState(null);
   };
@@ -64,7 +64,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       value={{
         projectIdLocal,
         setProjectIdLocal,
-        clearProjectId,
+        clearProjectIdLocal,
       }}
     >
       {children}

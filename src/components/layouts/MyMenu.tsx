@@ -215,7 +215,7 @@ export default function SidebarMenu({ open }: { open: boolean }) {
                 localStorage.removeItem("nickname");
                 localStorage.removeItem("workspaceId");
                 localStorage.removeItem("spaceId");
-                // localStorage.removeItem(`projectId:${userId}`);
+                // localStorage.removeItem(`projectIdLocal:${userId}`);
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
 
