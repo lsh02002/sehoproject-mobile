@@ -4,7 +4,6 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { getSprintsByProjectApi } from "../../api/sehomanagerapi";
-import { useParams } from "react-router-dom";
 import { SprintCalendarType } from "../../types/type";
 import { EventInput } from "@fullcalendar/core";
 import koLocale from "@fullcalendar/core/locales/ko";
