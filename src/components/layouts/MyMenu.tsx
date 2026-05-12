@@ -147,10 +147,22 @@ export default function SidebarMenu({ open }: { open: boolean }) {
         minWidth: open ? 240 : 64,
         height: "100%",
         boxSizing: "border-box",
+        overflow: "hidden",
+        minHeight: 0,        
       }}
       aria-label="Workspace Tree Navigation"
     >
-      <ul className="list-unstyled m-0 p-0">
+      <ul
+        className="list-unstyled"
+        style={{
+          flex: 1,
+          minHeight: 0,
+          overflowY: "auto",          
+          margin: 0,
+          padding: 0,          
+          boxSizing: "border-box",          
+        }}
+      >
         <TreeNode
           open={open}
           node={root}

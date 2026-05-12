@@ -515,10 +515,12 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
             color: isDisabled || isModalNode ? "#94a3b8" : "inherit",
             fontSize: "0.93em",
             lineHeight: 1.2,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+            whiteSpace: "normal",
+            overflow: "visible",
+            textOverflow: "clip",
             flex: 1,
+            minWidth: 0,
+            wordBreak: "break-word",
           }}
         >
           {node.name}
@@ -561,8 +563,9 @@ export const TreeNode: React.FC<Props> = memo(function TreeNode({
       <div
         style={{
           overflow: "hidden",
-          maxHeight: open ? 1000 : 0,
-          transition: "max-height 220ms ease",
+          transition: "all 220ms ease",
+          opacity: open ? 1 : 0,
+          height: open ? "auto" : 0,
         }}
       >
         <ul
