@@ -7,6 +7,7 @@ import ConfirmButton from "../../components/form/ConfirmButton";
 import { FaRegistered } from "react-icons/fa6";
 import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 import { layout } from "../../theme/theme";
+import { toast } from "react-toastify";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const SignupPage = () => {
 
     UserSignupApi(userInfo)
       .then((res) => {
+        toast.success("회원가입이 성공적으로 되었습니다.");
+        
         navigate("/login");
       })
       .catch((err) => {});

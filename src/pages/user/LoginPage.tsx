@@ -8,6 +8,7 @@ import { SlLogin } from "react-icons/sl";
 import PasswordVisibleInput from "../../components/form/PasswordVisibleInput";
 import { layout } from "../../theme/theme";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -49,6 +50,9 @@ const LoginPage = () => {
         window.dispatchEvent(new Event("userIdChanged"));
 
         setIsLogin(true);
+
+        toast.success("로그인 되었습니다.");
+
         navigate("/");
       })
       .catch(() => {});

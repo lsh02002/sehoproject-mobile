@@ -4,6 +4,7 @@ import {
   postInvitationAcceptApi,
   postInvitationDeclineApi,
 } from "../../api/sehomanagerapi";
+import { toast } from "react-toastify";
 
 type Invite = {
   id: number;
@@ -42,6 +43,7 @@ export const InvitationMessageBoxPage: React.FC = () => {
     postInvitationAcceptApi(record.workspaceId, record.id)
       .then((res) => {
         setIsLoading((prev) => !prev);
+        toast.success("수락 되었습니다.");
       })
       .catch(() => {});
   };
@@ -50,6 +52,7 @@ export const InvitationMessageBoxPage: React.FC = () => {
     postInvitationDeclineApi(record.workspaceId, record.id)
       .then((res) => {
         setIsLoading((prev) => !prev);
+        toast.success("거절 되었습니다.");
       })
       .catch(() => {});
   };

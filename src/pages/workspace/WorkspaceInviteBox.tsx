@@ -54,7 +54,7 @@ const WorkspaceInviteBox = ({ workspaceId }: { workspaceId: number }) => {
 
     postWorkspaceInvite(payloads)
       .then((res) => {
-        toast.success?.("초대 완료");
+        toast.success?.("초대 완료되었습니다.");
       })
       .catch(() => {});
   };

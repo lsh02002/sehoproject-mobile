@@ -18,9 +18,7 @@ const SpaceEditPage = () => {
   const { workspaceId, spaceId } = useParams();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
-  const [workspaceIdState, setWorkspaceIdState] = useState<string>(
-    workspaceId?.toString() ?? "",
-  );
+
   const [currentTab, setCurrentTab] = useState<TabKey>("info");
 
   const queryClient = useQueryClient();
@@ -38,12 +36,13 @@ const SpaceEditPage = () => {
 
   const OnEditSubmit = () => {
     const data: SpaceRequestType = {
+      workspaceId: Number(workspaceId),
       name,
       slug,
     };
 
     putOneSpaceByWorkspaceAndSpaceApi(
-      Number(workspaceIdState),
+      Number(workspaceId),
       Number(spaceId),
       data,
     )
@@ -126,8 +125,8 @@ const SpaceEditPage = () => {
               name="workspaceId"
               title="워크스페이스"
               disabled
-              data={workspaceIdState}
-              setData={setWorkspaceIdState}
+              data={workspaceId ?? ""}
+              setData={() => {}}
             />
             <ConfirmButton title="수정" onClick={OnEditSubmit} />
           </section>
