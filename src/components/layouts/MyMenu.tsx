@@ -7,10 +7,11 @@ import {
   rowsToWorkspaceTreeResponse,
 } from "./TreeNode";
 import type { TreeNodeType } from "../../types/type";
-import { getWorkspacesTreeApi } from "../../api/sehomanagerapi";
+import { getWorkspacesTreeApi, UserLogoutApi } from "../../api/sehomanagerapi";
 import { useLogin } from "../../context/LoginContext";
 import { useModalManager } from "../../context/ModalContext";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export default function SidebarMenu({ open }: { open: boolean }) {
   const { isLogin, setIsLogin, resetLoginContext } = useLogin();
@@ -112,6 +113,14 @@ export default function SidebarMenu({ open }: { open: boolean }) {
     };
   }, [isMemuRefresh]);
 
+  const goTo = (path: string) => {
+    closeAllModals();
+
+    setTimeout(() => {
+      navigate(path);
+    }, 0);
+  };
+
   const go = (e: React.MouseEvent, path: string) => {
     e.preventDefault();
     e.stopPropagation();
@@ -120,13 +129,8 @@ export default function SidebarMenu({ open }: { open: boolean }) {
       document.activeElement.blur();
     }
 
-    closeAllModals();
-
-    setTimeout(() => {
-      navigate(path);
-    }, 0);
+    goTo(path);
   };
-
   if (!root)
     return (
       <aside
@@ -148,7 +152,7 @@ export default function SidebarMenu({ open }: { open: boolean }) {
         height: "100%",
         boxSizing: "border-box",
         overflow: "hidden",
-        minHeight: 0,        
+        minHeight: 0,
       }}
       aria-label="Workspace Tree Navigation"
     >
@@ -157,10 +161,10 @@ export default function SidebarMenu({ open }: { open: boolean }) {
         style={{
           flex: 1,
           minHeight: 0,
-          overflowY: "auto",          
+          overflowY: "auto",
           margin: 0,
-          padding: 0,          
-          boxSizing: "border-box",          
+          padding: 0,
+          boxSizing: "border-box",
         }}
       >
         <TreeNode
@@ -217,38 +221,45 @@ export default function SidebarMenu({ open }: { open: boolean }) {
                 padding: "6px 10px",
                 borderRadius: 6,
               }}
-              onClick={(e) => {
+              onClick={() => {
                 if (!window.confirm("로그아웃 하시겠습니까?")) {
                   return;
                 }
-                // const userId = localStorage.getItem("userId");
+                UserLogoutApi()
+                  .catch(() => {})
+                  .finally(() => {
+                    // const userId = localStorage.getItem("userId");
 
-                localStorage.removeItem("userId");
-                localStorage.removeItem("nickname");
-                localStorage.removeItem("workspaceId");
-                localStorage.removeItem("spaceId");
-                // localStorage.removeItem(`projectIdLocal:${userId}`);
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("refreshToken");
+                    localStorage.removeItem("userId");
+                    localStorage.removeItem("nickname");
+                    localStorage.removeItem("workspaceId");
+                    localStorage.removeItem("spaceId");
+                    // localStorage.removeItem(`projectIdLocal:${userId}`);
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
 
-                queryClient.removeQueries({
-                  predicate: (query) =>
-                    [
-                      "workspaces",
-                      "spaces",
-                      "projects",
-                      "sprints",
-                      "milestones",
-                      "tasks",
-                    ].includes(query.queryKey[0] as string),
-                });
+                    queryClient.removeQueries({
+                      predicate: (query) =>
+                        [
+                          "workspaces",
+                          "spaces",
+                          "projects",
+                          "sprints",
+                          "milestones",
+                          "tasks",
+                        ].includes(query.queryKey[0] as string),
+                    });
 
-                resetLoginContext();
+                    resetLoginContext();
 
-                window.dispatchEvent(new Event("userIdChanged"));
+                    window.dispatchEvent(new Event("userIdChanged"));
 
-                setIsLogin(false);
-                go(e, "/login");
+                    setIsLogin(false);
+
+                    toast.success("로그아웃 하였습니다.");
+
+                    goTo("/login");
+                  });
               }}
             >
               <div className="d-flex">로그아웃 ({nickname})</div>

@@ -103,7 +103,7 @@ const UserSignupApi = async (data: UserSignupType) => {
 };
 
 const UserLogoutApi = async () => {
-  return api.delete(`/user/logout`);
+  return api.post(`/user/logout`);
 };
 
 const UserChangePasswordApi = async (
