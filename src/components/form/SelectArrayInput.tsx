@@ -85,7 +85,7 @@ const SelectArrayInput = ({
           opacity: isSelArrayOpen ? 1 : 0,
           pointerEvents: isSelArrayOpen ? "auto" : "none",
           transition: "opacity 160ms ease",
-          zIndex: 200,
+          zIndex: 100,
         }}
       />
 
@@ -94,7 +94,7 @@ const SelectArrayInput = ({
         className="w-100 start-0 position-fixed bg-white shadow d-flex flex-column"
         style={{
           bottom: 55,
-          zIndex: 200,
+          zIndex: 100,
           height: "70%",
           borderRadius: "20px 20px 0 0",
           transform: isSelArrayOpen ? "translateY(0)" : "translateY(100%)",
